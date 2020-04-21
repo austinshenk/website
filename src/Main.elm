@@ -3,6 +3,7 @@ module Main exposing (main)
 import Browser
 import Browser.Navigation
 import Json.Decode as Json
+import Json.Encode
 import Url exposing (Url)
 import W3.Html as Html
 import W3.Html.Attributes as Attributes
@@ -143,7 +144,7 @@ view model =
                 [ Html.label []
                     [ Html.text "Text Size"
                     , Html.range
-                        [ Attributes.property "value" (String.fromInt model.preferences.textSize)
+                        [ Attributes.property "value" (Json.Encode.int model.preferences.textSize)
                         , Attributes.min 0
                         , Attributes.max 200
                         , Html.on "change"
