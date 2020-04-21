@@ -101,19 +101,6 @@ const webpackConfig = {
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
       chunkFilename: '[id].[contenthash].css',
-    }),
-    new CompressionPlugin({
-      filename: '[path].br[query]',
-      algorithm: 'brotliCompress',
-      compressionOptions: { level: 11 },
-      test: /\.(js|css|html|svg)$/,
-      minRatio: 1
-    }),
-    new CompressionPlugin({
-      filename: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.(js|css|html|svg)$/,
-      minRatio: 1
     })
   ]
 };
