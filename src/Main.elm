@@ -16,7 +16,7 @@ type alias Flags =
 type alias Preferences =
     { colorScheme : String
     , reducedMotion : String
-    , textSize : Int
+    , textSize : String
     }
 
 
@@ -40,7 +40,7 @@ type alias Model =
 type Msg
     = Noop
     | Modal Bool
-    | TextSize Int
+    | TextSize String
 
 
 main : Program Flags Model Msg
@@ -64,7 +64,7 @@ init flags url key =
                     (Json.map3 Preferences
                         (Json.field "colorScheme" Json.string)
                         (Json.field "reducedMotion" Json.string)
-                        (Json.field "textSize" Json.int)
+                        (Json.field "textSize" Json.string)
                     )
                 )
                 (Json.field "supports"
@@ -79,7 +79,7 @@ init flags url key =
                     Model value.preferences value.supports False
 
                 Err error ->
-                    Model (Preferences "" "" 100) (Supports False) False
+                    Model (Preferences "" "" "100") (Supports False) False
     in
     ( model, Cmd.none )
 
@@ -144,23 +144,18 @@ view model =
                 [ Html.label []
                     [ Html.text "Text Size"
                     , Html.range
-                        [ Attributes.property "value" (Json.Encode.int model.preferences.textSize)
+                        [ Attributes.value model.preferences.textSize
                         , Attributes.min 0
                         , Attributes.max 200
-                        , Html.on "change"
+                        , Html.on "input"
                             (Json.map (\textSize -> Html.Event (TextSize textSize) True True)
-                                (Json.at [ "target", "value" ] Json.int)
-                            )
-                        ]
-                    , Html.input
-                        [ Attributes.type_input "text"
-                        , Attributes.value (String.fromInt model.preferences.textSize)
-                        , Html.on "change"
-                            (Json.map (\textSize -> Html.Event (TextSize textSize) True True)
-                                (Json.at [ "target", "value" ] Json.int)
+                                (Json.at [ "target", "value" ] Json.string)
                             )
                         ]
                     ]
+                , Html.span
+                    []
+                    [ Html.text model.preferences.textSize ]
                 ]
             ]
             |> Html.toNode

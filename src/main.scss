@@ -1,6 +1,6 @@
 $pixel: 4px;
 
-body {
+:root {
     --pixel: hsl(0, 0%, 0%);
     --shadow: hsl(0, 0%, 70%);
     --background: hsl(0, 0%, 100%);
@@ -100,6 +100,7 @@ header {
     transition: filter 0.3s;
 
     &.modalOpen {
+        transform: translateZ(0);
         filter: blur(1px);
     }
 }
@@ -128,6 +129,7 @@ main {
     transition: filter 0.3s;
 
     &.modalOpen {
+        transform: translateZ(0);
         filter: blur(1px);
     }
 }
@@ -137,22 +139,21 @@ header, main {
 }
 
 dialog {
+    display: block;
     background: none;
     box-sizing: border-box;
     border: none;
-    position: absolute;
-    z-index: 3;
-    max-width: 500px;
-    width: 100vw;
+    position: fixed;
     top: 0;
-    height: 100vh;
     left: auto;
     right: -500px;
+    max-width: 500px;
+    width: 100vw;
     transition: right .5s;
     overflow-y: auto;
     padding: 8px 0;
 
-    &[open="true"] {
+    &[open] {
         right: 0;
     }
 
@@ -169,7 +170,6 @@ dialog {
 
 #backdrop {
     position: absolute;
-    z-index: 2;
     top: 0;
     bottom: 0;
     left: 0;
@@ -316,6 +316,7 @@ button {
 input, textarea {
     appearance: none;
     border: none;
+    vertical-align: middle;
     font-family: monospace;
 }
 

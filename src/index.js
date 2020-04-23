@@ -3,7 +3,7 @@ import {Elm} from "Main";
 const preferences = {
   colorScheme: "no-preference",
   reducedMotion: "no-preference",
-  textSize: 100
+  textSize: "100"
 };
 
 const supports = {
