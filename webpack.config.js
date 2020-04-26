@@ -102,7 +102,7 @@ const webpackConfig = {
       // Use this template to get basic responsive meta tags
       template: "src/index.html",
       // inject details of output file at end of body
-      inject: "head",
+      inject: "body",
       minify: true,
       meta: {viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'}
     }),
