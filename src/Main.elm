@@ -1,9 +1,8 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Browser.Navigation
 import Json.Decode as Json
-import Json.Encode
 import Url exposing (Url)
 import W3.Html as Html
 import W3.Html.Attributes as Attributes
@@ -20,19 +19,8 @@ type alias Preferences =
     }
 
 
-type alias Supports =
-    { variables : Bool }
-
-
-type alias FlagsModel =
-    { preferences : Preferences
-    , supports : Supports
-    }
-
-
 type alias Model =
     { preferences : Preferences
-    , supports : Supports
     , modalOpen : Bool
     }
 
@@ -41,6 +29,14 @@ type Msg
     = Noop
     | Modal Bool
     | TextSize String
+    | ColorScheme String
+    | Port Preferences
+
+
+port sendMessage : Preferences -> Cmd msg
+
+
+port messageReceiver : (Preferences -> msg) -> Sub msg
 
 
 main : Program Flags Model Msg
@@ -59,27 +55,18 @@ init : Flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         flagsDecoder =
-            Json.map2 FlagsModel
-                (Json.field "preferences"
-                    (Json.map3 Preferences
-                        (Json.field "colorScheme" Json.string)
-                        (Json.field "reducedMotion" Json.string)
-                        (Json.field "textSize" Json.string)
-                    )
-                )
-                (Json.field "supports"
-                    (Json.map Supports
-                        (Json.field "variables" Json.bool)
-                    )
-                )
+            Json.map3 Preferences
+                (Json.field "colorScheme" Json.string)
+                (Json.field "reducedMotion" Json.string)
+                (Json.field "textSize" Json.string)
 
         model =
             case Json.decodeValue flagsDecoder flags of
                 Ok value ->
-                    Model value.preferences value.supports False
+                    Model value False
 
-                Err error ->
-                    Model (Preferences "" "" "100") (Supports False) False
+                Err _ ->
+                    Model (Preferences "" "" "100") False
     in
     ( model, Cmd.none )
 
@@ -97,11 +84,11 @@ view model =
                     ""
                 ]
             ]
-            [ Html.nav []
-                [ Html.a [ Attributes.href "#" ] [ Html.text "About" ]
-                , Html.a [ Attributes.href "#" ] [ Html.text "Blog" ]
+            [ Html.nav [ Attributes.attribute "am-mod" "container" ]
+                [ Html.a [ Attributes.attribute "am-mod" "interactive", Attributes.href "#" ] [ Html.text "About" ]
+                , Html.a [ Attributes.attribute "am-mod" "interactive", Attributes.href "#" ] [ Html.text "Blog" ]
                 ]
-            , Html.button [ Html.onclick (Modal True) ] [ Html.text "Accessibility" ]
+            , Html.button [ Attributes.attribute "am-mod" "interactive", Attributes.attribute "am-floating" "", Html.onclick (Modal True) ] [ Html.text "Accessibility" ]
             ]
             |> Html.toNode
         , Html.main_
@@ -117,7 +104,8 @@ view model =
                 [ Html.a
                     [ Attributes.href "#about"
                     , Attributes.id "about"
-                    , Attributes.attribute "align" "center"
+                    , Attributes.attribute "am-mod" "interactive"
+                    , Attributes.attribute "am-align" "center"
                     ]
                     [ Html.text "#" ]
                 , Html.text "About"
@@ -140,22 +128,51 @@ view model =
             []
             |> Html.toNode
         , Html.dialog [ Attributes.open model.modalOpen ]
-            [ Html.section []
-                [ Html.label []
-                    [ Html.text "Text Size"
-                    , Html.range
-                        [ Attributes.value model.preferences.textSize
-                        , Attributes.min 0
-                        , Attributes.max 200
-                        , Html.on "input"
-                            (Json.map (\textSize -> Html.Event (TextSize textSize) True True)
-                                (Json.at [ "target", "value" ] Json.string)
-                            )
+            [ Html.section [ Attributes.attribute "am-mod" "container" ]
+                [ Html.div []
+                    [ Html.label []
+                        [ Html.text "Text Size"
+                        , Html.range
+                            [ Attributes.value model.preferences.textSize
+                            , Attributes.min 0
+                            , Attributes.max 200
+                            , Html.on "input"
+                                (Json.map (\textSize -> Html.Event (TextSize textSize) True True)
+                                    (Json.at [ "target", "value" ] Json.string)
+                                )
+                            ]
+                        ]
+                    , Html.span
+                        []
+                        [ Html.text model.preferences.textSize ]
+                    ]
+                , Html.div []
+                    [ Html.label []
+                        [ Html.text "Dark Mode"
+                        , Html.checkbox
+                            [ Attributes.attribute "am-mod" "interactive"
+                            , Attributes.checked
+                                (model.preferences.colorScheme == "dark")
+                            , Html.on "change"
+                                (Json.map
+                                    (\checked ->
+                                        Html.Event
+                                            (ColorScheme
+                                                (if checked then
+                                                    "dark"
+
+                                                 else
+                                                    "light"
+                                                )
+                                            )
+                                            True
+                                            True
+                                    )
+                                    (Json.at [ "target", "checked" ] Json.bool)
+                                )
+                            ]
                         ]
                     ]
-                , Html.span
-                    []
-                    [ Html.text model.preferences.textSize ]
                 ]
             ]
             |> Html.toNode
@@ -165,10 +182,6 @@ view model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    let
-        preferences =
-            model.preferences
-    in
     case msg of
         Noop ->
             ( model, Cmd.none )
@@ -177,19 +190,48 @@ update msg model =
             ( { model | modalOpen = open }, Cmd.none )
 
         TextSize textSize ->
-            ( { model
-                | preferences =
+            let
+                preferences =
+                    model.preferences
+
+                preferencesUpdated =
                     { preferences
                         | textSize = textSize
                     }
+            in
+            ( { model
+                | preferences = preferencesUpdated
+              }
+            , sendMessage preferencesUpdated
+            )
+
+        ColorScheme colorScheme ->
+            let
+                preferences =
+                    model.preferences
+
+                preferencesUpdated =
+                    { preferences
+                        | colorScheme = colorScheme
+                    }
+            in
+            ( { model
+                | preferences = preferencesUpdated
+              }
+            , sendMessage preferencesUpdated
+            )
+
+        Port preferences ->
+            ( { model
+                | preferences = preferences
               }
             , Cmd.none
             )
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+subscriptions _ =
+    messageReceiver Port
 
 
 onUrlRequest : Browser.UrlRequest -> Msg
