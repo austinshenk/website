@@ -310,6 +310,10 @@ a {
     }
 }
 
+label {
+    font-family: sans-serif;
+}
+
 button {
     appearance: none;
     border: none;
@@ -359,6 +363,17 @@ input[type=range]:hover::-webkit-slider-thumb, input[type=range]:focus::-webkit-
 
 input[type=checkbox] {
     min-height: .3in;
+    position: relative;
+
+    &[checked=true]:after {
+        content: "";
+        position: absolute;
+        background: var(--pixel);
+        top: $pixel;
+        bottom: $pixel;
+        left: $pixel;
+        right: $pixel;
+    }
 }
 
 select {
@@ -392,4 +407,8 @@ textarea:hover::placeholder, textarea:focus::placeholder {
     background-color: var(--selection-background);
     color: var(--selection-text);
     text-shadow: 0 0 1px var(--selection-shadow);
+}
+
+[am-mod=grid] {
+
 }

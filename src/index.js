@@ -1,56 +1,66 @@
 import {Elm} from "Main";
+import "./main.scss";
 
-const preferences = {
-  colorScheme: "no-preference",
-  reducedMotion: "no-preference",
-  textSize: "100"
-};
-
-let sendPreferencesToElmApp;
-const mediaListener = (mediaQuery, setter) => {
-  const mediaQueryList = window.matchMedia(mediaQuery);
-
-  mediaQueryList.addListener((mediaQueryEvent) => {
-    if (mediaQueryEvent.matches) {
-      setter();
-      sendPreferencesToElmApp();
-    }
-  })
-
-  if (mediaQueryList.matches)
-    setter();
-
-  return mediaQueryList.matches;
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-
+let initialPreferences = {};
+const getPreferencesFromLocalStorage = function() {
+  try {
+    initialPreferences = JSON.parse(localStorage.getItem("preferences"));
+  } catch (e) {
+    console.warn("Failed to load preferences from local storage. Falling back to defaults");
+  }
+}();
+const createMediaListeners = function() {
   if (window.matchMedia) {
+    const mediaListener = (mediaQuery, onMatch) => {
+      const mediaQueryList = window.matchMedia(mediaQuery);
+
+      mediaQueryList.addListener((mediaQueryEvent) => {
+        if (mediaQueryEvent.matches)
+          onMatch();
+      })
+
+      return mediaQueryList.matches;
+    };
+
+    const updateSystemColorScheme = (systemValue) => () => {
+      sendMessageToElmApp({
+        key: "UpdateSystemColorScheme",
+        value: systemValue
+      });
+    }
 
     //https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme
-    const prefersDarkMode = mediaListener("@media (prefers-color-scheme: dark)", () => preferences.colorScheme = "dark");
-    const prefersLightMode = mediaListener("@media (prefers-color-scheme: light)", () => preferences.colorScheme = "light");
-    if (!prefersDarkMode && !prefersLightMode)
-      preferences.colorScheme = "no-preference";
+    if (mediaListener("(prefers-color-scheme: dark)", updateSystemColorScheme("dark")))
+      initialPreferences.colorScheme.systemValue = "dark";
+    if (mediaListener("(prefers-color-scheme: light)", updateSystemColorScheme("light")))
+      initialPreferences.colorScheme.systemValue = "light";
+
 
     //https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
-    const prefersReducedMotion = mediaListener("@media (prefers-reduced-motion: reduce)", () => preferences.reducedMotion = "reduce");
-    if (!prefersReducedMotion)
-      preferences.reducedMotion = "no-preference";
+    if (mediaListener("(prefers-reduced-motion: reduce)", () => sendMessageToElmApp({
+      key: "UpdateSystemReduceMotion",
+      value: "reduce"
+    })))
+      initialPreferences.reducedMotion.systemValue = "reduce";
   }
+}
+const app = Elm.Main.init({node: document.body, flags: initialPreferences});
 
-  const app = Elm.Main.init(document.body, preferences);
+const sendMessageToElmApp = app.ports.incomingMessage.send;
 
-  app.ports.sendMessage.subscribe((message) => {
-    const htmlRoot = document.firstElementChild;
+const outgoingMessageMap = {
+  "StorePreferences": (preferencesFromElm) => {
+    const applyColorScheme = function() {
+      const {override, appValue, systemValue} = preferencesFromElm.colorScheme;
+      document.firstElementChild.classList.toggle("prefers-dark-mode", override ? appValue === "dark" : systemValue === "dark");
+    }();
 
-    if (message.textSize !== undefined && message.textSize !== null) {
-      htmlRoot.style.fontSize = (message.textSize / 100 * .2) + "in";
-    }
+    const applyTextSize = function() {
+      const textSize = preferencesFromElm.textSize;
+      document.firstElementChild.style.fontSize = (textSize / 100 * .2) + "in";
+    }();
 
-    if (message.colorScheme !== undefined && message.colorScheme !== null) {
-      htmlRoot.classList.toggle("prefers-dark-mode", message.colorScheme === "dark");
-    }
-  });
-  sendPreferencesToElmApp = () => app.ports.messageReceiver.send(preferences);
-});
+    localStorage.setItem("preferences", JSON.stringify(preferencesFromElm));
+  }
+};
+app.ports.outgoingMessage.subscribe((message) => outgoingMessageMap[message.key](message.value));

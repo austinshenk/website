@@ -3,20 +3,16 @@ const path = require('path');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ExtractCssChunksPlugin = require("extract-css-chunks-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-
-const smp = new SpeedMeasurePlugin();
 
 const webpackConfig = {
   mode: "production",
   devtool: false,
   entry: {
     resume: [
-      "./src/index.js",
-      "./src/main.scss"
+      "./src/index.js"
     ]
   },
   output: {
@@ -40,14 +36,14 @@ const webpackConfig = {
         exclude: [/elm-stuff/, /node_modules/],
         // see https://github.com/webpack-contrib/css-loader#url
         use: [
-          MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader"
+          ExtractCssChunksPlugin.loader, "css-loader", "postcss-loader", "sass-loader"
         ]
       },
       {
         test: /\.css$/,
         exclude: [/elm-stuff/, /node_modules/],
         use: [
-          MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"
+          ExtractCssChunksPlugin.loader, "css-loader", "postcss-loader"
         ]
       },
       {
@@ -101,8 +97,8 @@ const webpackConfig = {
     new HTMLWebpackPlugin({
       // Use this template to get basic responsive meta tags
       template: "src/index.html",
+      inject: false,
       // inject details of output file at end of body
-      inject: "body",
       minify: true,
       meta: {viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'}
     }),
@@ -118,9 +114,9 @@ const webpackConfig = {
         from: "src/assets"
       }
     ]),
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[id].[contenthash].css',
+    new ExtractCssChunksPlugin({
+      filename: '[name]-[contenthash].css',
+      chunkFilename: '[id]-[contenthash].css'
     })
   ]
 };
