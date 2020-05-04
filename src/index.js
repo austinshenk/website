@@ -1,5 +1,4 @@
-import {Elm} from "Main";
-import "./main.scss";
+import {Elm} from "./Main.elm";
 
 let initialPreferences = {};
 const getPreferencesFromLocalStorage = function() {
