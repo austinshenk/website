@@ -1,0 +1,45 @@
+dialog {
+  color: inherit;
+  display: block;
+  background: none;
+  box-sizing: border-box;
+  border: none;
+  position: fixed;
+  top: 0;
+  left: auto;
+  right: -500px;
+  max-width: 500px;
+  width: 100vw;
+  transition: right .5s;
+  overflow-y: auto;
+  padding: 8px 0;
+
+  &[open=true] {
+    right: 0;
+  }
+
+  &::backdrop {
+    display: none;
+  }
+
+  > section {
+    margin-left: $pixel;
+  }
+}
+
+#backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: hsla(0, 0%, 0%, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms, pointer-events 1ms 500ms;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

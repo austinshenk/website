@@ -1,0 +1,52 @@
+@mixin pixelated-border($floating: false, $interactive: false, $state: "normal") {
+  $color: var(--pixel);
+  $shadow: var(--shadow);
+
+  $border: #{0} -$pixel $color, $pixel #{0} $color, #{0} $pixel $color, -$pixel #{0} $color;
+  @if ($floating and not $interactive) or ($floating and $interactive and $state == "normal") {
+    $border: $border + "," + ( 0 (2 * $pixel) $shadow, $pixel $pixel $shadow, -$pixel $pixel $shadow);
+  }
+
+  box-shadow: #{$border};
+}
+
+@mixin container($floating: false) {
+  @include pixelated-border();
+
+  padding: $pixel;
+  background-color: var(--background);
+}
+
+@mixin interactive($floating: false) {
+  @include pixelated-border($floating, true, "normal");
+  transition-property: transform, box-shadow, background, color, text-shadow;
+  transition-duration: .1s, .1s, .3s, .3s, .3s;
+  transition-timing-function: ease-in-out;
+
+  margin: $pixel ($pixel * 2);
+  @if ($floating) {
+    margin-bottom: $pixel * 2;
+  }
+
+  & svg {
+    transition-property: fill;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+  }
+
+  &:hover, &:focus {
+    background-color: hsl(0, 0%, 50%);
+    color: hsl(0, 0%, 100%);
+    outline: none;
+    text-shadow: 0 0 2px hsl(0, 0%, 30%);
+
+    & svg {
+      fill: hsl(0, 0%, 100%);
+    }
+  }
+
+  &:active {
+    @include pixelated-border($floating, true, "active");
+    transform: translate(0, 2px);
+  }
+}

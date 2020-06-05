@@ -1,0 +1,61 @@
+@font-face {
+  font-family: system;
+  font-style: normal;
+  font-weight: 300;
+  src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"), local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Light"), local("Roboto-Light"), local("DroidSans"), local("Tahoma");
+}
+
+* {
+  line-height: calc(#{$pixel} + 2ex + #{$pixel});
+}
+
+::selection {
+  background-color: var(--selection-background);
+  color: var(--selection-text);
+  text-shadow: 0 0 1px var(--selection-shadow);
+}
+
+html {
+  padding: $pixel;
+  font-family: monospace;
+  font-size: .2in;
+}
+
+body {
+  color: var(--text);
+  background: repeating-conic-gradient(var(--background-alt) 0% 25%, var(--background-checker) 0% 50%) 0/ 800px 800px;
+  overflow-x: hidden;
+
+  .prefers-dark-mode & {
+    background: repeating-conic-gradient(var(--background-checker) 0% 25%, var(--background-alt) 0% 50%) 0/ 800px 800px;
+  }
+}
+
+header {
+  margin-bottom: $pixel * 4;
+  display: flex;
+
+  & > nav {
+    display: flex;
+    flex-basis: 100ch;
+    flex-grow: 0;
+    justify-content: space-evenly;
+  }
+}
+
+main {
+  max-width: 100ch;
+  padding: 1px (2 * $pixel) (2 * $pixel);
+  background-color: var(--background);
+  box-shadow: 0 -6px var(--pixel), 6px 0 var(--pixel), 0 6px var(--pixel), -6px 0 var(--pixel), 0 0 0 3px var(--pixel), 0 10px var(--shadow), 6px 4px var(--shadow), -6px 4px var(--shadow), 0 4px 0 3px var(--shadow);
+}
+
+header, main {
+  filter: blur(0);
+  transition: filter 0.3s;
+
+  &.modalOpen {
+    transform: translateZ(0);
+    filter: blur(1px);
+  }
+}

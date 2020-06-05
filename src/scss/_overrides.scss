@@ -1,0 +1,32 @@
+header > nav > a {
+  flex: none;
+  padding: $pixel;
+  margin: 0 0 $pixel !important;
+
+  font-family: system;
+  text-align: center;
+}
+
+dialog > section {
+  padding: $pixel * 2 !important;
+}
+
+h1 > a, h1 > a:active {
+  margin: 0 !important;
+  box-shadow: 0 (1.5 * $pixel) var(--pixel) !important;
+}
+
+h2 > a, h2 > a:active {
+  margin: 0 !important;
+  box-shadow: 0 $pixel var(--pixel) !important;
+}
+
+h3 > a, h3 > a:active {
+  margin: 0 !important;
+  box-shadow: 0 (0.5 * $pixel) var(--pixel) !important;
+}
+
+h4 > a, h4 > a:active, h5 > a, h5 > a:active, h6 > a, h6 > a:active {
+  margin: 0 !important;
+  box-shadow: 0 (0.5 * $pixel) var(--pixel) !important;
+}

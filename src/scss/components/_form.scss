@@ -1,0 +1,143 @@
+form {
+  & > * + fieldset {
+    margin-top: $pixel * 4;
+  }
+
+  & > * + section {
+    margin-top: $pixel;
+  }
+
+  & > fieldset > label + label {
+    margin-left: $pixel * 2;
+  }
+}
+
+fieldset {
+  border: none;
+  padding: $pixel;
+  margin: $pixel;
+
+  & > span {
+    display: block;
+  }
+}
+
+label {
+  padding-bottom: $pixel;
+
+  font-family: system;
+
+  span {
+    padding: 0 $pixel;
+  }
+}
+
+button {
+  appearance: none;
+  border: none;
+  font-family: monospace;
+  background: var(--background);
+}
+
+input, textarea {
+  appearance: none;
+  border: none;
+  vertical-align: middle;
+  font-family: monospace;
+  margin: 0;
+}
+
+input[type=range] {
+  appearance: none;
+  outline: none;
+  background: none;
+
+  min-height: .3in;
+  min-width: .3in;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  @include container();
+
+  width: 100%;
+  height: $pixel;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  @include interactive(true);
+  transition: transform, box-shadow, background, color, text-shadow;
+  transition-duration: .1s, .1s, .3s, .3s, .3s;
+  transition-timing-function: ease-in-out;
+  min-width: .3in;
+  appearance: none;
+
+  background-color: var(--background);
+  height: .3in;
+  width: $pixel;
+  margin-top: -.15in;
+}
+
+input[type=range]:hover::-webkit-slider-thumb, input[type=range]:focus::-webkit-slider-thumb {
+  background: hsl(0, 0%, 50%);
+}
+
+input[type=checkbox] {
+  min-height: $pixel * 3;
+  position: relative;
+  margin: $pixel;
+
+  &[checked=true]:after {
+    content: "";
+    position: absolute;
+    background: var(--pixel);
+    top: $pixel;
+    bottom: $pixel;
+    left: $pixel;
+    right: $pixel;
+  }
+}
+
+input[type=radio] {
+  min-height: $pixel * 3;
+  position: relative;
+  margin: $pixel;
+
+  &[checked=true]:after {
+    content: "";
+    position: absolute;
+    background: var(--pixel);
+    top: $pixel;
+    bottom: $pixel;
+    left: $pixel;
+    right: $pixel;
+  }
+}
+
+select {
+  appearance: none;
+  border: none;
+  border-radius: 0;
+}
+
+textarea {
+  appearance: none;
+  border: none;
+  display: block;
+
+  resize: vertical;
+  min-height: 0.3in;
+
+  &::placeholder {
+    color: var(--text);
+    opacity: 0.3;
+    font-style: italic;
+    transition: color ease-in-out 0.3s, opacity ease-in-out 0.3s;
+  }
+
+  &:hover, &:focus {
+    &::placeholder {
+      color: var(--text-invert);
+      opacity: 1;
+    }
+  }
+}

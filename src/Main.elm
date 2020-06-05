@@ -1,70 +1,37 @@
-port module Main exposing (main)
+module Main exposing (main)
 
 import Browser
 import Browser.Navigation
+import Html
+import Html.Attributes as Attributes
+import Html.Events as Events
+import Icon
 import Json.Decode
-import Json.Encode
-import Preferences exposing (SystemPreference)
+import Model
+import Port
+import Preferences
+import Preferences.Msg
 import Ui
 import Url exposing (Url)
-import W3.Html as Html
-import W3.Html.Attributes as Attributes
 
 
 type alias Flags =
     Json.Decode.Value
 
 
-type alias Model =
-    { preferences : Preferences.Model
-    , modalOpen : Bool
-    }
-
-
 type Msg
     = Noop
     | Modal Bool
-    | TextSize String
-    | ColorScheme (SystemPreference String)
-    | IncomingMsg IncomingModel
+    | Preference Preferences.Msg.Msg
+    | Port Port.IncomingMsg
 
 
-type alias IncomingModel =
-    { key : String
-    , value : Json.Decode.Value
-    }
-
-
-port incomingMessage : (IncomingModel -> msg) -> Sub msg
-
-
-subscriptions : Model -> Sub Msg
+subscriptions : Model.Model -> Sub Msg
 subscriptions _ =
-    incomingMessage IncomingMsg
+    Sub.map Port Port.subscriptions
 
 
-port outgoingMessage : OutgoingModel -> Cmd msg
-
-
-type alias OutgoingModel =
-    { key : String
-    , value : Json.Encode.Value
-    }
-
-
-outgoingMsg : String -> Json.Encode.Value -> OutgoingModel
-outgoingMsg key value =
-    { key = key
-    , value = value
-    }
-
-
-storePreferences : Preferences.Model -> OutgoingModel
-storePreferences =
-    outgoingMsg "StorePreferences" << Preferences.encoder
-
-
-main : Program Flags Model Msg
+main : Program Flags Model.Model Msg
 main =
     Browser.application
         { init = init
@@ -76,52 +43,42 @@ main =
         }
 
 
-init : Flags -> Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
+init : Flags -> Url -> Browser.Navigation.Key -> ( Model.Model, Cmd Msg )
 init flags url key =
     let
-        model =
-            case Json.Decode.decodeValue Preferences.decoder flags of
-                Ok value ->
-                    Model value False
-
-                Err _ ->
-                    Model (Preferences.Model (SystemPreference False "" "") (SystemPreference False "" "") "100") False
+        ( preferences, commands ) =
+            Preferences.init flags
     in
-    ( model, outgoingMessage (storePreferences model.preferences) )
+    ( Model.Model preferences False, Cmd.map Preference commands )
 
 
-view : Model -> Browser.Document Msg
+view : Model.Model -> Browser.Document Msg
 view model =
-    let
-        colorScheme =
-            model.preferences.colorScheme
-    in
     { title = "Austin Bookhart"
     , body =
         [ Html.header
             [ Attributes.class
-                [ if model.modalOpen then
+                (if model.modalOpen then
                     "modalOpen"
 
-                  else
+                 else
                     ""
-                ]
+                )
             ]
             [ Ui.nav []
                 [ Ui.a [ Attributes.href "#" ] [ Html.text "About" ]
                 , Ui.a [ Attributes.href "#" ] [ Html.text "Blog" ]
+                , Ui.button [ Events.onClick (Modal True), Attributes.attribute "aria-label" "Accessibility" ] [ Icon.accessibility ]
                 ]
-            , Ui.button [ Html.onclick (Modal True) ] [ Html.text "Accessibility" ]
             ]
-            |> Html.toNode
         , Html.main_
             [ Attributes.class
-                [ if model.modalOpen then
+                (if model.modalOpen then
                     "modalOpen"
 
-                  else
+                 else
                     ""
-                ]
+                )
             ]
             [ Html.h1 []
                 [ Ui.headerAnchor
@@ -134,102 +91,33 @@ view model =
             , Html.p []
                 [ Html.text "Hello, my name is Austin Bookhart. I'm a Software Engineer that has worked primarily as a Full-Stack Developer with an emphasis towards Frontend development. My goal is to create UIs that facilitate concise user experiences and are accessible to a wide variety of audiences." ]
             ]
-            |> Html.toNode
         , Html.div
             [ Attributes.id "backdrop"
-            , Html.onclick (Modal False)
+            , Events.onClick (Modal False)
             , Attributes.class
-                [ if model.modalOpen then
+                (if model.modalOpen then
                     "visible"
 
-                  else
+                 else
                     ""
-                ]
+                )
             ]
             []
-            |> Html.toNode
-        , Html.dialog [ Attributes.open model.modalOpen ]
-            [ Html.section [ Attributes.attribute "am-mod" "container" ]
-                [ Html.div []
-                    [ Html.label []
-                        [ Html.text "Text Size"
-                        , Html.range
-                            [ Attributes.value model.preferences.textSize
-                            , Attributes.min 0
-                            , Attributes.max 200
-                            , Html.on "input"
-                                (Json.Decode.map (\textSize -> Html.Event (TextSize textSize) True True)
-                                    (Json.Decode.at [ "target", "value" ] Json.Decode.string)
-                                )
-                            ]
-                        ]
-                    , Html.span
-                        []
-                        [ Html.text model.preferences.textSize ]
-                    ]
-                , Html.div []
-                    [ Html.label []
-                        [ Html.text "Dark Mode"
-                        , Ui.checkbox
-                            [ Attributes.attribute "checked"
-                                (if model.preferences.colorScheme.override then
-                                    "true"
+        , Html.node "dialog"
+            [ Attributes.attribute "open"
+                (if model.modalOpen then
+                    "true"
 
-                                 else
-                                    "false"
-                                )
-                            , Attributes.checked model.preferences.colorScheme.override
-                            , Html.on "change"
-                                (Json.Decode.map
-                                    (\checked ->
-                                        Html.Event
-                                            (ColorScheme (Preferences.setOverride checked colorScheme))
-                                            True
-                                            True
-                                    )
-                                    (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
-                                )
-                            ]
-                        , Ui.checkbox
-                            [ Attributes.attribute "checked"
-                                (if Preferences.systemPreferenceValue model.preferences.colorScheme == "dark" then
-                                    "true"
-
-                                 else
-                                    "false"
-                                )
-                            , Attributes.checked (Preferences.systemPreferenceValue model.preferences.colorScheme == "dark")
-                            , Html.on "change"
-                                (Json.Decode.map
-                                    (\checked ->
-                                        Html.Event
-                                            (ColorScheme
-                                                (Preferences.setAppValue
-                                                    (if checked then
-                                                        "dark"
-
-                                                     else
-                                                        "light"
-                                                    )
-                                                    colorScheme
-                                                )
-                                            )
-                                            True
-                                            True
-                                    )
-                                    (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
-                                )
-                            ]
-                        ]
-                    ]
-                ]
+                 else
+                    "false"
+                )
             ]
-            |> Html.toNode
+            [ Html.map Preference (Preferences.view model.preferences) ]
         ]
     }
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model.Model -> ( Model.Model, Cmd Msg )
 update msg model =
     case msg of
         Noop ->
@@ -238,47 +126,33 @@ update msg model =
         Modal open ->
             ( { model | modalOpen = open }, Cmd.none )
 
-        TextSize textSize ->
+        Preference preferenceMsg ->
             let
-                preferences =
-                    Preferences.setTextSize textSize model.preferences
+                ( preferences, commands ) =
+                    Preferences.update preferenceMsg model.preferences
             in
-            ( { model
-                | preferences = preferences
-              }
-            , outgoingMessage (storePreferences preferences)
-            )
+            ( { model | preferences = preferences }, Cmd.map Preference commands )
 
-        ColorScheme colorScheme ->
-            let
-                preferences =
-                    Preferences.setColorScheme colorScheme model.preferences
-            in
-            ( { model
-                | preferences = preferences
-              }
-            , outgoingMessage (storePreferences preferences)
-            )
-
-        IncomingMsg message ->
+        Port (Port.IncomingMsg message) ->
             let
                 preferences =
                     model.preferences
             in
             if message.key == "UpdateSystemColorScheme" then
-                ( { model
-                    | preferences =
-                        { preferences
-                            | colorScheme =
-                                Preferences.setSystemValue
+                let
+                    ( updatedPreferences, preferenceCommands ) =
+                        Preferences.update
+                            (Preferences.Msg.ColorScheme
+                                (Preferences.Msg.SystemValue
                                     (Result.withDefault preferences.colorScheme.systemValue
                                         (Json.Decode.decodeValue Json.Decode.string message.value)
                                     )
-                                    preferences.colorScheme
-                        }
-                  }
-                , Cmd.none
-                )
+                                )
+                                True
+                            )
+                            preferences
+                in
+                ( { model | preferences = updatedPreferences }, Cmd.map Preference preferenceCommands )
 
             else
                 ( model, Cmd.none )

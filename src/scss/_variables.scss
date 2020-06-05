@@ -1,0 +1,27 @@
+$pixel: 4px;
+
+:root {
+  --pixel: hsl(0, 0%, 0%);
+  --shadow: hsl(0, 0%, 70%);
+  --background: hsl(0, 0%, 100%);
+  --background-alt: hsl(0, 0%, 95%);
+  --background-checker: hsl(0, 0%, 97%);
+  --text: hsl(0, 0%, 0%);
+  --text-invert: hsl(0, 0%, 100%);
+  --selection-background: hsl(0, 0%, 20%);
+  --selection-text: hsl(0, 0%, 100%);
+  --selection-shadow: hsl(0, 0%, 65%);
+
+  &.prefers-dark-mode {
+    --pixel: hsl(0, 0%, 100%);
+    --shadow: hsl(0, 0%, 50%);
+    --background: hsl(0, 0%, 0%);
+    --background-alt: hsl(0, 0%, 20%);
+    --background-checker: hsl(0, 0%, 18%);
+    --text: hsl(0, 0%, 100%);
+    --text-invert: hsl(0, 0%, 0%);
+    --selection-background: hsla(0, 0%, 80%, 0.99);
+    --selection-text: hsl(0, 0%, 0%);
+    --selection-shadow: hsl(0, 0%, 65%);
+  }
+}

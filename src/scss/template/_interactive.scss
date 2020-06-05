@@ -1,0 +1,11 @@
+[am-interactive] {
+  min-width: .3in;
+}
+
+[am-interactive=""] {
+  @include interactive();
+}
+
+[am-interactive=floating] {
+  @include interactive(true);
+}
