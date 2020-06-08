@@ -4,35 +4,41 @@ dialog {
   background: none;
   box-sizing: border-box;
   border: none;
+
   position: fixed;
   top: 0;
   left: auto;
-  right: -500px;
+  right: -$pixel;
+
   max-width: 500px;
   width: 100vw;
-  transition: right .5s;
+  margin: 0;
+  padding: $pixel 0 $pixel $pixel;
   overflow-y: auto;
-  padding: 8px 0;
+
+  transform: translateX(100%);
+  transition: transform .5s;
 
   &[open=true] {
-    right: 0;
+    transform: translateX(0);
   }
 
   &::backdrop {
     display: none;
   }
 
-  > section {
+  > * {
     margin-left: $pixel;
   }
 }
 
 #backdrop {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+
   background-color: hsla(0, 0%, 0%, 0.1);
   opacity: 0;
   pointer-events: none;

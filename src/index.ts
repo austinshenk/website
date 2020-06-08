@@ -42,17 +42,21 @@ const createMediaListeners = function() {
     }
 
     //https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme
-    if (mediaListener("(prefers-color-scheme: dark)", updateSystemColorScheme("dark")))
+    const prefersDarkColorScheme = mediaListener("(prefers-color-scheme: dark)", updateSystemColorScheme("dark"));
+    if (prefersDarkColorScheme)
       initialPreferences.colorScheme.systemValue = "dark";
-    if (mediaListener("(prefers-color-scheme: light)", updateSystemColorScheme("light")))
+
+    const prefersLightColorScheme = mediaListener("(prefers-color-scheme: light)", updateSystemColorScheme("light"));
+    if (prefersLightColorScheme)
       initialPreferences.colorScheme.systemValue = "light";
 
 
     //https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
-    if (mediaListener("(prefers-reduced-motion: reduce)", () => sendMessageToElmApp({
+    const prefersReducedMotion = mediaListener("(prefers-reduced-motion: reduce)", () => sendMessageToElmApp({
       key: "UpdateSystemReduceMotion",
       value: "reduce"
-    })))
+    }));
+    if (prefersReducedMotion)
       initialPreferences.reducedMotion.systemValue = "reduce";
   }
 }

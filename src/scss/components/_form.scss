@@ -1,21 +1,15 @@
 form {
-  & > * + fieldset {
-    margin-top: $pixel * 4;
-  }
-
-  & > * + section {
-    margin-top: $pixel;
+  & > * + * {
+    margin-top: $pixel * 3 !important;
   }
 
   & > fieldset > label + label {
-    margin-left: $pixel * 2;
+    margin-left: $pixel * 2 !important;
   }
 }
 
 fieldset {
   border: none;
-  padding: $pixel;
-  margin: $pixel;
 
   & > span {
     display: block;
@@ -23,6 +17,7 @@ fieldset {
 }
 
 label {
+  display: inline-block;
   padding-bottom: $pixel;
 
   font-family: system;
@@ -35,15 +30,16 @@ label {
 button {
   appearance: none;
   border: none;
-  font-family: monospace;
+  font-family: system;
   background: var(--background);
 }
 
 input, textarea {
   appearance: none;
   border: none;
+  outline: none;
   vertical-align: middle;
-  font-family: monospace;
+  font-family: system;
   margin: 0;
 }
 
@@ -82,18 +78,50 @@ input[type=range]:hover::-webkit-slider-thumb, input[type=range]:focus::-webkit-
 }
 
 input[type=checkbox] {
-  min-height: $pixel * 3;
+  height: $pixel * 4;
+  width: $pixel * 4;
   position: relative;
   margin: $pixel;
 
-  &[checked=true]:after {
+  &:before, &:after {
     content: "";
     position: absolute;
+    height: $pixel;
     background: var(--pixel);
-    top: $pixel;
-    bottom: $pixel;
-    left: $pixel;
-    right: $pixel;
+    transition-property: top left transform width;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+  }
+
+  &[checked=false]:before, &[checked=false]:after {
+    width: 18px;
+  }
+
+  &[checked=false]:before {
+    top: 13px;
+    transform: rotateZ(-45deg);
+    transform-origin: left top;
+  }
+
+  &[checked=false]:after {
+    top: -1px;
+    transform: rotateZ(45deg);
+    transform-origin: left bottom;
+  }
+
+  &[checked=true]:before {
+    width: 9px;
+    top: 5px;
+    transform: rotateZ(45deg);
+    transform-origin: 0 100%;
+  }
+
+  &[checked=true]:after {
+    width: 15px;
+    top: 12px;
+    left: 4px;
+    transform: rotateZ(-45deg);
+    transform-origin: 0 0;
   }
 }
 

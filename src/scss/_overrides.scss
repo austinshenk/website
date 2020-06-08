@@ -1,14 +1,12 @@
 header > nav > a {
   flex: none;
-  padding: $pixel;
-  margin: 0 0 $pixel !important;
+  margin: $pixel 0 ($pixel * 2) !important;
 
   font-family: system;
-  text-align: center;
 }
 
 dialog > section {
-  padding: $pixel * 2 !important;
+  padding: $pixel ($pixel * 2) ($pixel * 2) !important;
 }
 
 h1 > a, h1 > a:active {

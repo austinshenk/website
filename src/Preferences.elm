@@ -1,10 +1,12 @@
 module Preferences exposing (decoder, encoder, init, setAppValue, setColorScheme, setOverride, setReducedMotion, setSystemValue, setTextSize, systemPreferenceValue, update, view)
 
+import Am
 import Html
 import Html.Attributes as Attributes
 import Html.Events as Events
 import Json.Decode
 import Json.Encode
+import Msg
 import Port
 import Preferences.Model
 import Preferences.Msg exposing (Msg(..), SystemPreferenceMsg(..))
@@ -31,7 +33,7 @@ systemPreferenceEncoder systemPreference =
 
 decoder : Json.Decode.Decoder Preferences.Model.Model
 decoder =
-    Json.Decode.map3 Preferences.Model.Model
+    Json.Decode.map3 (Preferences.Model.Model False)
         (Json.Decode.field "colorScheme" systemPreferenceDecoder)
         (Json.Decode.field "reducedMotion" systemPreferenceDecoder)
         (Json.Decode.field "textSize" Json.Decode.int)
@@ -98,7 +100,7 @@ init model =
                     value
 
                 Err _ ->
-                    Preferences.Model.Model (Preferences.Model.SystemPreference False "" "") (Preferences.Model.SystemPreference False "" "") 100
+                    Preferences.Model.Model False (Preferences.Model.SystemPreference False "" "") (Preferences.Model.SystemPreference False "" "") 100
     in
     ( decodedModel, Port.outgoingMessage (storePreferences decodedModel) )
 
@@ -125,6 +127,9 @@ update msg model =
             ( preferences
             , Port.outgoingMessage (storePreferences preferences)
             )
+
+        Open open ->
+            ( { model | open = open }, Cmd.none )
 
 
 updateSystemPreference : SystemPreferenceMsg a -> Bool -> Preferences.Model.SystemPreference a -> Preferences.Model.SystemPreference a
@@ -154,8 +159,14 @@ view model =
             model
     in
     Html.section [ Attributes.attribute "am-container" "" ]
-        [ Html.form []
-            [ Html.fieldset [ Attributes.attribute "am-container" "" ]
+        [ Html.section
+            [ Am.containerInvisible
+            , Am.flexbox ""
+            , Am.flexboxJustifyContent "end"
+            ]
+            [ Ui.button [ Events.onClick (Open False) ] [ Html.text "Close" ] ]
+        , Html.form []
+            [ Html.fieldset [ Am.container ]
                 [ Html.span []
                     [ Html.text "Text Size" ]
                 , Html.label []
@@ -186,17 +197,17 @@ view model =
                     , Html.span [] [ Html.text "large" ]
                     ]
                 ]
-            , Html.fieldset [ Attributes.attribute "am-container" "" ]
+            , Html.fieldset [ Am.containerInvisible ]
                 [ Html.span []
                     [ Html.text "Color Scheme" ]
-                , Html.label []
+                , Html.label [ Attributes.attribute "am-interactive" "" ]
                     [ Ui.checkbox colorScheme.override
                         [ Events.onCheck (ColorScheme Override) ]
                         []
                     , Html.span [] [ Html.text "override" ]
                     ]
-                , Html.label []
-                    [ Ui.switch (colorScheme.appValue == "dark")
+                , Html.label [ Attributes.attribute "am-interactive" "" ]
+                    [ Ui.checkbox (colorScheme.appValue == "dark")
                         [ Attributes.disabled (not colorScheme.override)
                         , Events.onCheck (ColorScheme (AppValue "dark" "light"))
                         ]

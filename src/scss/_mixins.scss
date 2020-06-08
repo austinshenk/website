@@ -11,9 +11,7 @@
 }
 
 @mixin container($floating: false) {
-  @include pixelated-border();
-
-  padding: $pixel;
+  @include pixelated-border($floating);
   background-color: var(--background);
 }
 
@@ -22,11 +20,6 @@
   transition-property: transform, box-shadow, background, color, text-shadow;
   transition-duration: .1s, .1s, .3s, .3s, .3s;
   transition-timing-function: ease-in-out;
-
-  margin: $pixel ($pixel * 2);
-  @if ($floating) {
-    margin-bottom: $pixel * 2;
-  }
 
   & svg {
     transition-property: fill;

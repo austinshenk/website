@@ -1,4 +1,7 @@
 [am-interactive] {
+  margin: $pixel;
+  padding: $pixel;
+
   min-width: .3in;
 }
 
@@ -8,4 +11,6 @@
 
 [am-interactive=floating] {
   @include interactive(true);
+
+  margin-bottom: $pixel * 2;
 }

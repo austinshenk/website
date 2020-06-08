@@ -54,17 +54,19 @@ a {
   text-decoration: none;
 
   display: inline-block;
-  padding-block: 0;
-  padding-inline: .25rem;
 
   box-shadow: 0 $pixel var(--pixel) !important;
   color: var(--text);
-
 
   &:active {
     transform: translate(0, 1px);
 
     box-shadow: 0 $pixel var(--pixel);
+  }
+
+  main & {
+    padding-block: 0 !important;
+    padding-inline: .25rem !important;
   }
 }
 

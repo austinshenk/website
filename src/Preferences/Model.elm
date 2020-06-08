@@ -2,7 +2,8 @@ module Preferences.Model exposing (..)
 
 
 type alias Model =
-    { colorScheme : SystemPreference String
+    { open : Bool
+    , colorScheme : SystemPreference String
     , reducedMotion : SystemPreference String
     , textSize : Int
     }
