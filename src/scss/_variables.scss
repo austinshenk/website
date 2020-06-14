@@ -2,6 +2,7 @@ $pixel: 4px;
 
 :root {
   --pixel: hsl(0, 0%, 0%);
+  --pixel-invert: hsl(0, 0%, 100%);
   --shadow: hsl(0, 0%, 70%);
   --background: hsl(0, 0%, 100%);
   --background-alt: hsl(0, 0%, 95%);
@@ -14,6 +15,7 @@ $pixel: 4px;
 
   &.prefers-dark-mode {
     --pixel: hsl(0, 0%, 100%);
+    --pixel-invert: hsl(0, 0%, 90%);
     --shadow: hsl(0, 0%, 50%);
     --background: hsl(0, 0%, 0%);
     --background-alt: hsl(0, 0%, 20%);

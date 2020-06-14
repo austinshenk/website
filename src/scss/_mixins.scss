@@ -22,12 +22,12 @@
   transition-timing-function: ease-in-out;
 
   & svg {
-    transition-property: fill;
-    transition-duration: .3s;
+    transition: fill .3s;
     transition-timing-function: ease-in-out;
   }
 
-  &:hover, &:focus {
+  &:hover, &:focus, &:focus-within {
+    will-change: background-color, color, outline, text-shadow;
     background-color: hsl(0, 0%, 50%);
     color: hsl(0, 0%, 100%);
     outline: none;
@@ -38,8 +38,10 @@
     }
   }
 
-  &:active {
-    @include pixelated-border($floating, true, "active");
-    transform: translate(0, 2px);
+  &:not([disabled=""]), &:not([disabled=true]) {
+    &:active {
+      @include pixelated-border($floating, true, "active");
+      transform: translate(0, 2px);
+    }
   }
 }

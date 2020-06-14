@@ -8,6 +8,7 @@
 * {
   line-height: calc(#{$pixel} + 2ex + #{$pixel});
   box-sizing: border-box;
+  outline: none;
 }
 
 ::selection {
@@ -47,12 +48,19 @@ main {
   box-shadow: 0 -6px var(--pixel), 6px 0 var(--pixel), 0 6px var(--pixel), -6px 0 var(--pixel), 0 0 0 3px var(--pixel), 0 10px var(--shadow), 6px 4px var(--shadow), -6px 4px var(--shadow), 0 4px 0 3px var(--shadow);
 }
 
-header, main {
-  filter: blur(0);
-  transform: translateZ(0);
-  transition: filter 0.3s;
+#skip-to-links {
+  position: fixed;
+  top: -($pixel * 3);
+  left: 50%;
+  transform: translate3d(-50%, -100%, 0);
+  transition: transform .3s ease-in-out, top .3s ease-in-out;
 
-  .modalOpen & {
-    filter: blur(1px);
+  &:focus-within {
+    top: -$pixel;
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  > a {
+    margin-bottom: $pixel;
   }
 }

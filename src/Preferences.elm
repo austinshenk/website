@@ -1,15 +1,16 @@
 module Preferences exposing (decoder, encoder, init, setAppValue, setColorScheme, setOverride, setReducedMotion, setSystemValue, setTextSize, systemPreferenceValue, update, view)
 
 import Am
+import Browser.Dom as Dom
 import Html
 import Html.Attributes as Attributes
 import Html.Events as Events
 import Json.Decode
 import Json.Encode
-import Msg
 import Port
 import Preferences.Model
 import Preferences.Msg exposing (Msg(..), SystemPreferenceMsg(..))
+import Task
 import Ui
 
 
@@ -108,6 +109,9 @@ init model =
 update : Msg -> Preferences.Model.Model -> ( Preferences.Model.Model, Cmd Msg )
 update msg model =
     case msg of
+        Noop ->
+            ( model, Cmd.none )
+
         TextSize textSize ->
             let
                 preferences =
@@ -129,7 +133,15 @@ update msg model =
             )
 
         Open open ->
-            ( { model | open = open }, Cmd.none )
+            let
+                focusId =
+                    if open then
+                        "dialog-preferences"
+
+                    else
+                        "btn-preferences"
+            in
+            ( { model | open = open }, Task.attempt (\_ -> Preferences.Msg.Noop) (Dom.focus focusId) )
 
 
 updateSystemPreference : SystemPreferenceMsg a -> Bool -> Preferences.Model.SystemPreference a -> Preferences.Model.SystemPreference a
@@ -152,13 +164,22 @@ updateSystemPreference msg checked model =
             model
 
 
+onKeyUp : (Int -> msg) -> Html.Attribute msg
+onKeyUp tagger =
+    Events.on "keyup" (Json.Decode.map tagger Events.keyCode)
+
+
 view : Preferences.Model.Model -> Html.Html Msg
 view model =
     let
         { colorScheme, textSize } =
             model
     in
-    Html.section [ Attributes.attribute "am-container" "" ]
+    Html.section
+        [ Attributes.attribute "am-container" ""
+        , Attributes.tabindex 0
+        , Attributes.id "dialog-preferences"
+        ]
         [ Html.section
             [ Am.containerInvisible
             , Am.flexbox ""
@@ -200,13 +221,24 @@ view model =
             , Html.fieldset [ Am.containerInvisible ]
                 [ Html.span []
                     [ Html.text "Color Scheme" ]
-                , Html.label [ Attributes.attribute "am-interactive" "" ]
+                , Html.label
+                    [ Attributes.attribute "am-interactive" ""
+                    ]
                     [ Ui.checkbox colorScheme.override
                         [ Events.onCheck (ColorScheme Override) ]
                         []
                     , Html.span [] [ Html.text "override" ]
                     ]
-                , Html.label [ Attributes.attribute "am-interactive" "" ]
+                , Html.label
+                    [ Attributes.attribute "am-interactive" ""
+                    , Attributes.attribute "disabled"
+                        (if not colorScheme.override then
+                            "true"
+
+                         else
+                            "false"
+                        )
+                    ]
                     [ Ui.checkbox (colorScheme.appValue == "dark")
                         [ Attributes.disabled (not colorScheme.override)
                         , Events.onCheck (ColorScheme (AppValue "dark" "light"))

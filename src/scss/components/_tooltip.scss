@@ -1,0 +1,36 @@
+[am-tooltip] {
+  position: relative;
+
+  & > :first-child {
+    &:hover, &:focus {
+      & + [role=tooltip] {
+        opacity: 1;
+      }
+    }
+  }
+
+  & > [role=tooltip] {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: $pixel 0 0;
+
+    background: var(--background);
+    opacity: 0;
+    transition: opacity .3s;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: -($pixel * 2);
+      left: 50%;
+      transform: translateX(-50%);
+
+      height: $pixel;
+      width: $pixel;
+
+      background: var(--pixel);
+    }
+  }
+}

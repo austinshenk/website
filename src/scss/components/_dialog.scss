@@ -17,9 +17,10 @@ dialog {
   overflow-y: auto;
 
   transform: translateX(100%);
-  transition: transform .5s;
+  transition: transform .5s ease-in-out;
 
   &[open=true] {
+    will-change: transform;
     transform: translateX(0);
   }
 
@@ -39,10 +40,11 @@ dialog {
   left: 0;
   right: 0;
 
-  background-color: hsla(0, 0%, 0%, 0.1);
+  background-color: hsla(0, 0%, 0%, 0.5);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 500ms, pointer-events 1ms 500ms;
+  transition: opacity .5s, pointer-events 1ms .5s;
+  transition-timing-function: ease-in-out;
 
   &.visible {
     opacity: 1;

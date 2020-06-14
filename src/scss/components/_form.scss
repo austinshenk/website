@@ -30,14 +30,14 @@ label {
 button {
   appearance: none;
   border: none;
-  font-family: system;
+  color: inherit;
+  font: 400 1rem system;
   background: var(--background);
 }
 
 input, textarea {
   appearance: none;
   border: none;
-  outline: none;
   vertical-align: middle;
   font-family: system;
   margin: 0;
@@ -45,7 +45,6 @@ input, textarea {
 
 input[type=range] {
   appearance: none;
-  outline: none;
   background: none;
 
   min-height: .3in;
@@ -61,9 +60,6 @@ input[type=range]::-webkit-slider-runnable-track {
 
 input[type=range]::-webkit-slider-thumb {
   @include interactive(true);
-  transition: transform, box-shadow, background, color, text-shadow;
-  transition-duration: .1s, .1s, .3s, .3s, .3s;
-  transition-timing-function: ease-in-out;
   min-width: .3in;
   appearance: none;
 
@@ -88,9 +84,16 @@ input[type=checkbox] {
     position: absolute;
     height: $pixel;
     background: var(--pixel);
-    transition-property: top left transform width;
+    will-change: top, left, transform, width, background;
+    transition-property: top, left, transform, width, background;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
+  }
+
+  &:hover, &:focus {
+    &:before, &:after {
+      background: var(--pixel-invert);
+    }
   }
 
   &[checked=false]:before, &[checked=false]:after {
@@ -130,7 +133,7 @@ input[type=radio] {
   position: relative;
   margin: $pixel;
 
-  &[checked=true]:after {
+  &:after {
     content: "";
     position: absolute;
     background: var(--pixel);
@@ -138,6 +141,16 @@ input[type=radio] {
     bottom: $pixel;
     left: $pixel;
     right: $pixel;
+
+    transition: transform .3s;
+  }
+
+  &:not([checked=true]):after {
+    transform: scale(0);
+  }
+
+  &[checked=true]:after {
+    transform: scale(1);
   }
 }
 
@@ -168,4 +181,8 @@ textarea {
       opacity: 1;
     }
   }
+}
+
+[disabled=""], [disabled=true] {
+  cursor: not-allowed;
 }

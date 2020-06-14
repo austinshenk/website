@@ -2,7 +2,8 @@ module Preferences.Msg exposing (..)
 
 
 type Msg
-    = Open Bool
+    = Noop
+    | Open Bool
     | TextSize String
     | ColorScheme (SystemPreferenceMsg String) Bool
 

@@ -19,6 +19,10 @@ containerInvisible =
     Attributes.attribute "am-container" "invisible"
 
 
+containerFloating =
+    Attributes.attribute "am-container" "floating"
+
+
 flexbox =
     Attributes.attribute "am-flexbox"
 
@@ -37,3 +41,7 @@ flexboxAlignItems =
 
 flexboxAlignContent =
     Attributes.attribute "am-flexbox-align-content"
+
+
+tooltip =
+    Attributes.attribute "am-tooltip" ""

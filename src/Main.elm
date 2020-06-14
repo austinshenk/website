@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Am
 import Browser
+import Browser.Dom as Dom
 import Browser.Navigation
 import Html
 import Html.Attributes as Attributes
@@ -13,6 +14,8 @@ import Msg exposing (Msg(..))
 import Port
 import Preferences
 import Preferences.Msg exposing (Msg(..))
+import Task
+import Tooltip exposing (tooltip)
 import Ui
 import Url exposing (Url)
 
@@ -33,8 +36,8 @@ main =
         , view = view
         , update = update
         , subscriptions = subscriptions
-        , onUrlRequest = onUrlRequest
-        , onUrlChange = onUrlChange
+        , onUrlRequest = Msg.UrlRequest
+        , onUrlChange = Msg.UrlChange
         }
 
 
@@ -44,7 +47,7 @@ init flags url key =
         ( preferences, commands ) =
             Preferences.init flags
     in
-    ( Model.Model preferences, Cmd.map Preference commands )
+    ( Model.Model key preferences, Cmd.map Preference commands )
 
 
 view : Model.Model -> Browser.Document Msg.Msg
@@ -60,14 +63,23 @@ view model =
                     ""
                 )
             ]
-            [ Html.header []
+            [ Html.section [ Am.containerFloating, Attributes.id "skip-to-links" ]
+                [ Ui.a [ Attributes.href "#main" ] [ Html.text "Skip to Content" ] ]
+            , Html.header []
                 [ Ui.nav [ Am.flexbox "", Am.flexboxJustifyContent "space-evenly" ]
                     [ Ui.a [ Attributes.href "#" ] [ Html.text "About" ]
                     , Ui.a [ Attributes.href "#" ] [ Html.text "Blog" ]
-                    , Ui.button [ Events.onClick (Preference (Open True)), Attributes.attribute "aria-label" "Accessibility" ] [ Icon.accessibility ]
+                    , tooltip "btn-accessibility"
+                        (Html.text "Accessibility")
+                        Ui.button
+                        [ Events.onClick (Preference (Open True))
+                        , Attributes.attribute "aria-label" "Accessibility"
+                        , Attributes.id "btn-preferences"
+                        ]
+                        [ Icon.accessibility ]
                     ]
                 ]
-            , Html.main_ []
+            , Html.main_ [ Attributes.id "main", Attributes.tabindex 0 ]
                 [ Html.h1 []
                     [ Ui.headerAnchor
                         [ Attributes.href "#about"
@@ -109,7 +121,7 @@ view model =
 update : Msg.Msg -> Model.Model -> ( Model.Model, Cmd Msg.Msg )
 update msg model =
     case msg of
-        Noop ->
+        Msg.Noop ->
             ( model, Cmd.none )
 
         Preference preferenceMsg ->
@@ -143,12 +155,28 @@ update msg model =
             else
                 ( model, Cmd.none )
 
+        UrlRequest urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model
+                    , Browser.Navigation.pushUrl model.navigationKey (Url.toString url)
+                    )
 
-onUrlRequest : Browser.UrlRequest -> Msg.Msg
-onUrlRequest _ =
-    Noop
+                Browser.External url ->
+                    ( model
+                    , Browser.Navigation.load url
+                    )
 
+        UrlChange url ->
+            let
+                fragment =
+                    Maybe.withDefault "" url.fragment
 
-onUrlChange : Url -> Msg.Msg
-onUrlChange _ =
-    Noop
+                command =
+                    if not (fragment == "") then
+                        Task.attempt (\_ -> Msg.Noop) (Dom.focus fragment)
+
+                    else
+                        Cmd.none
+            in
+            ( model, command )

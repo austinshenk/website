@@ -1,14 +1,17 @@
 h1, h2, h3, h4, h5, h6 {
   font-family: system;
+  font-size: 1rem;
 }
 
 h1 {
+  font-size: 1.5rem;
   box-shadow: -(1.5 * $pixel) 0 var(--pixel);
   margin-block: 10px 1rem;
   margin-inline: 8px 0;
 }
 
 h2 {
+  font-size: 1.25rem;
   box-shadow: -$pixel 0 var(--pixel);
   margin-inline-start: $pixel;
 }
@@ -22,19 +25,19 @@ hr {
   margin-inline: 2px .5rem;
   border: 1px solid;
 
-  &[am-hr=h1] {
+  &[am-h1] {
     border: 3px solid;
     box-shadow: -4px -1px 0 -1px var(--pixel), 4px -1px 0 -1px var(--pixel), 0 4px var(--shadow), -3px 2px var(--shadow), 3px 2px var(--shadow);
     margin-inline-start: 8px;
   }
 
-  &[am-hr=h2] {
+  &[am-h2] {
     border: 2px solid;
     box-shadow: 0 4px var(--shadow);
     margin-inline-start: 4px;
   }
 
-  &[am-hr=h3] {
+  &[am-h3] {
     border: 1px solid;
     box-shadow: 0 2px var(--shadow);
     margin-inline-start: 2px;
