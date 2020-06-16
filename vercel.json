@@ -1,11 +1,11 @@
 {
   "routes": [
     {
-      "src": "/src\..*\.css",
+      "src": "/src.(.*).css",
       "headers": { "cache-control": "public, max-age=604800, immutable" }
     },
     {
-      "src": "/src\..*\.js",
+      "src": "/src.(.*).js",
       "headers": { "cache-control": "public, max-age=604800, immutable" }
     }
   ]
