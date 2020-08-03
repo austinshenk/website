@@ -20,7 +20,6 @@ dialog {
   transition: transform .5s ease-in-out;
 
   &[open=true] {
-    will-change: transform;
     transform: translateX(0);
   }
 

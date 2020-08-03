@@ -84,7 +84,6 @@ input[type=checkbox] {
     position: absolute;
     height: $pixel;
     background: var(--pixel);
-    will-change: top, left, transform, width, background;
     transition-property: top, left, transform, width, background;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;

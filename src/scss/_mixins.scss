@@ -27,7 +27,6 @@
   }
 
   &:hover, &:focus, &:focus-within {
-    will-change: background-color, color, outline, text-shadow;
     background-color: hsl(0, 0%, 50%);
     color: hsl(0, 0%, 100%);
     outline: none;
