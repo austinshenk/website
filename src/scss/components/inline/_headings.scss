@@ -1,0 +1,69 @@
+h1, h2, h3, h4, h5, h6, span[role="heading"] {
+  font-family: system;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+h1, span[role="heading"][aria-level="1"] {
+  font-size: 1.5rem;
+  box-shadow: -(1.5 * $pixel) 0 var(--pixel);
+  margin-left: (1.5 * $pixel);
+
+  & > a, & > a:active {
+    margin: 0 !important;
+    box-shadow: 0 (1.5 * $pixel) var(--pixel) !important;
+  }
+}
+
+h2, span[role="heading"][aria-level="2"] {
+  font-size: 1.25rem;
+  box-shadow: -$pixel 0 var(--pixel);
+  margin-left: $pixel;
+
+  & > a, & > a:active {
+    margin: 0 !important;
+    box-shadow: 0 $pixel var(--pixel) !important;
+  }
+}
+
+h3, span[role="heading"][aria-level="3"] {
+  box-shadow: -(0.5 * $pixel) 0 var(--pixel);
+  margin-left: (0.5 * $pixel);
+
+  & > a, & > a:active {
+    margin: 0 !important;
+    box-shadow: 0 (0.5 * $pixel) var(--pixel) !important;
+  }
+}
+
+h4, h5, h6, span[role="heading"] {
+  & > a, & > a:active {
+    margin: 0 !important;
+    box-shadow: 0 (0.5 * $pixel) var(--pixel) !important;
+  }
+}
+
+hr {
+  margin: 1.5rem $pixel;
+  border: 1px solid;
+
+  &[am-level="1"] {
+    border: $pixel solid;
+  }
+
+  &[am-level="2"] {
+    border: (0.5 * $pixel) solid;
+  }
+
+  &[am-zero-horizontal-margin] {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  &[am-zero-vertical-margin] {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

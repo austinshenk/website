@@ -4,3 +4,11 @@
 @import "template/align";
 @import "template/flexbox";
 @import "template/flexitem";
+
+main p a {
+  line-height: 1;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}

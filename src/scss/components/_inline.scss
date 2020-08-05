@@ -1,115 +1,12 @@
-h1, h2, h3, h4, h5, h6 {
-  font-family: system;
-  font-size: 1rem;
-}
-
-h1 {
-  font-size: 1.5rem;
-  box-shadow: -(1.5 * $pixel) 0 var(--pixel);
-  margin-block: 10px 1rem;
-  margin-inline: 8px 0;
-}
-
-h2 {
-  font-size: 1.25rem;
-  box-shadow: -$pixel 0 var(--pixel);
-  margin-inline-start: $pixel;
-}
-
-h3 {
-  box-shadow: -(0.5 * $pixel) 0 var(--pixel);
-  margin-inline-start: (0.5 * $pixel);
-}
-
-hr {
-  margin-inline: 2px .5rem;
-  border: 1px solid;
-
-  &[am-h1] {
-    border: 3px solid;
-    box-shadow: -4px -1px 0 -1px var(--pixel), 4px -1px 0 -1px var(--pixel), 0 4px var(--shadow), -3px 2px var(--shadow), 3px 2px var(--shadow);
-    margin-inline-start: 8px;
-  }
-
-  &[am-h2] {
-    border: 2px solid;
-    box-shadow: 0 4px var(--shadow);
-    margin-inline-start: 4px;
-  }
-
-  &[am-h3] {
-    border: 1px solid;
-    box-shadow: 0 2px var(--shadow);
-    margin-inline-start: 2px;
-  }
-}
+@import "inline/headings";
+@import "inline/anchors";
+@import "inline/lists";
 
 blockquote {
-  margin-block: .5rem;
-  margin-inline: 0;
-  padding-block: .5rem;
-  padding-inline: 2rem;
+  margin: .5rem 0;
+  padding: .5rem 2rem;
   box-shadow: -$pixel 0 var(--pixel);
   background-color: var(--background-alt);
-}
-
-a {
-  text-decoration: none;
-
-  display: inline-block;
-
-  box-shadow: 0 $pixel var(--pixel) !important;
-  color: var(--text);
-
-  &:active {
-    transform: translate(0, 1px);
-
-    box-shadow: 0 $pixel var(--pixel);
-  }
-
-  main & {
-    padding-block: 0 !important;
-    padding-inline: .25rem !important;
-  }
-}
-
-ul {
-  list-style: none;
-}
-
-ul > li {
-  position: relative;
-
-  &:before {
-    content: "";
-    position: absolute;
-    left: -16px;
-    top: 50%;
-
-    margin-block-start: -4px;
-    width: 8px;
-    height: 8px;
-
-    background: var(--pixel);
-  }
-}
-
-ol {
-  list-style: none;
-  counter-reset: ol-counter;
-}
-
-ol > li {
-  counter-increment: ol-counter;
-  position: relative;
-
-  &:before {
-    content: counter(ol-counter) ".";
-    position: absolute;
-    right: 100%;
-
-    font-family: monospace;
-  }
 }
 
 svg {

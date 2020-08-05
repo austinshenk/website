@@ -1,0 +1,25 @@
+input[type=radio] {
+  min-height: $pixel * 3;
+  position: relative;
+  margin: $pixel;
+
+  &:after {
+    content: "";
+    position: absolute;
+    background: var(--pixel);
+    top: $pixel;
+    bottom: $pixel;
+    left: $pixel;
+    right: $pixel;
+
+    transition: transform .3s;
+  }
+
+  &:not([checked=true]):after {
+    transform: scale(0);
+  }
+
+  &[checked=true]:after {
+    transform: scale(1);
+  }
+}

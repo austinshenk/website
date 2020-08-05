@@ -94,12 +94,12 @@ view model =
             , Html.div
                 [ Attributes.id "backdrop"
                 , Events.onClick (Preference (Open False))
-                , Attributes.class
+                , Attributes.attribute "open"
                     (if model.preferences.open then
-                        "visible"
+                        "true"
 
                      else
-                        ""
+                        "false"
                     )
                 ]
                 []

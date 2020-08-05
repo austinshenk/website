@@ -1,0 +1,18 @@
+fieldset {
+  border: none;
+
+  & > span {
+    display: block;
+  }
+}
+
+label {
+  display: inline-block;
+  padding-bottom: $pixel;
+
+  font-family: system;
+
+  span {
+    padding: 0 $pixel;
+  }
+}

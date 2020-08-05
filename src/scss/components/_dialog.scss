@@ -29,6 +29,7 @@ dialog {
 
   > * {
     margin-left: $pixel;
+    padding: $pixel ($pixel * 2) ($pixel * 2) !important;
   }
 }
 
@@ -39,13 +40,13 @@ dialog {
   left: 0;
   right: 0;
 
-  background-color: hsla(0, 0%, 0%, 0.5);
+  background-color: hsla(0, 0%, 0%, 0.25);
   opacity: 0;
   pointer-events: none;
   transition: opacity .5s, pointer-events 1ms .5s;
   transition-timing-function: ease-in-out;
 
-  &.visible {
+  &[open=true] {
     opacity: 1;
     pointer-events: auto;
   }

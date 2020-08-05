@@ -1,0 +1,14 @@
+a {
+  text-decoration: none;
+  font-family: system;
+  display: inline-block;
+
+  box-shadow: 0 $pixel var(--pixel) !important;
+  color: var(--text);
+
+  &:active {
+    transform: translate(0, 1px);
+
+    box-shadow: 0 $pixel var(--pixel);
+  }
+}

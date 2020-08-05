@@ -1,0 +1,38 @@
+ul {
+  list-style: none;
+}
+
+ul > li {
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: -(4 * $pixel);
+    top: 50%;
+
+    margin-top: -$pixel;
+    width: (2 * $pixel);
+    height: (2 * $pixel);
+
+    background: var(--pixel);
+  }
+}
+
+ol {
+  list-style: none;
+  counter-reset: ol-counter;
+}
+
+ol > li {
+  counter-increment: ol-counter;
+  position: relative;
+
+  &:before {
+    content: counter(ol-counter) ".";
+    position: absolute;
+    right: 100%;
+
+    font-family: monospace;
+  }
+}
