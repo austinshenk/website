@@ -43,5 +43,29 @@ flexboxAlignContent =
     Attributes.attribute "am-flexbox-align-content"
 
 
+flexitem =
+    Attributes.attribute "am-flexitem"
+
+
+flexitemGrow =
+    Attributes.attribute "am-flexitem-grow"
+
+
+flexitemShrink =
+    Attributes.attribute "am-flexitem-shrink"
+
+
+group =
+    Attributes.attribute "am-group"
+
+
+groupHeader =
+    Attributes.attribute "am-group-header" ""
+
+
+groupItem =
+    Attributes.attribute "am-group-item" ""
+
+
 tooltip =
     Attributes.attribute "am-tooltip" ""

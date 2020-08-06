@@ -16,7 +16,7 @@ input[type=checkbox] {
 
   &:hover, &:focus {
     &:before, &:after {
-      background: var(--pixel-invert);
+      background: hsl(0, 0%, 100%);
     }
   }
 

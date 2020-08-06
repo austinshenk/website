@@ -1,18 +1,9 @@
-@import "form/group";
 @import "form/button";
 @import "form/input";
 @import "form/input_checkbox";
 @import "form/input_radio";
-
-form {
-  & > * + * {
-    margin-top: $pixel * 3 !important;
-  }
-
-  & > fieldset > label + label {
-    margin-left: $pixel * 2 !important;
-  }
-}
+@import "form/fieldset";
+@import "form/label";
 
 [disabled=""], [disabled=true] {
   cursor: not-allowed;

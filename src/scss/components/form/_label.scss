@@ -1,11 +1,3 @@
-fieldset {
-  border: none;
-
-  & > span {
-    display: block;
-  }
-}
-
 label {
   display: inline-block;
   padding-bottom: $pixel;

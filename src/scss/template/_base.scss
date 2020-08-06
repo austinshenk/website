@@ -18,14 +18,14 @@
 }
 
 html {
-  padding: $pixel;
   font-family: monospace;
   font-size: .2in;
 }
 
 body {
   margin: 0;
-  padding: 0;
+  padding: $pixel * 2;
+  width: 100vw;
 
   color: var(--text);
   background: repeating-conic-gradient(var(--background-alt) 0% 25%, var(--background-checker) 0% 50%) 0/ 800px 800px;
@@ -36,12 +36,12 @@ body {
   }
 }
 
-header > nav {
-  max-width: 100ch;
+header {
+  max-width: 1000px;
 }
 
 main {
-  max-width: 100ch;
+  max-width: 1000px;
   margin: ($pixel * 4) 6px 10px 6px;
   padding: 1px (2 * $pixel) (2 * $pixel);
   background-color: var(--background);

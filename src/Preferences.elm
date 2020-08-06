@@ -176,21 +176,28 @@ view model =
             model
     in
     Html.section
-        [ Attributes.attribute "am-container" ""
+        [ Am.group "vertical"
+        , Am.container
         , Attributes.tabindex 0
         , Attributes.id "dialog-preferences"
         ]
         [ Html.section
-            [ Am.containerInvisible
+            [ Am.groupHeader
             , Am.flexbox ""
             , Am.flexboxJustifyContent "end"
             ]
             [ Ui.button [ Events.onClick (Open False) ] [ Html.text "Close" ] ]
-        , Html.form []
-            [ Html.fieldset [ Am.container ]
-                [ Html.span []
+        , Html.form [ Am.groupItem, Am.group "vertical" ]
+            [ Html.section
+                [ Am.groupItem
+                , Am.group ""
+                , Am.containerInvisible
+                , Am.flexbox ""
+                , Am.flexboxJustifyContent "start"
+                ]
+                [ Html.span [ Am.groupHeader ]
                     [ Html.text "Text Size" ]
-                , Html.label []
+                , Html.label [ Am.groupItem ]
                     [ Ui.radio (textSize == 80)
                         [ Attributes.value "80"
                         , Attributes.name "textSize"
@@ -199,7 +206,7 @@ view model =
                         []
                     , Html.span [] [ Html.text "small" ]
                     ]
-                , Html.label []
+                , Html.label [ Am.groupItem ]
                     [ Ui.radio (textSize == 100)
                         [ Attributes.value "100"
                         , Attributes.name "textSize"
@@ -208,7 +215,7 @@ view model =
                         []
                     , Html.span [] [ Html.text "medium" ]
                     ]
-                , Html.label []
+                , Html.label [ Am.groupItem ]
                     [ Ui.radio (textSize == 120)
                         [ Attributes.value "120"
                         , Attributes.name "textSize"
@@ -218,19 +225,28 @@ view model =
                     , Html.span [] [ Html.text "large" ]
                     ]
                 ]
-            , Html.fieldset [ Am.containerInvisible ]
-                [ Html.span []
+            , Html.section
+                [ Am.groupItem
+                , Am.group ""
+                , Am.containerInvisible
+                , Am.flexbox ""
+                , Am.flexboxJustifyContent "start"
+                ]
+                [ Html.span [ Am.groupHeader ]
                     [ Html.text "Color Scheme" ]
                 , Html.label
-                    [ Attributes.attribute "am-interactive" ""
+                    [ Am.groupItem
+                    , Am.interactive
                     ]
                     [ Ui.checkbox colorScheme.override
-                        [ Events.onCheck (ColorScheme Override) ]
+                        [ Events.onCheck (ColorScheme Override)
+                        ]
                         []
                     , Html.span [] [ Html.text "override" ]
                     ]
                 , Html.label
-                    [ Attributes.attribute "am-interactive" ""
+                    [ Am.groupItem
+                    , Am.interactive
                     , Attributes.attribute "disabled"
                         (if not colorScheme.override then
                             "true"
