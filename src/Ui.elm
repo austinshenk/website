@@ -11,7 +11,7 @@ type alias Node msg =
 
 nav : Node msg
 nav attributes =
-    Html.nav (Am.container :: attributes)
+    Html.nav attributes
 
 
 a : Node msg

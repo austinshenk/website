@@ -10,6 +10,7 @@ import Json.Encode
 import Port
 import Preferences.Model
 import Preferences.Msg exposing (Msg(..), SystemPreferenceMsg(..))
+import Process
 import Task
 import Ui
 
@@ -141,7 +142,11 @@ update msg model =
                     else
                         "btn-preferences"
             in
-            ( { model | open = open }, Task.attempt (\_ -> Preferences.Msg.Noop) (Dom.focus focusId) )
+            ( { model | open = open }
+            , Task.attempt
+                (\_ -> Preferences.Msg.Noop)
+                (Task.sequence [ Process.sleep 250, Dom.focus focusId ])
+            )
 
 
 updateSystemPreference : SystemPreferenceMsg a -> Bool -> Preferences.Model.SystemPreference a -> Preferences.Model.SystemPreference a

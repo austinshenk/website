@@ -66,20 +66,24 @@ view model =
                      else
                         "active"
                     )
+                , Am.flexbox "column"
+                , Am.flexboxJustifyContent "start"
+                , Am.flexboxWrap "no"
+                , Am.flexboxAlignItems "center"
                 ]
-                [ Html.header []
-                    [ Ui.nav [ Am.flexbox "", Am.flexboxJustifyContent "space-evenly" ]
+                [ Html.header [ Am.container, Am.flexbox "" ]
+                    [ Ui.nav [ Am.flexbox "", Am.flexboxJustifyContent "space-evenly", Am.flexitem "", Am.flexitemGrow "2" ]
                         [ Ui.a [ Attributes.href "#" ] [ Html.text "About" ]
                         , Ui.a [ Attributes.href "#" ] [ Html.text "Blog" ]
-                        , tooltip "btn-accessibility"
-                            (Html.text "Accessibility")
-                            Ui.button
-                            [ Events.onClick (Preference (Open True))
-                            , Attributes.attribute "aria-label" "Accessibility"
-                            , Attributes.id "btn-preferences"
-                            ]
-                            [ Icon.accessibility ]
                         ]
+                    , tooltip "btn-accessibility"
+                        (Html.text "Accessibility")
+                        Ui.button
+                        [ Events.onClick (Preference (Open True))
+                        , Attributes.attribute "aria-label" "Accessibility"
+                        , Attributes.id "btn-preferences"
+                        ]
+                        [ Icon.accessibility ]
                     ]
                 , Html.main_ [ Attributes.id "main", Attributes.tabindex 0 ]
                     [ Html.h1 []

@@ -15,20 +15,22 @@
     overflow: hidden auto;
 
     transform: translateX(100%);
-    transition: transform .5s ease-in-out;
+    visibility: hidden;
+    transition: transform .5s ease-in-out, visibility .5s;
 
     &[open=true] {
       transform: translateX(0);
+      visibility: visible;
     }
 
     &::backdrop {
       display: none;
     }
 
-  > * {
-    margin-left: $pixel;
-    padding: $pixel ($pixel * 2) ($pixel * 2) !important;
-  }
+    > * {
+      margin-left: $pixel;
+      padding: $pixel ($pixel * 2) ($pixel * 2) !important;
+    }
   }
 
   & > [am-dialog-backdrop] {
@@ -45,6 +47,10 @@
     &[open=true] {
       opacity: 1;
       pointer-events: auto;
+    }
+
+    .prefers-dark-mode & {
+      background: hsla(0, 0%, 0%, 0.5);
     }
   }
 }
