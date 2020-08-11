@@ -55,64 +55,79 @@ view model =
     { title = "Austin Bookhart"
     , body =
         [ Html.section
-            [ Attributes.class
-                (if model.preferences.open then
-                    "modalOpen"
-
-                 else
-                    ""
-                )
-            ]
+            [ Attributes.attribute "am-body" "" ]
             [ Html.section [ Am.containerFloating, Attributes.id "skip-to-links" ]
                 [ Ui.a [ Attributes.href "#main" ] [ Html.text "Skip to Content" ] ]
-            , Html.header []
-                [ Ui.nav [ Am.flexbox "", Am.flexboxJustifyContent "space-evenly" ]
-                    [ Ui.a [ Attributes.href "#" ] [ Html.text "About" ]
-                    , Ui.a [ Attributes.href "#" ] [ Html.text "Blog" ]
-                    , tooltip "btn-accessibility"
-                        (Html.text "Accessibility")
-                        Ui.button
-                        [ Events.onClick (Preference (Open True))
-                        , Attributes.attribute "aria-label" "Accessibility"
-                        , Attributes.id "btn-preferences"
-                        ]
-                        [ Icon.accessibility ]
-                    ]
-                ]
-            , Html.main_ [ Attributes.id "main", Attributes.tabindex 0 ]
-                [ Html.h1 []
-                    [ Ui.headerAnchor
-                        [ Attributes.href "#about"
-                        , Attributes.id "about"
-                        ]
-                        [ Html.text "#" ]
-                    , Html.text "About"
-                    ]
-                , Html.p []
-                    [ Html.text "Hello, my name is Austin Bookhart. I'm a Software Engineer that has worked primarily as a Full-Stack Developer with an emphasis towards Frontend development. My goal is to create UIs that facilitate concise user experiences and are accessible to a wide variety of audiences." ]
-                ]
-            , Html.div
-                [ Attributes.id "backdrop"
-                , Events.onClick (Preference (Open False))
-                , Attributes.attribute "open"
+            , Html.section
+                [ Attributes.attribute "am-window"
                     (if model.preferences.open then
-                        "true"
+                        "inactive"
 
                      else
-                        "false"
+                        "active"
                     )
                 ]
-                []
-            , Html.node "dialog"
-                [ Attributes.attribute "open"
+                [ Html.header []
+                    [ Ui.nav [ Am.flexbox "", Am.flexboxJustifyContent "space-evenly" ]
+                        [ Ui.a [ Attributes.href "#" ] [ Html.text "About" ]
+                        , Ui.a [ Attributes.href "#" ] [ Html.text "Blog" ]
+                        , tooltip "btn-accessibility"
+                            (Html.text "Accessibility")
+                            Ui.button
+                            [ Events.onClick (Preference (Open True))
+                            , Attributes.attribute "aria-label" "Accessibility"
+                            , Attributes.id "btn-preferences"
+                            ]
+                            [ Icon.accessibility ]
+                        ]
+                    ]
+                , Html.main_ [ Attributes.id "main", Attributes.tabindex 0 ]
+                    [ Html.h1 []
+                        [ Ui.headerAnchor
+                            [ Attributes.href "#about"
+                            , Attributes.id "about"
+                            ]
+                            [ Html.text "#" ]
+                        , Html.text "About"
+                        ]
+                    , Html.p []
+                        [ Html.text "Hello, my name is Austin Bookhart. I'm a Software Engineer that has worked primarily as a Full-Stack Developer with an emphasis towards Frontend development. My goal is to create UIs that facilitate concise user experiences and are accessible to a wide variety of audiences." ]
+                    ]
+                ]
+            , Html.section
+                [ Attributes.attribute "am-window"
                     (if model.preferences.open then
-                        "true"
+                        "active"
 
                      else
-                        "false"
+                        "inactive"
                     )
+                , Attributes.attribute "am-fullscreen" ""
+                , Attributes.attribute "am-dialog" ""
                 ]
-                [ Html.map Preference (Preferences.view model.preferences) ]
+                [ Html.div
+                    [ Attributes.attribute "am-dialog-backdrop" ""
+                    , Events.onClick (Preference (Open False))
+                    , Attributes.attribute "open"
+                        (if model.preferences.open then
+                            "true"
+
+                         else
+                            "false"
+                        )
+                    ]
+                    []
+                , Html.node "dialog"
+                    [ Attributes.attribute "open"
+                        (if model.preferences.open then
+                            "true"
+
+                         else
+                            "false"
+                        )
+                    ]
+                    [ Html.map Preference (Preferences.view model.preferences) ]
+                ]
             ]
         ]
     }

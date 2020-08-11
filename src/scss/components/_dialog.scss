@@ -1,54 +1,50 @@
-dialog {
-  color: inherit;
-  display: block;
-  background: none;
-  box-sizing: border-box;
-  border: none;
+[am-dialog] {
+  & > dialog {
+    color: inherit;
+    background: none;
+    border: none;
 
-  position: fixed;
-  top: 0;
-  left: auto;
-  right: -$pixel;
+    position: absolute;
+    left: auto;
+    right: -$pixel;
+    max-width: 500px;
+    width: 100%;
+    height: 100%;
+    padding: $pixel * 2;
+    padding-right: 0;
+    overflow: hidden auto;
 
-  max-width: 500px;
-  width: 100vw;
-  margin: 0;
-  padding: $pixel * 2;
-  padding-right: 0;
-  overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .5s ease-in-out;
 
-  transform: translateX(100%);
-  transition: transform .5s ease-in-out;
+    &[open=true] {
+      transform: translateX(0);
+    }
 
-  &[open=true] {
-    transform: translateX(0);
-  }
-
-  &::backdrop {
-    display: none;
-  }
+    &::backdrop {
+      display: none;
+    }
 
   > * {
     margin-left: $pixel;
     padding: $pixel ($pixel * 2) ($pixel * 2) !important;
   }
-}
+  }
 
-#backdrop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  & > [am-dialog-backdrop] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 
-  background-color: hsla(0, 0%, 0%, 0.25);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .5s, pointer-events 1ms .5s;
-  transition-timing-function: ease-in-out;
+    background: hsla(0, 0%, 0%, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .5s, pointer-events 1ms .5s;
+    transition-timing-function: ease-in-out;
 
-  &[open=true] {
-    opacity: 1;
-    pointer-events: auto;
+    &[open=true] {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 }

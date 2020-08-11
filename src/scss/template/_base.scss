@@ -22,20 +22,6 @@ html {
   font-size: .2in;
 }
 
-body {
-  margin: 0;
-  padding: $pixel * 2;
-  width: 100vw;
-
-  color: var(--text);
-  background: repeating-conic-gradient(var(--background-alt) 0% 25%, var(--background-checker) 0% 50%) 0/ 800px 800px;
-  overflow-x: hidden;
-
-  .prefers-dark-mode & {
-    background: repeating-conic-gradient(var(--background-checker) 0% 25%, var(--background-alt) 0% 50%) 0/ 800px 800px;
-  }
-}
-
 header {
   max-width: 1000px;
 }
