@@ -45,7 +45,6 @@ radio : Bool -> Node msg
 radio checked attributes =
     Html.input
         (Attributes.attribute "type" "radio"
-            :: Am.interactive
             :: Attributes.attribute "checked" (boolToString checked)
             :: Attributes.checked checked
             :: attributes

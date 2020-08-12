@@ -202,32 +202,41 @@ view model =
                 ]
                 [ Html.span [ Am.groupHeader ]
                     [ Html.text "Text Size" ]
-                , Html.label [ Am.groupItem ]
+                , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
                     [ Ui.radio (textSize == 80)
                         [ Attributes.value "80"
                         , Attributes.name "textSize"
                         , Events.onInput TextSize
                         ]
                         []
-                    , Html.span [] [ Html.text "small" ]
+                    , Html.span [] [ Html.text "smaller" ]
                     ]
-                , Html.label [ Am.groupItem ]
+                , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
                     [ Ui.radio (textSize == 100)
                         [ Attributes.value "100"
                         , Attributes.name "textSize"
                         , Events.onInput TextSize
                         ]
                         []
-                    , Html.span [] [ Html.text "medium" ]
+                    , Html.span [] [ Html.text "normal" ]
                     ]
-                , Html.label [ Am.groupItem ]
+                , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
                     [ Ui.radio (textSize == 120)
                         [ Attributes.value "120"
                         , Attributes.name "textSize"
                         , Events.onInput TextSize
                         ]
                         []
-                    , Html.span [] [ Html.text "large" ]
+                    , Html.span [] [ Html.text "larger" ]
+                    ]
+                , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
+                    [ Ui.radio (textSize == 150)
+                        [ Attributes.value "150"
+                        , Attributes.name "textSize"
+                        , Events.onInput TextSize
+                        ]
+                        []
+                    , Html.span [] [ Html.text "largest" ]
                     ]
                 ]
             , Html.section

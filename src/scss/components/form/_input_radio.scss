@@ -1,25 +1,36 @@
-input[type=radio] {
-  min-height: $pixel * 3;
-  position: relative;
-  margin: $pixel;
+[am-radio] {
+  & > input[type=radio] {
+    height: $pixel * 4;
+    width: $pixel * 4;
+    position: relative;
+    margin: 0 $pixel;
 
-  &:after {
-    content: "";
-    position: absolute;
-    background: var(--pixel);
-    top: $pixel;
-    bottom: $pixel;
-    left: $pixel;
-    right: $pixel;
+    &:after {
+      content: "";
+      position: absolute;
+      background: var(--pixel);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
 
-    transition: transform .3s;
+      transition: transform .3s ease-in-out, background .3s ease-in-out;
+    }
+
+    &:not([checked=true]):after {
+      transform: scale(0.25);
+    }
+
+    &[checked=true]:after {
+      transform: scale(1);
+    }
   }
 
-  &:not([checked=true]):after {
-    transform: scale(0);
+  &:hover > input[type=radio]:after {
+    background: hsl(0, 0%, 100%);
   }
 
-  &[checked=true]:after {
-    transform: scale(1);
+  & > span {
+    vertical-align: middle;
   }
 }
