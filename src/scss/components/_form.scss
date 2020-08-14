@@ -1,9 +1,9 @@
 @import "form/button";
 @import "form/input";
-@import "form/input_checkbox";
 @import "form/input_radio";
 @import "form/fieldset";
 @import "form/label";
+@import "form/select";
 
 [disabled=""], [disabled=true] {
   cursor: not-allowed;

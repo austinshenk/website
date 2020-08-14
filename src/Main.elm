@@ -165,7 +165,6 @@ update msg model =
                                         (Json.Decode.decodeValue Json.Decode.string message.value)
                                     )
                                 )
-                                True
                             )
                             preferences
                 in

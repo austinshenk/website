@@ -122,11 +122,11 @@ update msg model =
             , Port.outgoingMessage (storePreferences preferences)
             )
 
-        ColorScheme systemPreferenceMsg checked ->
+        ColorScheme systemPreferenceMsg ->
             let
                 preferences =
                     setColorScheme
-                        (updateSystemPreference systemPreferenceMsg checked model.colorScheme)
+                        (updateSystemPreference systemPreferenceMsg model.colorScheme)
                         model
             in
             ( preferences
@@ -149,24 +149,19 @@ update msg model =
             )
 
 
-updateSystemPreference : SystemPreferenceMsg a -> Bool -> Preferences.Model.SystemPreference a -> Preferences.Model.SystemPreference a
-updateSystemPreference msg checked model =
+updateSystemPreference : SystemPreferenceMsg a -> Preferences.Model.SystemPreference a -> Preferences.Model.SystemPreference a
+updateSystemPreference msg model =
     case msg of
-        Override ->
-            setOverride checked model
+        AppValue value ->
+            case value of
+                Nothing ->
+                    model |> setOverride False
 
-        AppValue truthy falsy ->
-            setAppValue
-                (if checked then
-                    truthy
+                Just appValue ->
+                    model |> setAppValue appValue |> setOverride True
 
-                 else
-                    falsy
-                )
-                model
-
-        _ ->
-            model
+        SystemValue value ->
+            model |> setSystemValue value
 
 
 onKeyUp : (Int -> msg) -> Html.Attribute msg
@@ -218,7 +213,7 @@ view model =
                         , Events.onInput TextSize
                         ]
                         []
-                    , Html.span [] [ Html.text "normal" ]
+                    , Html.span [] [ Html.text "default" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
                     [ Ui.radio (textSize == 120)
@@ -246,35 +241,31 @@ view model =
                 , Am.flexbox ""
                 , Am.flexboxJustifyContent "start"
                 ]
-                [ Html.span [ Am.groupHeader ]
+                [ Html.label [ Am.groupHeader, Attributes.for "preferences-colorscheme" ]
                     [ Html.text "Color Scheme" ]
-                , Html.label
-                    [ Am.groupItem
-                    , Am.interactive
-                    ]
-                    [ Ui.checkbox colorScheme.override
-                        [ Events.onCheck (ColorScheme Override)
-                        ]
-                        []
-                    , Html.span [] [ Html.text "override" ]
-                    ]
-                , Html.label
-                    [ Am.groupItem
-                    , Am.interactive
-                    , Attributes.attribute "disabled"
-                        (if not colorScheme.override then
-                            "true"
+                , Html.section [ Attributes.attribute "am-select" "", Am.interactive ]
+                    [ Html.select
+                        [ Attributes.id "preferences-colorscheme"
+                        , Events.onInput
+                            (\value ->
+                                if value == "default" then
+                                    ColorScheme (AppValue Nothing)
 
-                         else
-                            "false"
-                        )
-                    ]
-                    [ Ui.checkbox (colorScheme.appValue == "dark")
-                        [ Attributes.disabled (not colorScheme.override)
-                        , Events.onCheck (ColorScheme (AppValue "dark" "light"))
+                                else
+                                    ColorScheme (AppValue (Just value))
+                            )
+                        , Attributes.value
+                            (if colorScheme.override then
+                                colorScheme.appValue
+
+                             else
+                                "default"
+                            )
                         ]
-                        []
-                    , Html.span [] [ Html.text "dark mode" ]
+                        [ Html.option [ Attributes.value "default" ] [ Html.text "system default" ]
+                        , Html.option [ Attributes.value "light" ] [ Html.text "light" ]
+                        , Html.option [ Attributes.value "dark" ] [ Html.text "dark" ]
+                        ]
                     ]
                 ]
             ]

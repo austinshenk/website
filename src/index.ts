@@ -59,7 +59,7 @@ const createMediaListeners = function() {
     if (prefersReducedMotion)
       initialPreferences.reducedMotion.systemValue = "reduce";
   }
-}
+}();
 const app = Elm.Main.init({node: document.body, flags: initialPreferences});
 
 interface IncomingMessage<T> {

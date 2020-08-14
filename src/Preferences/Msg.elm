@@ -5,10 +5,9 @@ type Msg
     = Noop
     | Open Bool
     | TextSize String
-    | ColorScheme (SystemPreferenceMsg String) Bool
+    | ColorScheme (SystemPreferenceMsg String)
 
 
 type SystemPreferenceMsg a
-    = Override
-    | AppValue a a
+    = AppValue (Maybe a)
     | SystemValue a

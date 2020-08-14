@@ -18,7 +18,7 @@
     }
 
     &:not([checked=true]):after {
-      transform: scale(0.25);
+      transform: scale(0.5);
     }
 
     &[checked=true]:after {
@@ -26,8 +26,10 @@
     }
   }
 
-  &:hover > input[type=radio]:after {
-    background: hsl(0, 0%, 100%);
+  &:hover, &:focus, &:focus-within {
+    & > input[type=radio]:after {
+      background: hsl(0, 0%, 100%);
+    }
   }
 
   & > span {

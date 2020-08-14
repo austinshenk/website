@@ -1,5 +1,48 @@
-select {
-  appearance: none;
-  border: none;
-  border-radius: 0;
+[am-select] {
+  position: relative;
+  padding: 0;
+
+  > select {
+    appearance: none;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: inherit;
+    font: 400 1rem system;
+    white-space: normal;
+    width: 100%;
+
+    padding: ($pixel * 2) !important;
+    padding-left: $pixel * 10 !important;
+  }
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    transition: background .3s ease-in-out;
+    background: var(--pixel);
+
+    height: $pixel;
+    width: $pixel * 3;
+    top: 60%;
+  }
+
+  &:before {
+    left: $pixel * 2;
+    transform-origin: 100% 100%;
+    transform: rotateZ(45deg);
+  }
+
+  &:after {
+    left: $pixel * 5;
+    transform-origin: 0 100%;
+    transform: rotateZ(-45deg);
+  }
+
+  &:hover, &:focus, &:focus-within {
+    &:before, &:after {
+      background: hsl(0, 0%, 100%);
+    }
+  }
 }
