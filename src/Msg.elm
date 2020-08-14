@@ -8,6 +8,7 @@ import Url exposing (Url)
 
 type Msg
     = Noop
+    | Loaded ()
     | UrlRequest Browser.UrlRequest
     | UrlChange Url
     | Preference Preferences.Msg.Msg

@@ -14,6 +14,7 @@ import Msg exposing (Msg(..))
 import Port
 import Preferences
 import Preferences.Msg exposing (Msg(..))
+import Process
 import Task
 import Tooltip exposing (tooltip)
 import Ui
@@ -47,7 +48,12 @@ init flags url key =
         ( preferences, commands ) =
             Preferences.init flags
     in
-    ( Model.Model key preferences, Cmd.map Preference commands )
+    ( Model.Model False key preferences
+    , Cmd.batch
+        [ Cmd.map Preference commands
+        , Task.perform Loaded (Process.sleep 0)
+        ]
+    )
 
 
 view : Model.Model -> Browser.Document Msg.Msg
@@ -55,7 +61,14 @@ view model =
     { title = "Austin Bookhart"
     , body =
         [ Html.section
-            [ Attributes.attribute "am-body" "" ]
+            [ Attributes.attribute "am-body"
+                (if model.loaded then
+                    "true"
+
+                 else
+                    "false"
+                )
+            ]
             [ Html.section [ Am.containerFloating, Attributes.id "skip-to-links" ]
                 [ Ui.a [ Attributes.href "#main" ] [ Html.text "Skip to Content" ] ]
             , Html.section
@@ -142,6 +155,9 @@ update msg model =
     case msg of
         Msg.Noop ->
             ( model, Cmd.none )
+
+        Loaded _ ->
+            ( { model | loaded = True }, Cmd.none )
 
         Preference preferenceMsg ->
             let

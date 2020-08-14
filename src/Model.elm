@@ -5,6 +5,7 @@ import Preferences.Model
 
 
 type alias Model =
-    { navigationKey : Browser.Navigation.Key
+    { loaded : Bool
+    , navigationKey : Browser.Navigation.Key
     , preferences : Preferences.Model.Model
     }

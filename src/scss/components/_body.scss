@@ -1,20 +1,23 @@
 body {
   margin: 0;
   padding: 0;
-
-  color: var(--text);
-  background: repeating-conic-gradient(var(--background-alt) 0% 25%, var(--background-checker) 0% 50%) 0/ 800px 800px;
   overflow: hidden;
-
-  .prefers-dark-mode & {
-    background: repeating-conic-gradient(var(--background-checker) 0% 25%, var(--background-alt) 0% 50%) 0/ 800px 800px;
-  }
 }
 
 [am-body] {
   position: fixed;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+
+  color: var(--text);
+  background: repeating-conic-gradient(var(--background-alt) 0% 25%, var(--background-checker) 0% 50%) 0/ 800px 800px;
+
+  .prefers-dark-mode & {
+    background: repeating-conic-gradient(var(--background-checker) 0% 25%, var(--background-alt) 0% 50%) 0/ 800px 800px;
+  }
 
   & > [am-window] {
     position: absolute;
@@ -33,4 +36,8 @@ body {
   & > [am-window=""], & > [am-window="inactive"] {
     pointer-events: none;
   }
+}
+
+[am-body="true"] {
+  opacity: 1;
 }
