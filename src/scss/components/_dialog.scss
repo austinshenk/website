@@ -10,8 +10,7 @@
     max-width: 500px;
     width: 100%;
     height: 100%;
-    padding: $pixel * 2;
-    padding-right: 0;
+    padding: ($pixel * 2) 0 ($pixel * 2) $pixel;
     overflow: hidden auto;
 
     transform: translateX(100%);

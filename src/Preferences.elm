@@ -184,9 +184,11 @@ view model =
         [ Html.section
             [ Am.groupHeader
             , Am.flexbox ""
-            , Am.flexboxJustifyContent "end"
+            , Am.flexboxJustifyContent "space-between"
             ]
-            [ Ui.button [ Events.onClick (Open False) ] [ Html.text "Close" ] ]
+            [ Html.span [ Attributes.attribute "role" "heading", Attributes.attribute "aria-level" "2" ] [ Html.text "Accessibility" ]
+            , Ui.button [ Events.onClick (Open False) ] [ Html.text "Close" ]
+            ]
         , Html.form [ Am.groupItem, Am.group "vertical" ]
             [ Html.section
                 [ Am.groupItem
@@ -243,7 +245,7 @@ view model =
                 ]
                 [ Html.label [ Am.groupHeader, Attributes.for "preferences-colorscheme" ]
                     [ Html.text "Color Scheme" ]
-                , Html.section [ Attributes.attribute "am-select" "", Am.interactive ]
+                , Html.section [ Am.groupItem, Attributes.attribute "am-select" "", Am.interactive ]
                     [ Html.select
                         [ Attributes.id "preferences-colorscheme"
                         , Events.onInput

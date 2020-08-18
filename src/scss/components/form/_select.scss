@@ -1,6 +1,5 @@
 [am-select] {
   position: relative;
-  padding: 0;
 
   > select {
     appearance: none;
@@ -11,9 +10,10 @@
     font: 400 1rem system;
     white-space: normal;
     width: 100%;
+    line-height: calc(#{$pixel} + 2ex + #{$pixel});
+    vertical-align: middle;
 
-    padding: ($pixel * 2) !important;
-    padding-left: $pixel * 10 !important;
+    padding: 0 $pixel 0 ($pixel * 9);
   }
 
   &:before, &:after {

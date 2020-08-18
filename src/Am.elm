@@ -55,6 +55,34 @@ flexitemShrink =
     Attributes.attribute "am-flexitem-shrink"
 
 
+grid =
+    Attributes.attribute "am-grid" ""
+
+
+gridJustifyItems =
+    Attributes.attribute "am-grid-justify-items"
+
+
+gridAlignItems =
+    Attributes.attribute "am-grid-align-items"
+
+
+gridJustifyContent =
+    Attributes.attribute "am-grid-justify-content"
+
+
+gridAlignContent =
+    Attributes.attribute "am-grid-align-content"
+
+
+gridAutoFlow =
+    Attributes.attribute "am-grid-auto-flow"
+
+
+gridGap =
+    Attributes.style "gap"
+
+
 group =
     Attributes.attribute "am-group"
 

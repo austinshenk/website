@@ -79,12 +79,11 @@ view model =
                      else
                         "active"
                     )
-                , Am.flexbox "column"
-                , Am.flexboxJustifyContent "start"
-                , Am.flexboxWrap "no"
-                , Am.flexboxAlignItems "center"
+                , Am.grid
+                , Am.gridAlignContent "start"
+                , Am.gridGap "10px 0"
                 ]
-                [ Html.header [ Am.container, Am.flexbox "" ]
+                [ Html.header [ Am.container, Am.flexbox "", Am.flexboxJustifyContent "space-around" ]
                     [ Ui.nav [ Am.flexbox "", Am.flexboxJustifyContent "space-evenly", Am.flexitem "", Am.flexitemGrow "2" ]
                         [ Ui.a [ Attributes.href "#" ] [ Html.text "About" ]
                         , Ui.a [ Attributes.href "#" ] [ Html.text "Blog" ]
