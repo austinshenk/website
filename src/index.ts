@@ -15,8 +15,13 @@ class SystemPreference<T> {
 
 let initialPreferences: Preferences = new Preferences();
 const getPreferencesFromLocalStorage = function() {
+  const localPreferences = localStorage.getItem(localStorageKey);
+
+  if (!localPreferences)
+    return;
+
   try {
-    initialPreferences = JSON.parse(localStorage.getItem(localStorageKey));
+    initialPreferences = JSON.parse(localPreferences);
   } catch (e) {
     console.warn("Failed to load preferences from local storage. Falling back to defaults");
   }
