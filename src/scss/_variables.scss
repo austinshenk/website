@@ -3,25 +3,23 @@ $pixel: 4px;
 //Palette from https://lospec.com/palette-list/pixel-ink
 
 :root {
-  --pixel: hsl(340 28% 19%);
+  --pixel: hsl(340 28% 29%);
   --shadow: hsl(340 28% 19% / .3);
   --background: hsl(77 64% 90%);
   --background-main: hsl(0 0% 100%);
-  --background-body: repeating-conic-gradient(hsl(77 34% 80%) 0% 25%, hsl(77 34% 83%) 0% 50%) 0/ 800px 800px;
+  --background-body: repeating-conic-gradient(hsl(77 14% 92%) 0% 25%, hsl(77 14% 93%) 0% 50%) 0/ 800px 800px;
   --text: hsl(0 0% 0%);
-  --selection-background: hsl(0 0% 20%);
-  --selection-text: hsl(0 0% 100%);
-  --selection-shadow: hsl(0 0% 65%);
+  --selection-background: hsl(340 28% 29%);
+  --selection-text: hsl(77 64% 90%);
 
   &.prefers-dark-mode {
     --pixel: hsl(77 64% 90%);
     --shadow: hsl(77 64% 90% / .3);
     --background: hsl(340 28% 19%);
     --background-main: hsl(0 0% 0%);
-    --background-body: repeating-conic-gradient(hsl(340 18% 10%) 0% 25%, hsl(340 18% 13%) 0% 50%) 0/ 800px 800px;
+    --background-body: repeating-conic-gradient(hsl(340 8% 10%) 0% 25%, hsl(340 8% 11%) 0% 50%) 0/ 800px 800px;
     --text: hsl(0 0% 90%);
-    --selection-background: hsl(0 0% 50% / 0.99);
-    --selection-text: hsl(0 0% 90%);
-    --selection-shadow: hsl(0 0% 0%);
+    --selection-background: hsl(77 64% 90% / 0.99);
+    --selection-text: hsl(340 28% 19%);
   }
 }

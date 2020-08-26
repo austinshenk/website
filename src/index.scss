@@ -2,13 +2,3 @@
 @import "scss/mixins";
 @import "scss/template";
 @import "scss/components";
-
-[am-maintainsize] {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-[am-mod=grid] {
-
-}
