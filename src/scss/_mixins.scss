@@ -17,6 +17,7 @@
 
 @mixin interactive($floating: false) {
   @include pixelated-border($floating, true, "normal");
+  background-color: var(--background-main);
   transition-property: transform, box-shadow, background, color, text-shadow;
   transition-duration: .1s, .1s, .3s, .3s, .3s;
   transition-timing-function: ease-in-out;

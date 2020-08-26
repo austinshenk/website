@@ -118,7 +118,7 @@ view model =
                      else
                         "inactive"
                     )
-                , Attributes.attribute "am-fullscreen" ""
+                , Attributes.attribute "am-window-fullscreen" ""
                 , Attributes.attribute "am-dialog" ""
                 ]
                 [ Html.div

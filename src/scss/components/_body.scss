@@ -13,31 +13,27 @@ body {
   transition: opacity .5s ease-in-out;
 
   color: var(--text);
-  background: repeating-conic-gradient(var(--background-alt) 0% 25%, var(--background-checker) 0% 50%) 0/ 800px 800px;
-
-  .prefers-dark-mode & {
-    background: repeating-conic-gradient(var(--background-checker) 0% 25%, var(--background-alt) 0% 50%) 0/ 800px 800px;
-  }
-
-  & > [am-window] {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden auto;
-
-    padding: $pixel * 2;
-
-    &[am-fullscreen] {
-      padding: 0;
-      overflow: initial;
-    }
-  }
-
-  & > [am-window=""], & > [am-window="inactive"] {
-    pointer-events: none;
-  }
+  background: var(--background-body);
 }
 
 [am-body="true"] {
   opacity: 1;
+}
+
+[am-window] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden auto;
+
+  padding: $pixel * 2;
+
+  &[am-window-fullscreen] {
+    padding: 0;
+    overflow: initial;
+  }
+}
+
+[am-window="inactive"] {
+  pointer-events: none;
 }

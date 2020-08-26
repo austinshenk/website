@@ -30,7 +30,7 @@ header, main {
 main {
   margin: 6px 6px 10px;
   padding: 1px (2 * $pixel) (2 * $pixel);
-  background-color: var(--background);
+  background-color: var(--background-main);
   box-shadow: 0 -6px var(--pixel), 6px 0 var(--pixel), 0 6px var(--pixel), -6px 0 var(--pixel), 0 0 0 3px var(--pixel), 0 10px var(--shadow), 6px 4px var(--shadow), -6px 4px var(--shadow), 0 4px 0 3px var(--shadow);
 }
 

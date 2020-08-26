@@ -16,7 +16,7 @@
     transform: translateX(-50%);
     margin: $pixel 0 0;
 
-    background: var(--background);
+    background-color: var(--background-main);
     opacity: 0;
     transition: opacity .3s;
 
@@ -30,7 +30,7 @@
       height: $pixel;
       width: $pixel;
 
-      background: var(--pixel);
+      background-color: var(--pixel);
     }
   }
 }

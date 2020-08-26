@@ -1,29 +1,27 @@
 $pixel: 4px;
 
+//Palette from https://lospec.com/palette-list/pixel-ink
+
 :root {
-  --pixel: hsl(0, 0%, 10%);
-  --pixel-invert: hsl(0, 0%, 99%);
-  --shadow: hsl(0, 0%, 70%);
-  --background: hsl(0, 0%, 99%);
-  --background-alt: hsl(0, 0%, 95%);
-  --background-checker: hsl(0, 0%, 97%);
-  --text: hsl(0, 0%, 0%);
-  --text-invert: hsl(0, 0%, 100%);
-  --selection-background: hsl(0, 0%, 20%);
-  --selection-text: hsl(0, 0%, 100%);
-  --selection-shadow: hsl(0, 0%, 65%);
+  --pixel: hsl(340 28% 19%);
+  --shadow: hsl(340 28% 19% / .3);
+  --background: hsl(77 64% 90%);
+  --background-main: hsl(0 0% 100%);
+  --background-body: repeating-conic-gradient(hsl(77 34% 80%) 0% 25%, hsl(77 34% 83%) 0% 50%) 0/ 800px 800px;
+  --text: hsl(0 0% 0%);
+  --selection-background: hsl(0 0% 20%);
+  --selection-text: hsl(0 0% 100%);
+  --selection-shadow: hsl(0 0% 65%);
 
   &.prefers-dark-mode {
-    --pixel: hsl(0, 0%, 40%);
-    --pixel-invert: hsl(0, 0%, 10%);
-    --shadow: hsl(0, 0%, 10%);
-    --background: hsl(0, 0%, 0%);
-    --background-alt: hsl(0, 0%, 20%);
-    --background-checker: hsl(0, 0%, 18%);
-    --text: hsl(0, 0%, 90%);
-    --text-invert: hsl(0, 0%, 0%);
-    --selection-background: hsla(0, 0%, 50%, 0.99);
-    --selection-text: hsl(0, 0%, 90%);
-    --selection-shadow: hsl(0, 0%, 0%);
+    --pixel: hsl(77 64% 90%);
+    --shadow: hsl(77 64% 90% / .3);
+    --background: hsl(340 28% 19%);
+    --background-main: hsl(0 0% 0%);
+    --background-body: repeating-conic-gradient(hsl(340 18% 10%) 0% 25%, hsl(340 18% 13%) 0% 50%) 0/ 800px 800px;
+    --text: hsl(0 0% 90%);
+    --selection-background: hsl(0 0% 50% / 0.99);
+    --selection-text: hsl(0 0% 90%);
+    --selection-shadow: hsl(0 0% 0%);
   }
 }
