@@ -1,39 +1,21 @@
 [am-radio] {
-  & > input[type=radio] {
-    height: $pixel * 4;
-    width: $pixel * 4;
-    position: relative;
-    margin: 0 $pixel;
+  position: relative;
 
-    &:after {
-      content: "";
-      position: absolute;
-      background: var(--pixel);
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-
-      transition: transform .3s ease-in-out, background .3s ease-in-out;
-    }
-
-    &:not([checked=true]):after {
-      transform: scale(0.5);
-    }
-
-    &[checked=true]:after {
-      transform: scale(1);
-    }
+  > input[type=radio] {
+    position: absolute;
   }
 
-  &:hover, &:focus, &:focus-within {
-    & > input[type=radio]:after {
-      background: hsl(0, 0%, 100%);
-    }
-  }
-
-  & > span {
+  > [am-icon] {
+    margin: 0 $pixel $pixel;
     vertical-align: middle;
+
+    > path {
+      stroke-width: 0;
+      fill: var(--pixel);
+    }
+  }
+
+  > span {
     padding: 0 $pixel;
   }
 }

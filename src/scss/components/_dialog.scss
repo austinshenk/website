@@ -17,6 +17,10 @@
     visibility: hidden;
     transition: transform .5s ease-in-out, visibility .5s;
 
+    [prefers-reduced-motion=reduce] & {
+      transition: none;
+    }
+
     &[open=true] {
       transform: translateX(0);
       visibility: visible;
@@ -43,7 +47,7 @@
       pointer-events: auto;
     }
 
-    .prefers-dark-mode & {
+    [prefers-color-scheme=dark] & {
       background: hsla(0, 0%, 0%, 0.5);
     }
   }

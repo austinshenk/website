@@ -5,6 +5,7 @@ import Browser.Dom as Dom
 import Html
 import Html.Attributes as Attributes
 import Html.Events as Events
+import Icon
 import Json.Decode
 import Json.Encode
 import Port
@@ -12,6 +13,7 @@ import Preferences.Model
 import Preferences.Msg exposing (Msg(..), SystemPreferenceMsg(..))
 import Process
 import Task
+import Tooltip exposing (tooltip)
 import Ui
 
 
@@ -133,6 +135,17 @@ update msg model =
             , Port.outgoingMessage (storePreferences preferences)
             )
 
+        ReducedMotion systemPreferenceMsg ->
+            let
+                preferences =
+                    setReducedMotion
+                        (updateSystemPreference systemPreferenceMsg model.reducedMotion)
+                        model
+            in
+            ( preferences
+            , Port.outgoingMessage (storePreferences preferences)
+            )
+
         Open open ->
             let
                 focusId =
@@ -172,7 +185,7 @@ onKeyUp tagger =
 view : Preferences.Model.Model -> Html.Html Msg
 view model =
     let
-        { colorScheme, textSize } =
+        { colorScheme, textSize, reducedMotion } =
             model
     in
     Html.section
@@ -187,7 +200,11 @@ view model =
             , Am.flexboxJustifyContent "space-between"
             ]
             [ Html.span [ Attributes.attribute "role" "heading", Attributes.attribute "aria-level" "2" ] [ Html.text "Accessibility" ]
-            , Ui.button [ Events.onClick (Open False) ] [ Html.text "Close" ]
+            , tooltip "btn-preferences-close"
+                (Html.text "Close")
+                Ui.button
+                [ Events.onClick (Open False) ]
+                [ Icon.base "cross" ]
             ]
         , Html.form [ Am.groupItem, Am.group "vertical" ]
             [ Html.section
@@ -206,6 +223,13 @@ view model =
                         , Events.onInput TextSize
                         ]
                         []
+                    , Icon.base
+                        (if textSize == 80 then
+                            "bigRadio"
+
+                         else
+                            "smallRadio"
+                        )
                     , Html.span [] [ Html.text "smaller" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
@@ -215,6 +239,13 @@ view model =
                         , Events.onInput TextSize
                         ]
                         []
+                    , Icon.base
+                        (if textSize == 100 then
+                            "bigRadio"
+
+                         else
+                            "smallRadio"
+                        )
                     , Html.span [] [ Html.text "default" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
@@ -224,6 +255,13 @@ view model =
                         , Events.onInput TextSize
                         ]
                         []
+                    , Icon.base
+                        (if textSize == 120 then
+                            "bigRadio"
+
+                         else
+                            "smallRadio"
+                        )
                     , Html.span [] [ Html.text "larger" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
@@ -233,6 +271,13 @@ view model =
                         , Events.onInput TextSize
                         ]
                         []
+                    , Icon.base
+                        (if textSize == 150 then
+                            "bigRadio"
+
+                         else
+                            "smallRadio"
+                        )
                     , Html.span [] [ Html.text "largest" ]
                     ]
                 ]
@@ -267,6 +312,40 @@ view model =
                         [ Html.option [ Attributes.value "default" ] [ Html.text "system default" ]
                         , Html.option [ Attributes.value "light" ] [ Html.text "light" ]
                         , Html.option [ Attributes.value "dark" ] [ Html.text "dark" ]
+                        ]
+                    ]
+                ]
+            , Html.section
+                [ Am.groupItem
+                , Am.group ""
+                , Am.containerInvisible
+                , Am.flexbox ""
+                , Am.flexboxJustifyContent "start"
+                ]
+                [ Html.label [ Am.groupHeader, Attributes.for "preferences-reducemotion" ]
+                    [ Html.text "Reduce Motion" ]
+                , Html.section [ Am.groupItem, Attributes.attribute "am-select" "", Am.interactive ]
+                    [ Html.select
+                        [ Attributes.id "preferences-reducemotion"
+                        , Events.onInput
+                            (\value ->
+                                if value == "default" then
+                                    ReducedMotion (AppValue Nothing)
+
+                                else
+                                    ReducedMotion (AppValue (Just value))
+                            )
+                        , Attributes.value
+                            (if reducedMotion.override then
+                                reducedMotion.appValue
+
+                             else
+                                "default"
+                            )
+                        ]
+                        [ Html.option [ Attributes.value "default" ] [ Html.text "system default" ]
+                        , Html.option [ Attributes.value "no-preference" ] [ Html.text "no" ]
+                        , Html.option [ Attributes.value "reduce" ] [ Html.text "yes" ]
                         ]
                     ]
                 ]

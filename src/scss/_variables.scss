@@ -12,7 +12,7 @@ $pixel: 4px;
   --selection-background: hsl(340 28% 29%);
   --selection-text: hsl(77 64% 90%);
 
-  &.prefers-dark-mode {
+  &[prefers-color-scheme=dark] {
     --pixel: hsl(77 64% 90%);
     --shadow: hsl(77 64% 90% / .3);
     --background: hsl(340 28% 19%);

@@ -12,5 +12,4 @@ blockquote {
 svg {
   fill: var(--text);
   height: calc(#{$pixel} + 2ex + #{$pixel});
-  vertical-align: middle;
 }

@@ -82,8 +82,13 @@ interface OutgoingMessageMap {
 }
 const outgoingMessageMap: OutgoingMessageMap = {
   "StorePreferences": (preferencesFromElm : Preferences) => {
-    const {override, appValue, systemValue} = preferencesFromElm.colorScheme;
-    document.firstElementChild.classList.toggle("prefers-dark-mode", (override ? appValue : systemValue) === "dark");
+    const persistSystemPreference = (systemPreference: SystemPreference<any>, attribute: string) => {
+      const {override, appValue, systemValue} = systemPreference;
+      document.firstElementChild.setAttribute(attribute, override ? appValue : systemValue);
+    };
+
+    persistSystemPreference(preferencesFromElm.colorScheme, "prefers-color-scheme");
+    persistSystemPreference(preferencesFromElm.reducedMotion, "prefers-reduced-motion");
 
     const textSize = preferencesFromElm.textSize;
     document.firstElementChild["style"].fontSize = (textSize * .002) + "in";

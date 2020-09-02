@@ -6,6 +6,7 @@ type Msg
     | Open Bool
     | TextSize String
     | ColorScheme (SystemPreferenceMsg String)
+    | ReducedMotion (SystemPreferenceMsg String)
 
 
 type SystemPreferenceMsg a

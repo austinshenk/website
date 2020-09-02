@@ -1,0 +1,31 @@
+[am-icon] {
+  height: $pixel * 4;
+  width: $pixel * 4;
+
+  > path {
+    transition: all .3s ease-in-out;
+    stroke: var(--pixel);
+    stroke-width: $pixel;
+    stroke-linecap: square;
+  }
+}
+
+[am-icon=downArrow] > path {
+  d: path("M 0 30 l 50 50 l 50 -50");
+}
+
+[am-icon=check] > path {
+  d: path("M 3 9 l 3 3 m 0 0 l 7 -7");
+}
+
+[am-icon=cross] > path {
+  d: path("M 3 3 L 13 13 M 3 13 L 13 3");
+}
+
+[am-icon=smallRadio] > path {
+  d: path("M 4 4 h 8 v 8 h -8 z");
+}
+
+[am-icon=bigRadio] > path {
+  d: path("M 0 0 h 16 v 16 h -16 z");
+}

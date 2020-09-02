@@ -97,3 +97,7 @@ groupItem =
 
 tooltip =
     Attributes.attribute "am-tooltip" ""
+
+
+icon =
+    Attributes.attribute "am-icon"
