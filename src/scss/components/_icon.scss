@@ -1,17 +1,37 @@
 [am-icon] {
   height: $pixel * 4;
   width: $pixel * 4;
+  vertical-align: middle;
+  margin-bottom: $pixel;
 
   > path {
-    transition: all .3s ease-in-out;
-    stroke: var(--pixel);
+    transition-property: d, stroke, fill;
+    transition-duration: .3s;
+    transition-timing-function: ease-in-out;
+    stroke: none;
     stroke-width: $pixel;
     stroke-linecap: square;
+    fill: none;
+  }
+
+  &[am-icon-style=outline] > path {
+    stroke: var(--pixel);
+    fill: none;
+  }
+
+  &[am-icon-style=fill] > path {
+    fill: var(--pixel);
+    stroke: none;
+  }
+
+  &[am-icon-style=outline-fill] > path {
+    fill: var(--background-main);
+    stroke: var(--pixel);
   }
 }
 
 [am-icon=downArrow] > path {
-  d: path("M 0 30 l 50 50 l 50 -50");
+  d: path("M 3 6 l 5 5 l 5 -5");
 }
 
 [am-icon=check] > path {

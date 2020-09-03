@@ -101,3 +101,7 @@ tooltip =
 
 icon =
     Attributes.attribute "am-icon"
+
+
+iconStyle =
+    Attributes.attribute "am-icon-style"

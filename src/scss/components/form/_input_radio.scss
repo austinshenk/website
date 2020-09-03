@@ -3,15 +3,18 @@
 
   > input[type=radio] {
     position: absolute;
+    top: -$pixel;
+    left: -$pixel;
+    width: calc(100% + #{2 * $pixel});
+    height: calc(100% + #{2 * $pixel});
   }
 
   > [am-icon] {
-    margin: 0 $pixel $pixel;
-    vertical-align: middle;
+    margin-left: $pixel;
+    margin-right: $pixel;
 
     > path {
       stroke-width: 0;
-      fill: var(--pixel);
     }
   }
 

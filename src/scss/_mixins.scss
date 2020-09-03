@@ -22,18 +22,22 @@
   transition-duration: .1s, .1s, .3s, .3s, .3s;
   transition-timing-function: ease-in-out;
 
-  & svg {
-    transition: fill .3s;
-    transition-timing-function: ease-in-out;
-  }
-
   &:hover, &:focus, &:focus-within {
     background-color: hsl(0, 0%, 50%);
     color: hsl(0, 0%, 100%);
     outline: none;
 
-    & svg {
+    & [am-icon][am-icon-style=outline] path {
+      stroke: hsl(0, 0%, 100%);
+    }
+
+    & [am-icon][am-icon-style=fill] path {
       fill: hsl(0, 0%, 100%);
+    }
+
+    & [am-icon][am-icon-style=outline-fill] path {
+      fill: hsl(0, 0%, 100%);
+      stroke: hsl(0, 0%, 100%);
     }
   }
 

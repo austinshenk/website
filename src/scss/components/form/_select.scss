@@ -1,6 +1,13 @@
 [am-select] {
   position: relative;
 
+  > [am-icon] {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 3 * $pixel;
+  }
+
   > select {
     appearance: none;
     background: none;
@@ -14,35 +21,5 @@
     vertical-align: middle;
 
     padding: 0 $pixel 0 ($pixel * 9);
-  }
-
-  &:before, &:after {
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    transition: background .3s ease-in-out;
-    background: var(--pixel);
-
-    height: $pixel;
-    width: $pixel * 3;
-    top: 60%;
-  }
-
-  &:before {
-    left: $pixel * 2;
-    transform-origin: 100% 100%;
-    transform: rotateZ(45deg);
-  }
-
-  &:after {
-    left: $pixel * 5;
-    transform-origin: 0 100%;
-    transform: rotateZ(-45deg);
-  }
-
-  &:hover, &:focus, &:focus-within {
-    &:before, &:after {
-      background: hsl(0, 0%, 100%);
-    }
   }
 }

@@ -204,7 +204,7 @@ view model =
                 (Html.text "Close")
                 Ui.button
                 [ Events.onClick (Open False) ]
-                [ Icon.base "cross" ]
+                [ Icon.base "cross" "outline" ]
             ]
         , Html.form [ Am.groupItem, Am.group "vertical" ]
             [ Html.section
@@ -230,6 +230,7 @@ view model =
                          else
                             "smallRadio"
                         )
+                        "fill"
                     , Html.span [] [ Html.text "smaller" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
@@ -246,6 +247,7 @@ view model =
                          else
                             "smallRadio"
                         )
+                        "fill"
                     , Html.span [] [ Html.text "default" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
@@ -262,6 +264,7 @@ view model =
                          else
                             "smallRadio"
                         )
+                        "fill"
                     , Html.span [] [ Html.text "larger" ]
                     ]
                 , Html.label [ Am.groupItem, Am.interactive, Attributes.attribute "am-radio" "" ]
@@ -278,6 +281,7 @@ view model =
                          else
                             "smallRadio"
                         )
+                        "fill"
                     , Html.span [] [ Html.text "largest" ]
                     ]
                 ]
@@ -291,7 +295,8 @@ view model =
                 [ Html.label [ Am.groupHeader, Attributes.for "preferences-colorscheme" ]
                     [ Html.text "Color Scheme" ]
                 , Html.section [ Am.groupItem, Attributes.attribute "am-select" "", Am.interactive ]
-                    [ Html.select
+                    [ Icon.base "downArrow" "outline"
+                    , Html.select
                         [ Attributes.id "preferences-colorscheme"
                         , Events.onInput
                             (\value ->
@@ -325,7 +330,8 @@ view model =
                 [ Html.label [ Am.groupHeader, Attributes.for "preferences-reducemotion" ]
                     [ Html.text "Reduce Motion" ]
                 , Html.section [ Am.groupItem, Attributes.attribute "am-select" "", Am.interactive ]
-                    [ Html.select
+                    [ Icon.base "downArrow" "outline"
+                    , Html.select
                         [ Attributes.id "preferences-reducemotion"
                         , Events.onInput
                             (\value ->
