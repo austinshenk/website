@@ -1,8 +1,15 @@
 @font-face {
-  font-family: system;
+  font-family: system-san-serif;
   font-style: normal;
-  font-weight: 300;
-  src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"), local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Light"), local("Roboto-Light"), local("DroidSans"), local("Tahoma");
+  font-weight: 400;
+  src: local("-apple-system"), local("BlinkMacSystemFont"), local("avenir next"), local("avenir"), local("helvetica neue"), local("helvetica"), local("Ubuntu"), local("roboto"), local("noto"), local("segoe ui"), local("arial"), local("sans-serif");
+}
+
+@font-face {
+  font-family: system-mono;
+  font-style: normal;
+  font-weight: 400;
+  src: local("Menlo"), local("Consolas"), local("Monaco"), local("Liberation Mono"), local("Lucida Console"), local("monospace");
 }
 
 * {
@@ -17,7 +24,6 @@
 }
 
 html {
-  font-family: monospace;
   font-size: .2in;
 }
 
