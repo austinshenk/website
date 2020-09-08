@@ -1,4 +1,4 @@
-module Preferences.Model exposing (..)
+module Preferences.Model exposing (Model, SystemPreference)
 
 
 type alias Model =

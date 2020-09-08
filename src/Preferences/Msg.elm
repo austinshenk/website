@@ -1,4 +1,4 @@
-module Preferences.Msg exposing (..)
+module Preferences.Msg exposing (Msg(..), SystemPreferenceMsg(..))
 
 
 type Msg

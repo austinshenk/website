@@ -1,4 +1,4 @@
-module Tooltip exposing (..)
+module Tooltip exposing (tooltip)
 
 import Am
 import Html

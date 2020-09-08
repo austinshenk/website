@@ -43,7 +43,7 @@ main =
 
 
 init : Flags -> Url -> Browser.Navigation.Key -> ( Model.Model, Cmd Msg.Msg )
-init flags url key =
+init flags _ key =
     let
         ( preferences, commands ) =
             Preferences.init flags

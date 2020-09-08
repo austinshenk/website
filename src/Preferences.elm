@@ -177,11 +177,6 @@ updateSystemPreference msg model =
             model |> setSystemValue value
 
 
-onKeyUp : (Int -> msg) -> Html.Attribute msg
-onKeyUp tagger =
-    Events.on "keyup" (Json.Decode.map tagger Events.keyCode)
-
-
 view : Preferences.Model.Model -> Html.Html Msg
 view model =
     let

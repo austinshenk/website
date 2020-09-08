@@ -1,4 +1,4 @@
-module Model exposing (..)
+module Model exposing (Model)
 
 import Browser.Navigation
 import Preferences.Model

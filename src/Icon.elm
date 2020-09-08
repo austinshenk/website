@@ -1,4 +1,4 @@
-module Icon exposing (..)
+module Icon exposing (accessibility, base)
 
 import Am
 import Svg

@@ -1,4 +1,4 @@
-module Msg exposing (..)
+module Msg exposing (Msg(..))
 
 import Browser
 import Port
