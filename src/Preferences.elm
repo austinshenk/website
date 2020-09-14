@@ -92,7 +92,7 @@ setOverride override systemPreference =
 
 storePreferences : Preferences.Model.Model -> Port.OutgoingModel
 storePreferences =
-    Port.outgoingMsg "StorePreferences" << encoder
+    Port.OutgoingModel "StorePreferences" << encoder
 
 
 init : Json.Decode.Value -> ( Preferences.Model.Model, Cmd Msg )

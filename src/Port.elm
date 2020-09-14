@@ -1,4 +1,4 @@
-port module Port exposing (IncomingMsg(..), outgoingMessage, subscriptions)
+port module Port exposing (IncomingMsg(..), OutgoingModel, outgoingMessage, subscriptions)
 
 import Json.Decode
 import Json.Encode
