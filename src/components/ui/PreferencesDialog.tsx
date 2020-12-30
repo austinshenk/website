@@ -9,12 +9,18 @@ import Window from "./Window";
 import {TooltipProvider} from "../Tooltip";
 
 export interface PreferencesDialogProps {
-    dialogRef: MutableRefObject<DialogRef>
+    dialogRef: MutableRefObject<DialogRef>;
+    onLoad?: () => void;
 }
 
-export default function PreferencesDialog({dialogRef}: PreferencesDialogProps) {
+export default function PreferencesDialog({dialogRef, onLoad}: PreferencesDialogProps) {
     const [preferences, preferenceSetters] = usePreferences();
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (onLoad)
+            onLoad();
+    }, []);
     useEffect(() => {
         dialogRef.current = {
             open: () => setDialogOpen(true),

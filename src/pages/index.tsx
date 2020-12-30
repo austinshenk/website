@@ -1,4 +1,4 @@
-import {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Body from "components/ui/Body";
@@ -19,9 +19,10 @@ const PreferencesDialog = dynamic(
 );
 
 function Home() {
+    const [_, setLoaded] = useState<boolean>(false);
     const dialog = useRef<DialogRef>();
 
-    return <Body>
+    return <Body loaded={dialog.current !== undefined}>
         <Head>
             <style>
                 {`body {
@@ -58,7 +59,7 @@ function Home() {
                 </div>
             </TooltipProvider>
         </Window>
-        <PreferencesDialog dialogRef={dialog}/>
+        <PreferencesDialog onLoad={() => setLoaded(true)} dialogRef={dialog}/>
     </Body>;
 }
 

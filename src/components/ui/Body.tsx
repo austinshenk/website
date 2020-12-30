@@ -1,13 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
-type Props = React.PropsWithChildren<{}>;
+type Props = React.PropsWithChildren<{
+    loaded: boolean;
+}>;
 
-function Body({...props}: Props) {
-    const [loaded, setLoaded] = useState<boolean>(false);
-    useEffect(() => {
-        setLoaded(true);
-    }, []);
-
+function Body({loaded, ...props}: Props) {
     return <section am-body={loaded.toString()} {...props} />;
 }
 
