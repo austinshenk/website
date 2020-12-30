@@ -1,0 +1,26 @@
+[am-tooltip] {
+  position: absolute;
+  margin: $pixel 0 0;
+  pointer-events: none;
+
+  background-color: var(--background-main);
+  opacity: 0;
+  transition: opacity .3s;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: -($pixel * 2);
+    left: 50%;
+    transform: translateX(-50%);
+
+    height: $pixel;
+    width: $pixel;
+
+    background-color: var(--pixel);
+  }
+
+  &[am-tooltip-open="true"] {
+    opacity: 1;
+  }
+}

@@ -21,7 +21,7 @@
       transition: none;
     }
 
-    &[open=true] {
+    &[am-dialog-open=true] {
       transform: translateX(0);
       visibility: visible;
     }
@@ -42,7 +42,7 @@
     transition: opacity .5s, pointer-events 1ms .5s;
     transition-timing-function: ease-in-out;
 
-    &[open=true] {
+    &[am-dialog-open=true] {
       opacity: 1;
       pointer-events: auto;
     }

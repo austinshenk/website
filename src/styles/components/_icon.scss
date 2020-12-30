@@ -5,9 +5,7 @@
   margin-bottom: $pixel;
 
   > path {
-    transition-property: d, stroke, fill;
-    transition-duration: .3s;
-    transition-timing-function: ease-in-out;
+    transition: d .3s ease-in-out, stroke .3s ease-in-out, fill .3s ease-in-out;
     stroke: none;
     stroke-width: $pixel;
     stroke-linecap: square;
