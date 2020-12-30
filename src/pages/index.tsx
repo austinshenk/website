@@ -1,5 +1,6 @@
 import {useRef} from "react";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import Body from "components/ui/Body";
 import Container from "components/ui/Container";
 import Link from "components/ui/Link";
@@ -21,6 +22,16 @@ function Home() {
     const dialog = useRef<DialogRef>();
 
     return <Body>
+        <Head>
+            <style>
+                {`body {
+                    background: #808080;
+                }
+                [am-body] {
+                    opacity: 0;
+                }`}
+            </style>
+        </Head>
         <Container floating id="skip-to-links">
             <Link href="#main">Skip to Content</Link>
         </Container>
