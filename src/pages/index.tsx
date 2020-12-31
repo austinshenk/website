@@ -30,6 +30,8 @@ function Home() {
 
     return <Body loaded={bodyLoaded}>
         <Head>
+            <title>Austin Bookhart</title>
+            <meta name="Description" content="A personal portfolio website." />
             <style>
                 {`body {
                     background: #808080;
