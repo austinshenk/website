@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import Body from "components/ui/Body";
+import Body, {BodyLoadedProp} from "components/ui/Body";
 import Container from "components/ui/Container";
 import Link from "components/ui/Link";
 import Window from "components/ui/Window";
@@ -19,10 +19,16 @@ const PreferencesDialog = dynamic(
 );
 
 function Home() {
-    const [_, setLoaded] = useState<boolean>(false);
+    const [bodyLoaded, setBodyLoaded] = useState<BodyLoadedProp>("unloaded");
     const dialog = useRef<DialogRef>();
 
-    return <Body loaded={dialog.current !== undefined}>
+    useEffect(() => {
+        if (bodyLoaded === "loading") {
+            setTimeout(() => setBodyLoaded("loaded"), 300);
+        }
+    }, [bodyLoaded]);
+
+    return <Body loaded={bodyLoaded}>
         <Head>
             <style>
                 {`body {
@@ -59,7 +65,7 @@ function Home() {
                 </div>
             </TooltipProvider>
         </Window>
-        <PreferencesDialog onLoad={() => setLoaded(true)} dialogRef={dialog}/>
+        <PreferencesDialog onLoad={() => setBodyLoaded("loading")} dialogRef={dialog}/>
     </Body>;
 }
 

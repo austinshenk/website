@@ -11,13 +11,17 @@ body {
   height: 100%;
   overflow: hidden;
   opacity: 0;
-  transition: opacity .3s ease-in-out .1s;
+  transition: opacity .3s ease-in-out;
 
   color: var(--text);
   background: var(--background-body);
 }
 
-[am-body="true"] {
+[am-body="unloaded"] *, [am-body="loading"] * {
+  transition: none !important;
+}
+
+[am-body="loading"], [am-body="loaded"] {
   opacity: 1;
 }
 
