@@ -20,7 +20,10 @@ const PreferencesDialog = dynamic(
 
 function Home() {
     const [bodyLoaded, setBodyLoaded] = useState<BodyLoadedProp>("unloaded");
-    const dialog = useRef<DialogRef>();
+    const [dialog, setDialog] = useState<DialogRef>({
+        open: () => {},
+        isOpen: false
+    });
 
     useEffect(() => {
         if (bodyLoaded === "loading") {
@@ -44,16 +47,16 @@ function Home() {
         <Container floating id="skip-to-links">
             <Link href="#main">Skip to Content</Link>
         </Container>
-        <Window active={!dialog.current?.isOpen}>
-            <TooltipProvider>
-                <div am-grid="" am-grid-align-content="start" style={{gap: "10px 0"}}>
+        <TooltipProvider>
+            {(windowRef, tooltip) => (
+                <Window ref={windowRef} active={!dialog.isOpen} am-grid="" am-grid-align-content="start" style={{gap: "10px 0"}}>
                     <Header>
                         <Nav>
                             <Link href="#">About</Link>
                             <Link href="#">Blog</Link>
                         </Nav>
                         <Tooltip content="Accessibility">
-                            <Button onClick={() => dialog.current?.open()} aria-label="Accessibility" id="btn-preferences">
+                            <Button onClick={() => dialog?.open()} aria-label="Accessibility" id="btn-preferences">
                                 <AccessibilityIcon />
                             </Button>
                         </Tooltip>
@@ -64,10 +67,11 @@ function Home() {
                             Hello, my name is Austin Bookhart. I'm a Software Engineer that has worked primarily as a Full-Stack Developer with an emphasis towards Frontend development. My goal is to create UIs that facilitate concise user experiences and are accessible to a wide variety of audiences.
                         </p>
                     </main>
-                </div>
-            </TooltipProvider>
-        </Window>
-        <PreferencesDialog onLoad={() => setBodyLoaded("loading")} dialogRef={dialog}/>
+                    {tooltip}
+                </Window>
+            )}
+        </TooltipProvider>
+        <PreferencesDialog onLoad={() => setBodyLoaded("loading")} dialogRef={setDialog}/>
     </Body>;
 }
 

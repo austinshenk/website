@@ -6,8 +6,10 @@ type Props = React.PropsWithChildren<{
     [key:string]: any
 }>
 
-function Window({active, fullscreen, ...props}: Props) {
-    return <section am-window={active ? "active" : "inactive"} am-window-fullscreen={fullscreen?.toString()} {...props} />;
+function Window({active, fullscreen, ...props}: Props, ref) {
+    return <section am-window={active ? "active" : "inactive"} am-window-fullscreen={fullscreen?.toString()} {...props} ref={ref} />;
 }
 
-export default Window;
+Window.displayName = "Window";
+
+export default React.forwardRef(Window);

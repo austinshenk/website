@@ -1,7 +1,7 @@
 import {
     cloneElement,
     createContext, MutableRefObject,
-    ReactElement,
+    ReactElement, RefObject,
     useContext, useEffect,
     useReducer,
     useRef,
@@ -47,13 +47,27 @@ type Opening = Event<"opening", {
 type Open = Event<"open", {
     target: Element;
     tooltip: Element;
+    container: Element;
 }>;
 type Close = Event<"close", {}>;
 type TooltipEvent = Opening | Open | Close;
 
-export function TooltipProvider({children}: {children: ReactElement}) {
+const position = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRect, tooltipBoundingBox: DOMRect) => {
+    let x = targetBoundingBox.x - tooltipBoundingBox.width/2 + targetBoundingBox.width/2;
+    let y = targetBoundingBox.y + targetBoundingBox.height + 8;
+
+    if (x + tooltipBoundingBox.width > containerBoundingBox.width)
+        x = containerBoundingBox.width - tooltipBoundingBox.width - 8;
+    else if (x < containerBoundingBox.x)
+        x = containerBoundingBox.x;
+
+    return { x, y };
+}
+
+export function TooltipProvider({children}: {children: (containerRef: RefObject<Element>, tooltip: ReactElement) => ReactElement}) {
     const tooltipElement = useRef<Element>();
     const targetElement: MutableRefObject<Element> = useRef<HTMLElement>();
+    const containerElement: RefObject<Element> = useRef<HTMLElement>();
     const openTimeout: MutableRefObject<number> = useRef<number>();
     const closedAt: MutableRefObject<number> = useRef<number>(Date.now());
     const [state, dispatch] = useReducer((state: TooltipState, event: TooltipEvent) => {
@@ -77,11 +91,12 @@ export function TooltipProvider({children}: {children: ReactElement}) {
             case "open":
                 const targetBB = event.target.getBoundingClientRect();
                 const tooltipBB = event.tooltip.getBoundingClientRect();
+                const containerBB = event.container.getBoundingClientRect();
 
                 return {
                     ...state,
                     flow: "opened",
-                    position: {x: targetBB.x - tooltipBB.width/2 + targetBB.width/2, y: targetBB.y + targetBB.height + 8}
+                    position: position(containerBB, targetBB, tooltipBB)
                 };
         }
     }, {
@@ -93,7 +108,7 @@ export function TooltipProvider({children}: {children: ReactElement}) {
     useEffect(() =>  {
         if (state.flow === "opening" && state.content !== "")  {
             const dispatchOpen = () => {
-                dispatch({action: "open", target: targetElement.current, tooltip: tooltipElement.current});
+                dispatch({action: "open", target: targetElement.current, tooltip: tooltipElement.current, container: containerElement.current});
             }
 
             if (Date.now() - closedAt.current > 300)
@@ -121,9 +136,8 @@ export function TooltipProvider({children}: {children: ReactElement}) {
         open,
         close
     }}>
-        {cloneElement(children, {})}
-        <Container ref={tooltipElement} am-tooltip="" am-tooltip-open={state.flow === "opened" ? "true": ""} style={{position: "absolute", left: state.position.x, top: state.position.y}}>
+        {children(containerElement, <Container ref={tooltipElement} am-tooltip="" am-tooltip-open={state.flow === "opened" ? "true": ""} style={{position: "absolute", left: state.position.x, top: state.position.y}}>
             {state.content}
-        </Container>
+        </Container>)}
     </TooltipContext.Provider>
 }
