@@ -1,19 +1,15 @@
 [am-tooltip] {
   position: absolute;
+  transform: translateX(-$pixel * 2);
   pointer-events: none;
 
   background-color: var(--background-main);
   opacity: 0;
   transition: opacity .3s;
 
-  &:before {
-    content: "";
+  [am-tooltip-arrow] {
     position: absolute;
-    top: -($pixel * 2);
-    left: 50%;
-    transform: translateX(-50%);
-
-    height: $pixel;
+    transform: translateX($pixel/2);
     width: $pixel;
 
     background-color: var(--pixel);

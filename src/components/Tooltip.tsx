@@ -1,11 +1,4 @@
-import {
-    cloneElement,
-    createContext, MutableRefObject,
-    ReactElement, RefObject,
-    useContext, useEffect,
-    useReducer,
-    useRef,
-} from "react";
+import {cloneElement, createContext, MutableRefObject, ReactElement, RefObject, useContext, useEffect, useReducer, useRef,} from "react";
 import Container from "./ui/Container";
 
 interface Context {
@@ -34,7 +27,7 @@ export default function Tooltip({content, children}: Props) {
 interface TooltipState {
     flow: "opening" | "opened" | "closed";
     content: string;
-    position: {x: number, y: number};
+    position: Position;
 }
 
 type Event<Action, Data> = {
@@ -52,17 +45,39 @@ type Open = Event<"open", {
 type Close = Event<"close", {}>;
 type TooltipEvent = Opening | Open | Close;
 
-const position = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRect, tooltipBoundingBox: DOMRect) => {
-    let x = targetBoundingBox.x - tooltipBoundingBox.width/2 + targetBoundingBox.width/2;
-    let y = targetBoundingBox.y + targetBoundingBox.height + 8;
+interface Position {
+    tooltip: {x: number, y: number},
+    arrow: {x: number, y: number, height: number}
+}
+
+const position = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRect, tooltipBoundingBox: DOMRect): Position => {
+    const tooltip = tooltipPosition(containerBoundingBox, targetBoundingBox, tooltipBoundingBox);
+
+    return {
+        tooltip,
+        arrow: arrowPosition(targetBoundingBox, tooltip)
+    };
+};
+
+const tooltipPosition = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRect, tooltipBoundingBox: DOMRect) => {
+    const pixel = 4;
+    let x = (targetBoundingBox.x + targetBoundingBox.width / 2) - tooltipBoundingBox.width / 2;
+    let y = targetBoundingBox.bottom + (2 * pixel);
 
     if (x + tooltipBoundingBox.width > containerBoundingBox.width)
-        x = containerBoundingBox.width - tooltipBoundingBox.width - 8;
+        x = containerBoundingBox.width - tooltipBoundingBox.width;
     else if (x < containerBoundingBox.x)
         x = containerBoundingBox.x;
 
     return { x, y };
-}
+};
+
+const arrowPosition = (targetBoundingBox: DOMRect, tooltip: {x: number, y: number}) => {
+    let x = (targetBoundingBox.x + targetBoundingBox.width / 2) - tooltip.x;
+    let height = tooltip.y - targetBoundingBox.bottom;
+
+    return { x, y: -height, height };
+};
 
 export function TooltipProvider({children}: {children: (containerRef: RefObject<Element>, tooltip: ReactElement) => ReactElement}) {
     const tooltipElement = useRef<Element>();
@@ -102,7 +117,7 @@ export function TooltipProvider({children}: {children: (containerRef: RefObject<
     }, {
         flow: "closed",
         content: "",
-        position: {x: 0, y: 0}
+        position: {tooltip: {x: 0, y: 0}, arrow: {x: 0, y: 0, height: 0}}
     });
 
     useEffect(() =>  {
@@ -136,7 +151,8 @@ export function TooltipProvider({children}: {children: (containerRef: RefObject<
         open,
         close
     }}>
-        {children(containerElement, <Container ref={tooltipElement} am-tooltip="" am-tooltip-open={state.flow === "opened" ? "true": ""} style={{position: "absolute", left: state.position.x, top: state.position.y}}>
+        {children(containerElement, <Container ref={tooltipElement} am-tooltip="" am-tooltip-open={state.flow === "opened" ? "true": ""} style={{left: state.position.tooltip.x, top: state.position.tooltip.y}}>
+            <div am-tooltip-arrow="" style={{left: state.position.arrow.x, top: state.position.arrow.y, height: state.position.arrow.height}}/>
             {state.content}
         </Container>)}
     </TooltipContext.Provider>
