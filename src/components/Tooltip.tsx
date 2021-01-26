@@ -107,6 +107,8 @@ export function TooltipProvider({children}: {children: (containerRef: RefObject<
                 const targetBB = event.target.getBoundingClientRect();
                 const tooltipBB = event.tooltip.getBoundingClientRect();
                 const containerBB = event.container.getBoundingClientRect();
+                containerBB.width = event.container.clientWidth;
+                containerBB.height = event.container.clientHeight;
 
                 return {
                     ...state,
