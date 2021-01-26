@@ -26,8 +26,11 @@ export function WindowController({children}: PropsWithChildren<{}>) {
 }
 
 type WindowProps = React.PropsWithChildren<{
-    fullscreen?: boolean
-}>
+    fullscreen?: boolean;
+
+    [x:string]: any;
+}>;
+
 function Window({fullscreen, ...props}: WindowProps, ref: RefObject<HTMLElement>) {
     const {isPopupActive} = useContext(WindowContext);
     useEffect(() => setFocusable(ref.current, !isPopupActive), [isPopupActive]);

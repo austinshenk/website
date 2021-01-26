@@ -79,10 +79,10 @@ const arrowPosition = (targetBoundingBox: DOMRect, tooltip: {x: number, y: numbe
     return { x, y: -height, height };
 };
 
-export function TooltipProvider({children}: {children: (containerRef: RefObject<Element>, tooltip: ReactElement) => ReactElement}) {
+export function TooltipProvider({children}: {children: (containerRef: RefObject<HTMLElement>, tooltip: ReactElement) => ReactElement}) {
     const tooltipElement = useRef<Element>();
     const targetElement: MutableRefObject<Element> = useRef<HTMLElement>();
-    const containerElement: RefObject<Element> = useRef<HTMLElement>();
+    const containerElement: RefObject<HTMLElement> = useRef<HTMLElement>();
     const openTimeout: MutableRefObject<number> = useRef<number>();
     const closedAt: MutableRefObject<number> = useRef<number>(Date.now());
     const [state, dispatch] = useReducer((state: TooltipState, event: TooltipEvent) => {
