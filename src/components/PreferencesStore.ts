@@ -1,4 +1,5 @@
 import {useEffect, useRef} from "react";
+import Transition from "./Transition";
 
 const KEY: string = "preferences";
 class Preferences {
@@ -64,11 +65,11 @@ const createMediaListeners = (preferences: Preferences) => {
         };
 
         //https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme
-        const prefersDarkColorScheme = mediaListener("(prefers-color-scheme: dark)", () => setColorSchemeSystemValue(preferences)("dark"));
+        const prefersDarkColorScheme = mediaListener("(prefers-color-scheme: dark)", () => setColorSchemeSystemValue(preferences, false)("dark"));
         if (prefersDarkColorScheme)
             preferences.colorScheme.systemValue = "dark";
 
-        const prefersLightColorScheme = mediaListener("(prefers-color-scheme: light)", () => setColorSchemeSystemValue(preferences)("light"));
+        const prefersLightColorScheme = mediaListener("(prefers-color-scheme: light)", () => setColorSchemeSystemValue(preferences, false)("light"));
         if (prefersLightColorScheme)
             preferences.colorScheme.systemValue = "light";
 
@@ -82,7 +83,7 @@ const createMediaListeners = (preferences: Preferences) => {
 
 const applyPreferences = ({textSize, colorScheme, reducedMotion}: Preferences) => {
     applyTextSize(textSize);
-    applyColorScheme(colorScheme);
+    applyColorScheme(true)(colorScheme);
     applyReducedMotion(reducedMotion);
 };
 
@@ -99,18 +100,25 @@ const applyTextSize = (textSize: number) => {
     document.firstElementChild["style"].fontSize = (textSize * .002) + "in";
 }
 
-const setColorSchemeSystemValue = (preferences: Preferences) => (systemValue: string) => {
-    setSystemPreferenceSystemValue(preferences.colorScheme, systemValue, applyColorScheme);
+const setColorSchemeSystemValue = (preferences: Preferences, instantly: boolean) => (systemValue: string) => {
+    setSystemPreferenceSystemValue(preferences.colorScheme, systemValue, applyColorScheme(instantly));
     setPreferences(preferences);
 };
 
-const setColorSchemeAppValue = (preferences: Preferences) => (appValue: string) => {
-    setSystemPreferenceAppValue(preferences.colorScheme, appValue, applyColorScheme);
+const setColorSchemeAppValue = (preferences: Preferences, instantly: boolean) => (appValue: string) => {
+    setSystemPreferenceAppValue(preferences.colorScheme, appValue, applyColorScheme(instantly));
     setPreferences(preferences);
 };
 
-const applyColorScheme = (colorScheme: SystemPreference) => {
-    applySystemPreference(colorScheme, "prefers-color-scheme");
+const applyColorScheme = (instantly: boolean) => (colorScheme: SystemPreference) => {
+    const block = () => {
+        applySystemPreference(colorScheme, "prefers-color-scheme");
+    };
+
+    if (instantly)
+        block();
+    else
+        Transition.preference(block, 200);
 };
 
 const setReducedMotionSystemValue = (preferences: Preferences) => (systemValue: string) => {
@@ -161,7 +169,7 @@ export default function usePreferences(): UsePreferences {
 
     return [preferences, {
         setTextSize: setTextSize(preferences),
-        setColorScheme: setColorSchemeAppValue(preferences),
+        setColorScheme: setColorSchemeAppValue(preferences, false),
         setReducedMotion: setReducedMotionAppValue(preferences)
     }];
 }
