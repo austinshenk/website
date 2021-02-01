@@ -14,7 +14,7 @@ import {DialogRef} from "components/ui/Dialog";
 import Tooltip, {Tooltips} from "../components/Tooltip";
 
 const Preferences = dynamic(
-    () => import("components/ui/PreferencesDialog"),
+    () => import("components/ui/Preferences"),
     { ssr: false }
 );
 
