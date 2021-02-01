@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, RefObject} from "react";
 import Container from "./Container";
 import Radios from "./Radios";
 import Select from "./Select";
@@ -8,30 +8,22 @@ import {PopupWindow} from "./Window";
 import {TooltipProvider} from "../Tooltip";
 
 export interface PreferencesDialogProps {
-    dialogRef: (dialog: DialogRef) => void;
+    dialogRef?: RefObject<DialogRef>;
     onLoad?: () => void;
 }
 
 export default function PreferencesDialog({dialogRef, onLoad}: PreferencesDialogProps) {
     const [preferences, preferenceSetters] = usePreferences();
-    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        if (onLoad)
-            onLoad();
+        onLoad();
     }, []);
-    useEffect(() => {
-        dialogRef({
-            open: () => setDialogOpen(true)
-        });
-    }, [dialogOpen]);
 
     return <TooltipProvider>
         {(windowRef, tooltip) => (
             <PopupWindow ref={windowRef} fullscreen am-dialog="">
                 {(window) => (<>
-                    <Dialog title={"Accessibility"} open={dialogOpen} onOpen={window.activate} onClose={() => {
-                        setDialogOpen(false);
+                    <Dialog ref={dialogRef} title={"Accessibility"} onOpen={window.activate} onClose={() => {
                         window.deactivate();
                     }}>
                         <form am-group-item="" am-group="vertical">

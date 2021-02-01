@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Body from "components/ui/Body";
@@ -19,9 +19,7 @@ const PreferencesDialog = dynamic(
 );
 
 function Home() {
-    const [dialog, setDialog] = useState<DialogRef>({
-        open: () => {}
-    });
+    const dialog = useRef<DialogRef>();
 
     return <Body>
         {(finishLoading) => (<>
@@ -42,7 +40,7 @@ function Home() {
                                     <Link href="#">Blog</Link>
                                 </Nav>
                                 <Tooltip content="Accessibility">
-                                    <Button onClick={() => dialog.open()} aria-label="Accessibility" id="btn-preferences">
+                                    <Button onClick={dialog.current?.open} aria-label="Accessibility" id="btn-preferences">
                                         <AccessibilityIcon />
                                     </Button>
                                 </Tooltip>
@@ -57,7 +55,7 @@ function Home() {
                         </Window>
                     )}
                 </TooltipProvider>
-                <PreferencesDialog onLoad={() => finishLoading()} dialogRef={setDialog}/>
+                <PreferencesDialog onLoad={finishLoading} dialogRef={dialog}/>
             </WindowController>
         </>)}
     </Body>;
