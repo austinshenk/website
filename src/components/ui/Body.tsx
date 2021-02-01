@@ -11,14 +11,19 @@ enum LoadState {
     LOADED = "loaded"
 }
 
-function Body({children}: Props) {
+function Body({children, loaded}: React.PropsWithChildren<{loaded: string}>)  {
+    return <section am-body={loaded}>
+        {children}
+    </section>;
+}
+
+function AsyncBody({children}: Props) {
     const [loaded, setLoaded] = useState<LoadState>(LoadState.UNLOADED);
     const finishLoading = () => setLoaded(LoadState.LOADING);
 
     useEffect(() => {
-        if (loaded === LoadState.LOADING) {
+        if (loaded === LoadState.LOADING)
             setTimeout(() => setLoaded(LoadState.LOADED), 300);
-        }
     }, [loaded]);
 
     return <>
@@ -32,10 +37,11 @@ function Body({children}: Props) {
                 }`
             }</style>
         </Head>
-        <section am-body={loaded.toString()}>
+        <Body loaded={loaded.toString()}>
             {children(finishLoading)}
-        </section>
+        </Body>
     </>;
 }
+AsyncBody.displayName = "Body";
 
-export default Body;
+export default AsyncBody;

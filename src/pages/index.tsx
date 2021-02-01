@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import Body from "components/ui/Body";
+import AsyncBody from "components/ui/Body";
 import Container from "components/ui/Container";
 import Link from "components/ui/Link";
 import Window, {Windows} from "components/ui/Window";
@@ -21,7 +21,7 @@ const Preferences = dynamic(
 function Home() {
     const dialog = useRef<DialogRef>();
 
-    return <Body>
+    return <AsyncBody>
         {(finishLoading) => (<>
             <Head>
                 <title>Austin Bookhart</title>
@@ -58,7 +58,7 @@ function Home() {
                 <Preferences onLoad={finishLoading} dialogRef={dialog}/>
             </Windows>
         </>)}
-    </Body>;
+    </AsyncBody>;
 }
 
 export default Home;
