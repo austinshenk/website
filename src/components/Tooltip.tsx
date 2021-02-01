@@ -79,7 +79,7 @@ const arrowPosition = (targetBoundingBox: DOMRect, tooltip: {x: number, y: numbe
     return { x, y: -height, height };
 };
 
-export function TooltipProvider({children}: {children: (containerRef: RefObject<HTMLElement>, tooltip: ReactElement) => ReactElement}) {
+export function Tooltips({children}: {children: (containerRef: RefObject<HTMLElement>, tooltip: ReactElement) => ReactElement}) {
     const tooltipElement = useRef<Element>();
     const targetElement: MutableRefObject<Element> = useRef<HTMLElement>();
     const containerElement: RefObject<HTMLElement> = useRef<HTMLElement>();

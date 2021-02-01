@@ -3,23 +3,23 @@ import Container from "./Container";
 import Radios from "./Radios";
 import Select from "./Select";
 import Dialog, {DialogRef} from "./Dialog";
-import usePreferences from "../PreferencesStore";
+import usePreferences from "../Preferences";
 import {PopupWindow} from "./Window";
-import {TooltipProvider} from "../Tooltip";
+import {Tooltips} from "../Tooltip";
 
-export interface PreferencesDialogProps {
+interface Props {
     dialogRef?: RefObject<DialogRef>;
     onLoad?: () => void;
 }
 
-export default function PreferencesDialog({dialogRef, onLoad}: PreferencesDialogProps) {
+export default function Preferences({dialogRef, onLoad}: Props) {
     const [preferences, preferenceSetters] = usePreferences();
 
     useEffect(() => {
         onLoad();
     }, []);
 
-    return <TooltipProvider>
+    return <Tooltips>
         {(windowRef, tooltip) => (
             <PopupWindow ref={windowRef} fullscreen am-dialog="">
                 {(window) => (<>
@@ -58,5 +58,5 @@ export default function PreferencesDialog({dialogRef, onLoad}: PreferencesDialog
                 </>)}
             </PopupWindow>
         )}
-    </TooltipProvider>
+    </Tooltips>
 }

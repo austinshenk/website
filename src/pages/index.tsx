@@ -4,16 +4,16 @@ import Head from "next/head";
 import Body from "components/ui/Body";
 import Container from "components/ui/Container";
 import Link from "components/ui/Link";
-import Window, {WindowController} from "components/ui/Window";
+import Window, {Windows} from "components/ui/Window";
 import Header from "components/ui/Header";
 import Nav from "components/ui/Nav";
 import Button from "components/ui/Button";
 import AccessibilityIcon from "components/ui/icon/Accessibility";
 import H1 from "components/ui/H1";
 import {DialogRef} from "components/ui/Dialog";
-import Tooltip, {TooltipProvider} from "../components/Tooltip";
+import Tooltip, {Tooltips} from "../components/Tooltip";
 
-const PreferencesDialog = dynamic(
+const Preferences = dynamic(
     () => import("components/ui/PreferencesDialog"),
     { ssr: false }
 );
@@ -30,8 +30,8 @@ function Home() {
             <Container floating id="skip-to-links">
                 <Link href="#main">Skip to Content</Link>
             </Container>
-            <WindowController>
-                <TooltipProvider>
+            <Windows>
+                <Tooltips>
                     {(windowRef, tooltip) => (
                         <Window ref={windowRef} am-grid="" am-grid-align-content="start" style={{gap: "10px 0"}}>
                             <Header>
@@ -54,9 +54,9 @@ function Home() {
                             {tooltip}
                         </Window>
                     )}
-                </TooltipProvider>
-                <PreferencesDialog onLoad={finishLoading} dialogRef={dialog}/>
-            </WindowController>
+                </Tooltips>
+                <Preferences onLoad={finishLoading} dialogRef={dialog}/>
+            </Windows>
         </>)}
     </Body>;
 }

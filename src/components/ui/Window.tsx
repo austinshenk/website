@@ -13,7 +13,7 @@ const WindowContext = createContext<WindowContext>({
     deactivatePopup: () => {}
 });
 
-export function WindowController({children}: PropsWithChildren<{}>) {
+export function Windows({children}: PropsWithChildren<{}>) {
     const [isPopupActive, setIsPopupActive] = useState<boolean>(false);
 
     return <WindowContext.Provider value={{
