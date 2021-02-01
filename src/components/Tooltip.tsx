@@ -1,4 +1,4 @@
-import {cloneElement, createContext, MutableRefObject, ReactElement, RefObject, useContext, useEffect, useReducer, useRef,} from "react";
+import {cloneElement, createContext, MutableRefObject, ReactElement, RefObject, useContext, useEffect, useReducer, useRef} from "react";
 import Container from "./ui/Container";
 
 interface Context {
@@ -149,13 +149,27 @@ export function TooltipProvider({children}: {children: (containerRef: RefObject<
         dispatch({action: "close"});
     }
 
-    return <TooltipContext.Provider value={{
-        open,
-        close
-    }}>
-        {children(containerElement, <Container ref={tooltipElement} am-tooltip="" am-tooltip-open={state.flow === "opened" ? "true": ""} style={{left: state.position.tooltip.x, top: state.position.tooltip.y}}>
-            <div am-tooltip-arrow="" style={{left: state.position.arrow.x, top: state.position.arrow.y, height: state.position.arrow.height}}/>
-            {state.content}
-        </Container>)}
+    const arrow = <div
+        am-tooltip-arrow=""
+        style={{
+            left: state.position.arrow.x,
+            top: state.position.arrow.y,
+            height: state.position.arrow.height
+        }}/>;
+
+    const tooltip = <Container
+        ref={tooltipElement}
+        am-tooltip=""
+        am-tooltip-open={state.flow === "opened" ? "true": ""}
+        style={{
+            left: state.position.tooltip.x,
+            top: state.position.tooltip.y
+        }}>
+        {arrow}
+        {state.content}
+    </Container>;
+
+    return <TooltipContext.Provider value={{ open, close }}>
+        {children(containerElement, tooltip)}
     </TooltipContext.Provider>
 }
