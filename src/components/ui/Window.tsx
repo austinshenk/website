@@ -41,8 +41,10 @@ Window.displayName = "Window";
 
 
 type PopupWindowProps = {
-    children: (popup: {activate: () => void, deactivate: () => void}) => ReactNode,
-    fullscreen?: boolean
+    children: (popup: {activate: () => void, deactivate: () => void}) => ReactNode;
+    fullscreen?: boolean;
+
+    [x:string]: any;
 }
 function PopupWindowComponent({fullscreen, children, ...props}: PopupWindowProps, ref: RefObject<HTMLElement>) {
     const {isPopupActive, activatePopup, deactivatePopup} = useContext(WindowContext);
