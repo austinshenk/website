@@ -16,6 +16,7 @@ function RadioComponent({name, label, value, checked, onChange}: RadioProps) {
         <span>{label}</span>
     </label>;
 }
+RadioComponent.displayName = "Radio";
 
 interface Radio {
     label: string,
