@@ -1,6 +1,7 @@
-import {useRef, useState} from "react";
+import {useRef} from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Am from "am";
 import AsyncBody from "components/ui/Body";
 import Container from "components/ui/Container";
 import Link from "components/ui/Link";
@@ -19,7 +20,9 @@ const Preferences = dynamic(
 );
 
 function Home() {
-    const dialog = useRef<DialogRef>();
+    const dialog = useRef<DialogRef>({
+        open: () => {}
+    });
 
     return <AsyncBody>
         {(finishLoading) => (<>
@@ -33,26 +36,28 @@ function Home() {
             <Windows>
                 <Tooltips>
                     {(windowRef, tooltip) => (
-                        <Window ref={windowRef} am-grid="" am-grid-align-content="start" style={{gap: "10px 0"}}>
-                            <Header>
-                                <Nav>
-                                    <Link href="#">About</Link>
-                                    <Link href="#">Blog</Link>
-                                </Nav>
-                                <Tooltip content="Accessibility">
-                                    <Button onClick={dialog.current?.open} aria-label="Accessibility" id="btn-preferences">
-                                        <AccessibilityIcon />
-                                    </Button>
-                                </Tooltip>
-                            </Header>
-                            <main id="main" tabIndex={0}>
-                                <H1 id="about" text="About" />
-                                <p>
-                                Hello, my name is Austin Bookhart. I'm a Software Engineer that has worked primarily as a Full-Stack Developer with an emphasis towards Frontend development. My goal is to create UIs that facilitate concise user experiences and are accessible to a wide variety of audiences.
-                                </p>
-                            </main>
-                            {tooltip}
-                        </Window>
+                        <Am grid={{alignContent: "start", gap: "10px 0"}}>
+                            <Window ref={windowRef}>
+                                <Header>
+                                    <Nav>
+                                        <Link href="#">About</Link>
+                                        <Link href="#">Blog</Link>
+                                    </Nav>
+                                    <Tooltip content="Accessibility">
+                                        <Button onClick={dialog.current?.open} aria-label="Accessibility" id="btn-preferences">
+                                            <AccessibilityIcon />
+                                        </Button>
+                                    </Tooltip>
+                                </Header>
+                                <main id="main" tabIndex={0}>
+                                    <H1 id="about" text="About" />
+                                    <p>
+                                    Hello, my name is Austin Bookhart. I'm a Software Engineer that has worked primarily as a Full-Stack Developer with an emphasis towards Frontend development. My goal is to create UIs that facilitate concise user experiences and are accessible to a wide variety of audiences.
+                                    </p>
+                                </main>
+                                {tooltip}
+                            </Window>
+                        </Am>
                     )}
                 </Tooltips>
                 <Preferences onLoad={finishLoading} dialogRef={dialog}/>

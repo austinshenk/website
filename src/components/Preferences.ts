@@ -36,10 +36,11 @@ const preferencsToString = (preferences: Preferences): string => {
         return JSON.stringify(preferences);
     } catch (e) {
         console.warn("Failed to store preferences to local storage. Falling back to defaults");
+        return JSON.stringify(new Preferences());
     }
 }
 
-const stringToPreferences = (preferencesString: string): Preferences => {
+const stringToPreferences = (preferencesString: string | null): Preferences => {
     if (!preferencesString)
         return new Preferences();
 
@@ -47,6 +48,7 @@ const stringToPreferences = (preferencesString: string): Preferences => {
         return JSON.parse(preferencesString);
     } catch (e) {
         console.warn("Failed to load preferences from local storage. Falling back to defaults");
+        return new Preferences();
     }
 }
 
@@ -97,7 +99,7 @@ const setTextSize = (preferences: Preferences) => (textSize: number) => {
 }
 
 const applyTextSize = (textSize: number) => {
-    document.firstElementChild["style"].fontSize = (textSize * .002) + "in";
+    document.documentElement["style"].fontSize = (textSize * .002) + "in";
 }
 
 const setColorSchemeSystemValue = (preferences: Preferences, instantly: boolean) => (systemValue: string) => {
@@ -147,7 +149,7 @@ const setSystemPreferenceAppValue = (systemPreference: SystemPreference, appValu
 
 const applySystemPreference = (systemPreference: SystemPreference, attribute: string) => {
     const {appValue, systemValue} = systemPreference;
-    document.firstElementChild.setAttribute(attribute, appValue !== "" ? appValue : systemValue);
+    document.documentElement.setAttribute(attribute, appValue !== "" ? appValue : systemValue);
 };
 
 type UsePreferences = [

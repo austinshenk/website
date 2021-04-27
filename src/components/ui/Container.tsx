@@ -1,4 +1,6 @@
-import React from "react";
+import React, {ForwardedRef} from "react";
+import Am from "am";
+import ContainerProps from "am/container";
 
 type Props = React.PropsWithChildren<{
     floating?: boolean,
@@ -8,7 +10,7 @@ type Props = React.PropsWithChildren<{
     [key:string]: any
 }>
 
-const containerTypeToString = (floating?: boolean, invisible?: boolean): String => {
+const toAttribute = (floating?: boolean, invisible?: boolean): ContainerProps => {
     if (floating)
         return "floating";
 
@@ -18,8 +20,8 @@ const containerTypeToString = (floating?: boolean, invisible?: boolean): String 
     return "";
 };
 
-function Container({floating, invisible, ...rest}: Props, ref) {
-    return <section am-container={containerTypeToString(floating, invisible)} {...rest} ref={ref}/>;
+function Container({floating, invisible, am, ...props}: Props, ref: ForwardedRef<Element>) {
+    return <Am as="section" container={toAttribute(floating, invisible)} {...props} ref={ref} />;
 }
 
 Container.displayName = "Container";

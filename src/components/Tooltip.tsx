@@ -38,9 +38,9 @@ type Opening = Event<"opening", {
     content: string;
 }>;
 type Open = Event<"open", {
-    target: Element;
-    tooltip: Element;
-    container: Element;
+    target?: Element;
+    tooltip: Element | null;
+    container: Element | null;
 }>;
 type Close = Event<"close", {}>;
 type TooltipEvent = Opening | Open | Close;
@@ -80,12 +80,16 @@ const arrowPosition = (targetBoundingBox: DOMRect, tooltip: {x: number, y: numbe
 };
 
 export function Tooltips({children}: {children: (containerRef: RefObject<HTMLElement>, tooltip: ReactElement) => ReactElement}) {
-    const tooltipElement = useRef<Element>();
-    const targetElement: MutableRefObject<Element> = useRef<HTMLElement>();
-    const containerElement: RefObject<HTMLElement> = useRef<HTMLElement>();
-    const openTimeout: MutableRefObject<number> = useRef<number>();
-    const closedAt: MutableRefObject<number> = useRef<number>(Date.now());
-    const [state, dispatch] = useReducer((state: TooltipState, event: TooltipEvent) => {
+    const tooltipElement = useRef<Element>(null);
+    const targetElement = useRef<Element>();
+    const containerElement: MutableRefObject<HTMLElement | null> = useRef<HTMLElement>(null);
+    const openTimeout = useRef<number>();
+    const closedAt = useRef<number>(Date.now());
+
+    useEffect(() => {
+        containerElement.current = document.body;
+    }, []);
+    const [state, dispatch] = useReducer((state: TooltipState, event: TooltipEvent): TooltipState => {
         switch (event.action) {
             case "close":
                 window.clearTimeout(openTimeout.current);
@@ -104,6 +108,9 @@ export function Tooltips({children}: {children: (containerRef: RefObject<HTMLEle
                 };
 
             case "open":
+                if (!event.target || !event.tooltip || !event.container)
+                    return state;
+
                 const targetBB = event.target.getBoundingClientRect();
                 const tooltipBB = event.tooltip.getBoundingClientRect();
                 const containerBB = event.container.getBoundingClientRect();

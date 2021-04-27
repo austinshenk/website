@@ -1,16 +1,16 @@
-let preferenceTransitionTimeout;
-let transitionTimeout;
+let preferenceTransitionTimeout: number;
+let transitionTimeout: number;
 export default {
     preference: (transition: () => void, duration: number) => {
-        const root = document.firstElementChild;
+        const root = document.documentElement;
 
-        clearTimeout(preferenceTransitionTimeout);
-        clearTimeout(transitionTimeout);
+        window.clearTimeout(preferenceTransitionTimeout);
+        window.clearTimeout(transitionTimeout);
         root.setAttribute("am-preference-transition", "running");
 
-        transitionTimeout = setTimeout(() => {
+        transitionTimeout = window.setTimeout(() => {
             transition();
-            preferenceTransitionTimeout = setTimeout(() => {
+            preferenceTransitionTimeout = window.setTimeout(() => {
                 root.setAttribute("am-preference-transition", "stopped");
             }, duration);
         }, 0);

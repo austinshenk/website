@@ -16,13 +16,13 @@ export default function Preferences({dialogRef, onLoad}: Props) {
     const [preferences, preferenceSetters] = usePreferences();
 
     useEffect(() => {
-        onLoad();
+        onLoad?.();
     }, []);
 
     return <Tooltips>
         {(windowRef, tooltip) => (
             <PopupWindow ref={windowRef} fullscreen am-dialog="">
-                {(window) => (<>
+                {(window) => <>
                     <Dialog ref={dialogRef} title={"Accessibility"} onOpen={window.activate} onClose={() => {
                         window.deactivate();
                     }}>
@@ -55,7 +55,7 @@ export default function Preferences({dialogRef, onLoad}: Props) {
                         </form>
                     </Dialog>
                     {tooltip}
-                </>)}
+                </>}
             </PopupWindow>
         )}
     </Tooltips>

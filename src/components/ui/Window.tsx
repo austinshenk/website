@@ -1,5 +1,7 @@
-import React, {createContext, PropsWithChildren, ReactNode, RefObject, useContext, useEffect, useState} from "react";
-import Element from "../Element";
+import React, {createContext, ForwardedRef, PropsWithChildren, ReactNode, RefObject, useContext, useEffect, useState} from "react";
+import Element from "components/Element";
+import Am from "am";
+import forwardedRef from "../ForwardedRefWrapper";
 
 interface WindowContext {
     isPopupActive: boolean;
@@ -27,36 +29,33 @@ export function Windows({children}: PropsWithChildren<{}>) {
 
 type WindowProps = React.PropsWithChildren<{
     fullscreen?: boolean;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>>;
 
-    [x:string]: any;
-}>;
-
-function Window({fullscreen, ...props}: WindowProps, ref: RefObject<HTMLElement>) {
+function Window({fullscreen, ...props}: WindowProps, ref: ForwardedRef<HTMLElement>) {
     const {isPopupActive} = useContext(WindowContext);
-    useEffect(() => setFocusable(ref.current, !isPopupActive), [isPopupActive]);
+    useEffect(() => setFocusable(forwardedRef(ref).current(), !isPopupActive), [isPopupActive]);
 
-    return <section am-window={!isPopupActive ? "active" : "inactive"} am-window-fullscreen={fullscreen?.toString()} {...props} ref={ref} />;
+    return <Am as="section" window={{active: !isPopupActive, fullscreen}} {...props} ref={ref} />;
 }
 Window.displayName = "Window";
 
 
 type PopupWindowProps = {
-    children: (popup: {activate: () => void, deactivate: () => void}) => ReactNode;
+    children: (popup: {activate: () => void, deactivate: () => void}) => React.ReactElement;
     fullscreen?: boolean;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 
-    [x:string]: any;
-}
-function PopupWindowComponent({fullscreen, children, ...props}: PopupWindowProps, ref: RefObject<HTMLElement>) {
+function PopupWindowComponent({fullscreen, children, ...props}: PopupWindowProps, ref: ForwardedRef<HTMLElement>) {
     const {isPopupActive, activatePopup, deactivatePopup} = useContext(WindowContext);
-    useEffect(() => setFocusable(ref.current, isPopupActive), [isPopupActive]);
+    useEffect(() => setFocusable(forwardedRef(ref).current(), isPopupActive), [isPopupActive]);
 
-    return <section am-window={isPopupActive ? "active" : "inactive"} am-window-fullscreen={fullscreen?.toString()} {...props} ref={ref}>
+    return <Am as="section" window={{active: isPopupActive, fullscreen}} {...props} ref={ref}>
         {children({activate: activatePopup, deactivate: deactivatePopup})}
-    </section>;
+    </Am>;
 }
 PopupWindowComponent.displayName = "PopupWindow";
 
-const setFocusable = (container: HTMLElement, focusable: boolean) => {
+const setFocusable = (container: HTMLElement | null, focusable: boolean) => {
     const tabIndexAttribute = "tabindex";
     const tabIndexPlaceholderAttribute = "data-tabindex";
     const toggleableDisabledValue = "-99";
@@ -64,7 +63,10 @@ const setFocusable = (container: HTMLElement, focusable: boolean) => {
     const focusableSelector = `[${tabIndexAttribute}], [${tabIndexPlaceholderAttribute}], a, input, button, select, textarea`;
 
     if (focusable) {
-        container.querySelectorAll(focusableSelector).forEach((element: HTMLElement) => {
+        container?.querySelectorAll(focusableSelector).forEach((element: Element) => {
+            if (!element)
+                return;
+
             const tabindex = Element.attribute(element, tabIndexAttribute);
             const dataTabindex = Element.attribute(element, tabIndexPlaceholderAttribute);
 
@@ -76,7 +78,7 @@ const setFocusable = (container: HTMLElement, focusable: boolean) => {
             }
         });
     } else {
-        container.querySelectorAll(focusableSelector).forEach((element: HTMLElement) => {
+        container?.querySelectorAll(focusableSelector).forEach((element: Element) => {
             const tabindex = Element.attribute(element, tabIndexAttribute);
             const dataTabindex = Element.attribute(element, tabIndexPlaceholderAttribute);
 

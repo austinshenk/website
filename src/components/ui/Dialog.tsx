@@ -1,8 +1,9 @@
-import React, {MutableRefObject, useEffect, useState} from "react";
+import React, {ForwardedRef, useEffect, useState} from "react";
 import Container from "./Container";
 import Button from "./Button";
 import Base from "./icon/Base";
 import Tooltip from "../Tooltip";
+import forwardedRef from "../ForwardedRefWrapper";
 
 type Props = React.PropsWithChildren<{
     title: string;
@@ -14,22 +15,22 @@ export interface DialogRef {
     open: () => void;
 }
 
-function Dialog(props: Props, ref: MutableRefObject<DialogRef>) {
+function Dialog(props: Props, ref: ForwardedRef<DialogRef>) {
     const {title, onOpen, onClose, children} = props;
     const [open, setOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (ref)
-            ref.current = {
+            forwardedRef(ref).current({
                 open: () => setOpen(true)
-            }
+            })
     }, []);
 
     useEffect(() => {
         if (open)
-            onOpen();
+            onOpen?.();
         else
-            onClose();
+            onClose?.();
     }, [open]);
 
     return <>
