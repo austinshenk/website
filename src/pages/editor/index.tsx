@@ -1,18 +1,8 @@
 import React from "react";
-import LazyBody from "components/ui/Body";
-
-function Body(props: {finishLoading: () => void}) {
-    React.useEffect(() => {
-        props.finishLoading();
-    }, []);
-
-    return <div>Hello</div>;
-}
+import Body from "components/ui/molecule/Body";
 
 export default function Editor() {
-    return <LazyBody>
-        {(finishLoading) => (<>
-            <Body finishLoading={finishLoading}/>
-        </>)}
-    </LazyBody>
+    return <Body.Eager>
+        Hello
+    </Body.Eager>
 }
