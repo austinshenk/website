@@ -1,5 +1,5 @@
 import React, {ForwardedRef, useEffect, useState} from "react";
-import Container from "./Container";
+import Container from "./atom/Container";
 import Button from "./Button";
 import Base from "./icon/Base";
 import Tooltip from "../Tooltip";

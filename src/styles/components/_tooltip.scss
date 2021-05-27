@@ -3,7 +3,6 @@
   transform: translateX(-$pixel * 2);
   pointer-events: none;
 
-  background-color: var(--background-main);
   opacity: 0;
   transition: opacity .3s;
 

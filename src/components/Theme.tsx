@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface Theme {
-    spacing: (amount: number) => String
+    spacing: (amount?: number) => string
 }
 
 const ThemeContext = React.createContext<Theme>({

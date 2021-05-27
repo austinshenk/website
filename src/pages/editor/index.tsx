@@ -1,5 +1,5 @@
 import React from "react";
-import AsyncBody from "components/ui/Body";
+import LazyBody from "components/ui/Body";
 
 function Body(props: {finishLoading: () => void}) {
     React.useEffect(() => {
@@ -10,9 +10,9 @@ function Body(props: {finishLoading: () => void}) {
 }
 
 export default function Editor() {
-    return <AsyncBody>
+    return <LazyBody>
         {(finishLoading) => (<>
             <Body finishLoading={finishLoading}/>
         </>)}
-    </AsyncBody>
+    </LazyBody>
 }

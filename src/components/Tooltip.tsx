@@ -1,5 +1,5 @@
 import {cloneElement, createContext, MutableRefObject, ReactElement, RefObject, useContext, useEffect, useReducer, useRef} from "react";
-import Container from "./ui/Container";
+import Container from "./ui/atom/Container";
 
 interface Context {
     open: (content: string) => (event: React.FocusEvent | React.MouseEvent) => void;
@@ -80,7 +80,7 @@ const arrowPosition = (targetBoundingBox: DOMRect, tooltip: {x: number, y: numbe
 };
 
 export function Tooltips({children}: {children: (containerRef: RefObject<HTMLElement>, tooltip: ReactElement) => ReactElement}) {
-    const tooltipElement = useRef<Element>(null);
+    const tooltipElement = useRef<HTMLElement>(null);
     const targetElement = useRef<Element>();
     const containerElement: MutableRefObject<HTMLElement | null> = useRef<HTMLElement>(null);
     const openTimeout = useRef<number>();
@@ -165,6 +165,7 @@ export function Tooltips({children}: {children: (containerRef: RefObject<HTMLEle
         }}/>;
 
     const tooltip = <Container
+        background="alternative"
         ref={tooltipElement}
         am-tooltip=""
         am-tooltip-open={state.flow === "opened" ? "true": ""}
