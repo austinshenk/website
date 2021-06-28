@@ -1,11 +1,9 @@
 import React, {useEffect, RefObject} from "react";
-import Atom from "./atom";
-import Window from "./molecule/Window";
-import Radios from "./Radios";
-import Select from "./Select";
-import Dialog, {DialogRef} from "./Dialog";
+import Am from "am";
+import Window from "atom/Window";
+import Dialog, {DialogRef} from "atom/Dialog";
 import usePreferences from "../Preferences";
-import {Tooltips} from "../Tooltip";
+import Tooltip, {Tooltips} from "../Tooltip";
 
 interface Props {
     dialogRef?: RefObject<DialogRef>;
@@ -23,35 +21,43 @@ export default function Preferences({dialogRef, onLoad}: Props) {
         {(windowRef, tooltip) => (
             <Window.Popup ref={windowRef} fullscreen am-dialog="">
                 {(window) => <>
-                    <Dialog ref={dialogRef} title={"Accessibility"} onOpen={window.activate} onClose={() => {
-                        window.deactivate();
-                    }}>
-                        <form am-group-item="" am-group="vertical">
-                            <Atom.Container variation="invisible" am-group-item="" am-group="" am-flexbox="" am-flexbox-justify-content="start">
-                                <span am-group-header="">Text Size</span>
-                                <Radios name="textSize" onChange={(value) => preferenceSetters.setTextSize(Number(value))} initialValue={preferences.textSize.toString()}>
-                                    {{label: "smaller", value: "80"}}
-                                    {{label: "default", value: "100"}}
-                                    {{label: "larger", value: "120"}}
-                                    {{label: "largest", value: "150"}}
-                                </Radios>
-                            </Atom.Container>
-                            <Atom.Container variation="invisible" am-group-item="" am-group="" am-flexbox="" am-flexbox-justify-content="start">
-                                <label am-group-header="" htmlFor="preferences-colorscheme">Color Scheme</label>
-                                <Select id="preferences-colorscheme" am-group-item="" onChange={preferenceSetters.setColorScheme} initialValue={preferences.colorScheme.appValue}>
+                    <Dialog dialogRef={dialogRef} onOpen={window.activate} onClose={window.deactivate} containerProps={{...Am.flex({direction: "column"})}}>
+                        <section {...Am.flex({direction: "row", wrap: "no"})} style={{width: "100%"}}>
+                            <span role="heading" aria-level={2} {...Am.flexItem({grow: 2})}>Accessibility</span>
+                            <Tooltip content="Close">
+                                <Am.Button.Component onClick={dialogRef?.current?.close} {...Am.flexItem({alignSelf: "center"})}>
+                                    <Am.Icon.Cross variation="outline"/>
+                                </Am.Button.Component>
+                            </Tooltip>
+                        </section>
+                        <form {...Am.flex({direction: "column", gap: "24px"})}>
+                            <section {...Am.flex({direction: "column", gap: "8px"})}>
+                                <span>Text Size</span>
+                                <section {...Am.flex({direction: "row", gap: "4px"})}>
+                                    <Am.Radio.Component name="textSize" onChange={(value) => preferenceSetters.setTextSize(Number(value))} initialValue={preferences.textSize.toString()}>
+                                        {{label: "smaller", value: "80"}}
+                                        {{label: "default", value: "100"}}
+                                        {{label: "larger", value: "120"}}
+                                        {{label: "largest", value: "150"}}
+                                    </Am.Radio.Component>
+                                </section>
+                            </section>
+                            <section {...Am.flex({direction: "column", gap: "8px"})}>
+                                <label htmlFor="preferences-colorscheme">Color Scheme</label>
+                                <Am.Select.Component id="preferences-colorscheme" onInput={(event) => preferenceSetters.setColorScheme(event.currentTarget.value)} value={preferences.colorScheme.appValue}>
                                     {{label: "system default", value: ""}}
                                     {{label: "light", value: "light"}}
                                     {{label: "dark", value: "dark"}}
-                                </Select>
-                            </Atom.Container>
-                            <Atom.Container variation="invisible" am-group-item="" am-group="" am-flexbox="" am-flexbox-justify-content="start">
-                                <label am-group-header="" htmlFor="preferences-reducemotion">Reduce Motion</label>
-                                <Select id="preferences-reducemotion" am-group-item="" onChange={preferenceSetters.setReducedMotion} initialValue={preferences.reducedMotion.appValue}>
+                                </Am.Select.Component>
+                            </section>
+                            <section {...Am.flex({direction: "column", gap: "8px"})}>
+                                <label htmlFor="preferences-reducemotion">Reduce Motion</label>
+                                <Am.Select.Component id="preferences-reducemotion" onInput={(event) => preferenceSetters.setReducedMotion(event.currentTarget.value)} value={preferences.reducedMotion.appValue}>
                                     {{label: "system default", value: ""}}
                                     {{label: "no", value: "no-preference"}}
                                     {{label: "yes", value: "reduce"}}
-                                </Select>
-                            </Atom.Container>
+                                </Am.Select.Component>
+                            </section>
                         </form>
                     </Dialog>
                     {tooltip}

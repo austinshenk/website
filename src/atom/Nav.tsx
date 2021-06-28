@@ -1,9 +1,10 @@
 import React from "react";
+import Am from "am";
 
 type Props = React.PropsWithChildren<{}>;
 
 function Nav({...props}: Props) {
-    return <nav am-flexbox="" am-flexbox-justify-content="space-evenly" am-flexitem="" am-flexitem-grow="2" {...props} />;
+    return <nav {...Am.flex({justifyContent: "space-evenly"})} {...Am.flexItem({grow: 2})} {...props} />;
 }
 
 export default Nav;

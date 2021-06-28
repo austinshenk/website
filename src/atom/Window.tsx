@@ -1,6 +1,6 @@
-import React from "react";
+import React, {MutableRefObject} from "react";
+import Am from "am";
 import forwardedRef from "components/ForwardedRefWrapper";
-import Atom, {WindowProps} from "components/ui/atom";
 import Element from "components/Element";
 
 interface WindowContext {
@@ -27,32 +27,40 @@ function WindowsProvider({children}: React.PropsWithChildren<{}>) {
     </WindowContext.Provider>
 }
 
-type BasicWindowProps = WindowProps;
+type BasicWindowProps = Am.Window.Props;
 
 function BasicWindow({fullscreen, ...props}: BasicWindowProps, ref: React.ForwardedRef<HTMLElement>) {
     const {isPopupActive} = React.useContext(WindowContext);
-    useFocusToggle(forwardedRef(ref).current(), !isPopupActive, [isPopupActive]);
+    const windowRef: MutableRefObject<HTMLElement | null> = React.useRef<HTMLElement>(null);
+    useFocusToggle(windowRef, !isPopupActive, [isPopupActive]);
 
-    return <Atom.Window active={!isPopupActive} fullscreen={fullscreen} {...props} ref={ref} />;
+    return <Am.Window.Component active={!isPopupActive} fullscreen={fullscreen} {...props} ref={(instance) => {
+        forwardedRef(ref).current(instance);
+        forwardedRef(windowRef).current(instance);
+    }} />;
 }
 BasicWindow.displayName = "Window";
 
 
-type PopupWindowProps = WindowProps & {
+type PopupWindowProps = Am.Window.Props & {
     children: (popup: {activate: () => void, deactivate: () => void}) => React.ReactElement;
 };
 
 function PopupWindowComponent({fullscreen, children, ...props}: PopupWindowProps, ref: React.ForwardedRef<HTMLElement>) {
     const {isPopupActive, activatePopup, deactivatePopup} = React.useContext(WindowContext);
-    useFocusToggle(forwardedRef(ref).current(), isPopupActive, [isPopupActive]);
+    const windowRef: MutableRefObject<HTMLElement | null> = React.useRef<HTMLElement>(null);
+    useFocusToggle(windowRef, isPopupActive, [isPopupActive]);
 
-    return <Atom.Window active={isPopupActive} fullscreen={fullscreen} {...props} ref={ref}>
+    return <Am.Window.Component active={isPopupActive} fullscreen={fullscreen} {...props} ref={(instance) => {
+        forwardedRef(ref).current(instance);
+        forwardedRef(windowRef).current(instance);
+    }}>
         {children({activate: activatePopup, deactivate: deactivatePopup})}
-    </Atom.Window>;
+    </Am.Window.Component>;
 }
 PopupWindowComponent.displayName = "PopupWindow";
 
-const useFocusToggle = (container: HTMLElement | null, focusable: boolean, dependency: any[]) => {
+const useFocusToggle = (container: React.ForwardedRef<HTMLElement>, focusable: boolean, dependency: any[]) => {
     React.useEffect(() => {
         const tabIndexAttribute = "tabindex";
         const tabIndexPlaceholderAttribute = "data-tabindex";
@@ -61,7 +69,7 @@ const useFocusToggle = (container: HTMLElement | null, focusable: boolean, depen
         const focusableSelector = `[${tabIndexAttribute}], [${tabIndexPlaceholderAttribute}], a, input, button, select, textarea`;
 
         if (focusable) {
-            container?.querySelectorAll(focusableSelector).forEach((element: Element) => {
+            forwardedRef(container).current()?.querySelectorAll(focusableSelector).forEach((element: Element) => {
                 if (!element)
                     return;
 
@@ -76,7 +84,7 @@ const useFocusToggle = (container: HTMLElement | null, focusable: boolean, depen
                 }
             });
         } else {
-            container?.querySelectorAll(focusableSelector).forEach((element: Element) => {
+            forwardedRef(container).current()?.querySelectorAll(focusableSelector).forEach((element: Element) => {
                 const tabindex = Element.attribute(element, tabIndexAttribute);
                 const dataTabindex = Element.attribute(element, tabIndexPlaceholderAttribute);
 

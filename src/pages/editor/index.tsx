@@ -1,5 +1,5 @@
 import React from "react";
-import Body from "components/ui/molecule/Body";
+import Body from "atom/Body";
 
 export default function Editor() {
     return <Body.Eager>

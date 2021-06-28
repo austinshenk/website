@@ -1,9 +1,10 @@
 import React from "react";
+import Am from "am";
 
 type Props = React.PropsWithChildren<{}>;
 
 function Header({...props}: Props) {
-    return <header am-container="" am-flexbox="" am-flexbox-justify-content="space-around" {...props} />;
+    return <Am.Container.Component as="header" {...Am.flex({justifyContent: "space-around"})} {...props} />;
 }
 
 export default Header;

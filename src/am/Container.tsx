@@ -1,12 +1,14 @@
+import React from "react";
 import {css} from "styled-jsx/css";
-import {Theme} from "components/Theme";
+import {useTheme, Theme} from "./Theme";
 
-export type ContainerProps = Partial<{
-    variation: "floating" | "invisible";
+type Config = Partial<{
+    as: React.ElementType;
+    floating: boolean;
     background: "alternative";
 }>;
 
-export function containerStyles(theme: Theme) {
+function styles(theme: Theme) {
     return css.global`
     [am-container] {
         margin: ${theme.spacing()};
@@ -35,8 +37,26 @@ const pixelatedBorder = (theme: Theme, floating?: boolean, interactive?: boolean
     return `box-shadow: ${border}`
 };
 
-export const container = ({variation, background, ...rest}: ContainerProps) => ({
-    "am-container" : variation ?? "",
+const container = ({floating, background, ...props}: Config) => ({
+    "am-container" : floating ? "floating" : "",
     "am-container-background" : background,
-    ...rest
+    ...props
 });
+
+type HtmlSectionProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+
+export type Props = React.PropsWithChildren<HtmlSectionProps> & Config;
+
+function Container(props: Props, ref: React.ForwardedRef<HTMLElement>) {
+    const theme = useTheme();
+    const style = styles(theme);
+    const {as: As, ...containerProps} = props;
+    const Component = As ?? "section";
+
+    return <>
+        <style jsx global>{style}</style>
+        <Component {...container(containerProps)} ref={ref}/>
+    </>;
+}
+
+export const Component = React.forwardRef<HTMLElement, Props>(Container);

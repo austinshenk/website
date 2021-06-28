@@ -18,5 +18,4 @@ export const ThemeProvider = (props: Props) => {
     </ThemeContext.Provider>
 };
 
-const useTheme = () => React.useContext(ThemeContext);
-export default useTheme;
+export const useTheme = () => React.useContext(ThemeContext);

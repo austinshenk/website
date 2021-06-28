@@ -1,5 +1,5 @@
 import React from "react";
-import Atom, {BodyState} from "components/ui/atom";
+import Am from "am";
 
 type LazyBodyProps = {
     children: (finishLoading: () => void) => React.ReactNode;
@@ -8,9 +8,9 @@ type LazyBodyProps = {
 function LazyBody({children}: LazyBodyProps, ref: React.ForwardedRef<HTMLElement>) {
     const loader = useLoader();
 
-    return <Atom.Body state={loader.value} ref={ref}>
+    return <Am.Body.Component state={loader.value} ref={ref}>
         {children(loader.start)}
-    </Atom.Body>;
+    </Am.Body.Component>;
 }
 
 type EagerBodyProps = React.PropsWithChildren<{}>;
@@ -20,26 +20,26 @@ function EagerBody({children}: EagerBodyProps, ref: React.ForwardedRef<HTMLEleme
 
     React.useEffect(loader.start, []);
 
-    return <Atom.Body state={loader.value} ref={ref}>
+    return <Am.Body.Component state={loader.value} ref={ref}>
         {children}
-    </Atom.Body>;
+    </Am.Body.Component>;
 }
 
 const useLoader = () => {
-    const [loadState, setLoaded] = React.useState(BodyState.UNLOADED);
+    const [loadState, setLoaded] = React.useState<Am.Body.State>(Am.Body.State.UNLOADED);
 
     React.useEffect(() => {
         if (loaderHasStarted(loadState))
-            setTimeout(() => setLoaded(BodyState.LOADED), 300);
+            setTimeout(() => setLoaded(Am.Body.State.LOADED), 300);
     }, [loadState]);
 
     return {
         value: loadState,
-        start: () => setLoaded(BodyState.LOADING),
+        start: () => setLoaded(Am.Body.State.LOADING),
     }
 }
 
-const loaderHasStarted = (loadState: BodyState) => loadState === BodyState.LOADING;
+const loaderHasStarted = (loadState: Am.Body.State) => loadState === Am.Body.State.LOADING;
 
 export default {
     Lazy: React.forwardRef<HTMLElement, LazyBodyProps>(LazyBody),

@@ -1,5 +1,5 @@
 import {cloneElement, createContext, MutableRefObject, ReactElement, RefObject, useContext, useEffect, useReducer, useRef} from "react";
-import Container from "./ui/atom/Container";
+import Am from "am";
 
 interface Context {
     open: (content: string) => (event: React.FocusEvent | React.MouseEvent) => void;
@@ -164,7 +164,7 @@ export function Tooltips({children}: {children: (containerRef: RefObject<HTMLEle
             height: state.position.arrow.height
         }}/>;
 
-    const tooltip = <Container
+    const tooltip = <Am.Container.Component
         background="alternative"
         ref={tooltipElement}
         am-tooltip=""
@@ -175,7 +175,7 @@ export function Tooltips({children}: {children: (containerRef: RefObject<HTMLEle
         }}>
         {arrow}
         {state.content}
-    </Container>;
+    </Am.Container.Component>;
 
     return <TooltipContext.Provider value={{ open, close }}>
         {children(containerElement, tooltip)}
