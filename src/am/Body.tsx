@@ -15,6 +15,10 @@ export enum State {
 const globalStyle = `
     body {
         background: #808080;
+        transition: background .1s ease-in-out;
+    }
+    html[prefers-color-scheme] body {
+        background: var(--background-main);
     }
     [am-body] {
         opacity: 0;

@@ -60,9 +60,8 @@ const position = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRect, too
 };
 
 const tooltipPosition = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRect, tooltipBoundingBox: DOMRect) => {
-    const pixel = 4;
     let x = (targetBoundingBox.x + targetBoundingBox.width / 2) - tooltipBoundingBox.width / 2;
-    let y = targetBoundingBox.bottom + (2 * pixel);
+    let y = targetBoundingBox.bottom;
 
     if (x + tooltipBoundingBox.width > containerBoundingBox.width)
         x = containerBoundingBox.width - tooltipBoundingBox.width;
@@ -73,10 +72,9 @@ const tooltipPosition = (containerBoundingBox: DOMRect, targetBoundingBox: DOMRe
 };
 
 const arrowPosition = (targetBoundingBox: DOMRect, tooltip: {x: number, y: number}) => {
-    let x = (targetBoundingBox.x + targetBoundingBox.width / 2) - tooltip.x;
-    let height = tooltip.y - targetBoundingBox.bottom;
+    let x = (targetBoundingBox.x + targetBoundingBox.width / 2) - tooltip.x - 4;
 
-    return { x, y: -height, height };
+    return { x, y: -8, height: 4 };
 };
 
 export function Tooltips({children}: {children: (containerRef: RefObject<HTMLElement>, tooltip: ReactElement) => ReactElement}) {
@@ -165,10 +163,10 @@ export function Tooltips({children}: {children: (containerRef: RefObject<HTMLEle
         }}/>;
 
     const tooltip = <Am.Container.Component
-        background="alternative"
+        variation="container-alternative"
         ref={tooltipElement}
         am-tooltip=""
-        am-tooltip-open={state.flow === "opened" ? "true": ""}
+        am-tooltip-open={state.flow === "opened" ? "true" : ""}
         style={{
             left: state.position.tooltip.x,
             top: state.position.tooltip.y

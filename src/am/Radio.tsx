@@ -2,10 +2,13 @@ import React from "react";
 import {css} from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 import * as Icon from "./Icon";
+import * as Container from "./Container";
 
 function styles(theme: Theme) {return css.global`
 [am-radio] {
     position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 [am-radio] > input[type=radio] {
@@ -42,11 +45,11 @@ type RadioChildProps = Omit<HtmlInputProps, "label"|"value"|"ref"|"key"|"childre
 const RadioChild = React.forwardRef((props: RadioChildProps, ref: React.ForwardedRef<HTMLInputElement>) => {
     const {label, ...radioProps} = props;
 
-    return <label am-radio="" am-interactive="">
+    return <Container.Component as="label" variation="control" containerBodyProps={{"am-radio":""}}>
         <input type="radio" {...radioProps} ref={ref}/>
         {radioProps.checked ? <Icon.BigRadio variation="fill"/> : <Icon.SmallRadio variation="fill"/>}
         <span>{label}</span>
-    </label>;
+    </Container.Component>;
 });
 
 type RadioProps = {

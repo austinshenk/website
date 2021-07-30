@@ -1,21 +1,28 @@
+import React from "react";
 import Am from "am";
 
-type CleanAnchorProps = Omit<Am.Anchor.Props, "href">
+type CleanAnchorProps = Omit<Am.Anchor.Props, "href">;
 
-function ExternalAnchor({url, ...props}: CleanAnchorProps & { url: string }) {
-    return <Am.Anchor.Component href={url} {...props} />;
+type ExternalAnchorProps = CleanAnchorProps & { url: string };
+
+function ExternalAnchor({url, ...props}: ExternalAnchorProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
+    return <Am.Anchor.Component href={url} {...props} ref={ref} />;
 }
 
-function InternalElementAnchor({elementId, ...props}: CleanAnchorProps & { elementId: string }) {
-    return <Am.Anchor.Component href={`#${elementId}`} {...props} />;
+type InternalElementAnchorProps = CleanAnchorProps & { elementId: string };
+
+function InternalElementAnchor({elementId, ...props}: InternalElementAnchorProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
+    return <Am.Anchor.Component href={`#${elementId}`} {...props} ref={ref} />;
 }
 
-function InternalPathAnchor({path, ...props}: CleanAnchorProps & { path: string[] }) {
-    return <Am.Anchor.Component href={path.join("/")} {...props} />;
+type InternalPathAnchorProps = CleanAnchorProps & { path: string[] };
+
+function InternalPathAnchor({path, ...props}: InternalPathAnchorProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
+    return <Am.Anchor.Component href={path.join("/")} {...props} ref={ref} />;
 }
 
 export default {
-    External: ExternalAnchor,
-    InternalElement: InternalElementAnchor,
-    InternalPath: InternalPathAnchor
+    External: React.forwardRef<HTMLAnchorElement, ExternalAnchorProps>(ExternalAnchor),
+    InternalElement: React.forwardRef<HTMLAnchorElement, InternalElementAnchorProps>(InternalElementAnchor),
+    InternalPath: React.forwardRef<HTMLAnchorElement, InternalPathAnchorProps>(InternalPathAnchor)
 }

@@ -1,9 +1,0 @@
-@import "inline/headings";
-@import "inline/lists";
-
-blockquote {
-  margin: .5rem 0;
-  padding: .5rem 2rem;
-  box-shadow: -$pixel 0 var(--pixel);
-  background-color: var(--background-alt);
-}

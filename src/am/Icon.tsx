@@ -4,10 +4,9 @@ import {css} from "styled-jsx/css";
 
 function styles(theme: Theme) {return css.global`
 [am-icon] {
-    height: ${theme.spacing(4)};
-    width: ${theme.spacing(4)};
+    height: 1em;
+    width: 1em;
     vertical-align: middle;
-    margin-bottom: ${theme.spacing()};
 }
     
 [am-icon] > path {

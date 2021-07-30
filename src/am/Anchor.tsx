@@ -1,47 +1,48 @@
 import React from "react";
 import {css} from "styled-jsx/css";
 import Link, {LinkProps} from "next/link";
-import {useTheme, Theme} from "./Theme";
+import * as Container from "./Container";
 
-function styles(theme: Theme) {
-    return css.global`
-    a {
-        display: inline-block;
-        text-decoration: none;
-        font-family: system-san-serif;
-        box-shadow: 0 ${theme.spacing(1)} var(--pixel) !important;
-        color: var(--text);
-    }
-    
-    a:active {
-        transform: translate(0, 1px);
-        box-shadow: 0 ${theme.spacing(1)} var(--pixel);
-    }
-`;
+const styles = css.global`
+a {
+    display: inline-block;
+    text-decoration: none;
+    font-family: system-san-serif;
+    color: var(--text);
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-image-outset: 0 !important;
 }
+
+a:active {
+    transform: translate(0, 1px);
+}
+`;
 
 type HtmlAnchorProps = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>;
 
-const HtmlAnchor = React.forwardRef<HTMLAnchorElement, HtmlAnchorProps>((props: HtmlAnchorProps) => {
-    return <a am-interactive="" {...props}/>;
+const HtmlAnchor = React.forwardRef<HTMLAnchorElement, HtmlAnchorProps>((props: HtmlAnchorProps, ref: React.ForwardedRef<HTMLAnchorElement>) => {
+    return <Container.Component as="a" variation="anchor" {...props} ref={ref}>
+        {props.children}
+    </Container.Component>;
 });
 
 export type Props = React.PropsWithChildren<LinkProps & HtmlAnchorProps>;
 
 function Anchor(props: Props, ref: React.ForwardedRef<HTMLAnchorElement>) {
-    const theme = useTheme();
+    const anchorRef = React.useRef<HTMLAnchorElement>(null);
     const {href, as, replace, scroll, shallow, passHref, prefetch, locale, ...htmlAnchorProps} = props
     const anchorProps = {
         href, as, replace, scroll, shallow, prefetch, locale
     };
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        <style jsx global>{styles}</style>
         <Link passHref {...anchorProps}>
-            <HtmlAnchor {...htmlAnchorProps} ref={ref} />
+            <HtmlAnchor {...htmlAnchorProps} ref={ref ?? anchorRef}/>
         </Link>
     </>;
 }
 
-export const Component = Anchor;
+export const Component = React.forwardRef<HTMLAnchorElement, Props>(Anchor);

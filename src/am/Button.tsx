@@ -1,5 +1,6 @@
 import React from "react";
 import {css} from "styled-jsx/css";
+import * as Container from "./Container";
 
 const styles = css.global`
     button {
@@ -8,17 +9,22 @@ const styles = css.global`
         color: inherit;
         font: 400 1rem system;
         background: none;
+        padding: 0 !important;
     }
 `;
 
 type HtmlButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
-export type Props = HtmlButtonProps;
+export type Props = HtmlButtonProps & {
+    containerBodyProps?: Container.BodyProps
+};
 
 function Button(props: Props, ref: React.ForwardedRef<HTMLButtonElement>) {
     return <>
         <style jsx global>{styles}</style>
-        <button am-interactive="floating" {...props} ref={ref} />
+        <Container.Component as="button" variation="button" {...props} ref={ref}>
+            {props.children}
+        </Container.Component>
     </>;
 }
 

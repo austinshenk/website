@@ -1,6 +1,5 @@
 import React from "react";
 import {css} from "styled-jsx/css";
-import {useTheme, Theme} from "./Theme";
 
 type DialogConfig = Partial<{
     open: boolean
@@ -10,7 +9,7 @@ type DialogBackdropConfig = Partial<{
     open: boolean
 }>;
 
-function styles(theme: Theme) {return css.global`
+function styles() {return css.global`
 [am-dialog] > dialog {
     color: inherit;
     background: none;
@@ -18,11 +17,11 @@ function styles(theme: Theme) {return css.global`
     
     position: absolute;
     left: auto;
-    right: -${theme.spacing()};
+    right: 0;
     max-width: 500px;
     width: 100%;
     height: 100%;
-    padding: ${theme.spacing(2)} 0 ${theme.spacing(2)} ${theme.spacing()};
+    padding: 0;
     overflow: hidden auto;
     
     transform: translateX(100%);
@@ -83,8 +82,7 @@ export type Props = React.PropsWithChildren<HtmlDialogProps> & DialogConfig & {
 };
 
 function Dialog({open, onClose, backdropProps, ...props}: Props, ref: React.ForwardedRef<HTMLDialogElement>) {
-    const theme = useTheme();
-    const style = styles(theme);
+    const style = styles();
 
     return <>
         <style jsx global>{style}</style>

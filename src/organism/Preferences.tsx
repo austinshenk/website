@@ -2,8 +2,8 @@ import React, {useEffect, RefObject} from "react";
 import Am from "am";
 import Window from "atom/Window";
 import Dialog, {DialogRef} from "atom/Dialog";
-import usePreferences from "../Preferences";
-import Tooltip, {Tooltips} from "../Tooltip";
+import Tooltip, {Tooltips} from "molecule/Tooltip";
+import usePreferences from "components/Preferences";
 
 interface Props {
     dialogRef?: RefObject<DialogRef>;
@@ -25,7 +25,7 @@ export default function Preferences({dialogRef, onLoad}: Props) {
                         <section {...Am.flex({direction: "row", wrap: "no"})} style={{width: "100%"}}>
                             <span role="heading" aria-level={2} {...Am.flexItem({grow: 2})}>Accessibility</span>
                             <Tooltip content="Close">
-                                <Am.Button.Component onClick={dialogRef?.current?.close} {...Am.flexItem({alignSelf: "center"})}>
+                                <Am.Button.Component onClick={dialogRef?.current?.close} {...Am.flexItem({alignSelf: "center"})} containerBodyProps={Am.flex({justifyContent: "center", alignItems: "stretch"})}>
                                     <Am.Icon.Cross variation="outline"/>
                                 </Am.Button.Component>
                             </Tooltip>
@@ -33,7 +33,7 @@ export default function Preferences({dialogRef, onLoad}: Props) {
                         <form {...Am.flex({direction: "column", gap: "24px"})}>
                             <section {...Am.flex({direction: "column", gap: "8px"})}>
                                 <span>Text Size</span>
-                                <section {...Am.flex({direction: "row", gap: "4px"})}>
+                                <section {...Am.flex({direction: "row", justifyContent: "start"})}>
                                     <Am.Radio.Component name="textSize" onChange={(value) => preferenceSetters.setTextSize(Number(value))} initialValue={preferences.textSize.toString()}>
                                         {{label: "smaller", value: "80"}}
                                         {{label: "default", value: "100"}}

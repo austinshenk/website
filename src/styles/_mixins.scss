@@ -1,12 +1,12 @@
 @mixin pixelated-border($floating: false, $interactive: false, $state: "normal") {
-  $color: var(--pixel);
-  $shadow: var(--shadow);
-
-  $border: #{0} -$pixel $color, $pixel #{0} $color, #{0} $pixel $color, -$pixel #{0} $color;
+  $border: #{0} #{0} var(--shadow);
   @if ($floating and not $interactive) or ($floating and $interactive and $state == "normal") {
-    $border: $border + "," + ( 0 (2 * $pixel) $shadow, $pixel $pixel $shadow, -$pixel $pixel $shadow);
+    $border: #{0} ($pixel * 2) var(--shadow), $pixel $pixel var(--shadow), -$pixel $pixel var(--shadow);
   }
 
+  border: $pixel solid transparent;
+  border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAI0lEQVQI12NgYGBgiDd1/h9v6vyfgYGBgRHGgAEmBmwAWQsATrIJMg0Be5wAAAAASUVORK5CYII=) 25%;
+  border-image-outset: $pixel;
   box-shadow: #{$border};
 }
 

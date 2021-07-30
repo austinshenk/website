@@ -1,18 +1,20 @@
 import React, {FormEvent, FormEventHandler, useState} from "react";
 import {css} from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
-import Am from "./index";
+import * as Icon from "./Icon";
+import * as Container from "./Container";
 
 function styles(theme: Theme) {return css.global`
 [am-select] {
     position: relative;
+    padding: 0 !important;
 }
 
 [am-select] > [am-icon] {
     position: absolute;
     height: 100%;
     top: 0;
-    left: ${theme.spacing(3)};
+    left: ${theme.spacing()};
     pointer-events: none;
 }
 
@@ -28,7 +30,8 @@ function styles(theme: Theme) {return css.global`
     line-height: calc(${theme.spacing(2)} + 2ex);
     vertical-align: middle;
     
-    padding: 0 ${theme.spacing()} 0 ${theme.spacing(9)};
+    padding: ${theme.spacing()};
+    padding-left: calc(1em + ${theme.spacing(2)});
 }
 `}
 
@@ -59,19 +62,19 @@ const handleChangeEvent = (setValue: (value: string) => void, onChange?: FormEve
     onChange?.(event);
 }
 
-function Select({children, onInput, value, ...props}: Props) {
+function Select({children, onInput, value, ref, ...props}: Props) {
     const theme = useTheme();
     const style = styles(theme);
     const [selectedValue, setSelectedValue] = useState<string | ReadonlyArray<string> | number>(determineInitialValue(children, value));
 
     return <>
         <style jsx global>{style}</style>
-        <section am-select="" am-interactive="" {...props}>
-            <Am.Icon.DownArrow variation="outline" />
+        <Container.Component as="section" variation="control" containerBodyProps={{"am-select":""}} {...props}>
+            <Icon.DownArrow variation="outline" />
             <select value={selectedValue} onInput={handleChangeEvent(setSelectedValue, onInput)}>
                 {children.map(({label, value}) => <option key={value} value={value}>{label}</option>)}
             </select>
-        </section>
+        </Container.Component>
     </>;
 }
 
