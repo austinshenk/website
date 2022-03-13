@@ -1,4 +1,4 @@
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 import Am from "am";
 import Anchor from "atom/Anchor";
 import Heading from "atom/Heading";

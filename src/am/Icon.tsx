@@ -1,6 +1,6 @@
 import React from "react";
 import {useTheme, Theme} from "./Theme";
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 
 function styles(theme: Theme) {return css.global`
 [am-icon] {

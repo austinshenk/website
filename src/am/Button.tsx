@@ -1,5 +1,5 @@
 import React from "react";
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 import * as Container from "./Container";
 
 const styles = css.global`

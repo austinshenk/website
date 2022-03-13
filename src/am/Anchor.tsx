@@ -1,5 +1,5 @@
 import React from "react";
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 import Link, {LinkProps} from "next/link";
 import * as Container from "./Container";
 

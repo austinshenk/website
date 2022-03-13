@@ -1,5 +1,5 @@
 import React from "react";
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 import * as Icon from "./Icon";
 import * as Container from "./Container";

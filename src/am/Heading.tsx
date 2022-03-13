@@ -1,5 +1,5 @@
 import React from "react";
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 
 function styles(theme: Theme) {return css.global`

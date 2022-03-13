@@ -1,5 +1,5 @@
 import React, {ForwardedRef} from "react";
-import {css} from "styled-jsx/css";
+import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 
 type Config = Partial<{
