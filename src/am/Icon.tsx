@@ -2,7 +2,7 @@ import React from "react";
 import {useTheme, Theme} from "./Theme";
 import css from "styled-jsx/css";
 
-function styles(theme: Theme) {return css.global`
+const styles = (theme: Theme) => <style jsx global>{`
 [am-icon] {
     height: 1em;
     width: 1em;
@@ -31,7 +31,7 @@ function styles(theme: Theme) {return css.global`
     fill: var(--background-main);
     stroke: var(--pixel);
 }
-`;}
+`}</style>;
 
 type Config = Partial<{
     icon: string,
@@ -50,10 +50,9 @@ export type Props = React.PropsWithChildren<HtmlSVGProps> & Config;
 
 export const Component = React.forwardRef<SVGSVGElement, Props>(function (props: Props, ref: React.ForwardedRef<SVGSVGElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <svg {...amicon(props)} width={theme.spacing(4)} height={theme.spacing(4)} viewBox="0 0 16 16" ref={ref}>
             <path />
         </svg>

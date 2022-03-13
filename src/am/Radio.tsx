@@ -1,10 +1,9 @@
 import React from "react";
-import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 import * as Icon from "./Icon";
 import * as Container from "./Container";
 
-function styles(theme: Theme) {return css.global`
+const styles = (theme: Theme) => <style jsx global>{`
 [am-radio] {
     position: relative;
     display: inline-flex;
@@ -32,7 +31,7 @@ function styles(theme: Theme) {return css.global`
     padding: 0 ${theme.spacing()};
     font-family: system-san-serif;
 }
-`}
+`}</style>;
 
 type HtmlInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
@@ -62,10 +61,9 @@ type RadioProps = {
 function Radio({name, children, onChange, initialValue}: RadioProps) {
     const theme = useTheme();
     const [checkedValue, setCheckedValue] = React.useState<string>(determineInitialValue(children, initialValue));
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         {children.map((props, index) => {
             return <RadioChild
                 key={`${props.label}-${index}-${props.value}`}

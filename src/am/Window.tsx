@@ -1,5 +1,4 @@
 import React, {ForwardedRef} from "react";
-import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 
 type Config = Partial<{
@@ -7,25 +6,24 @@ type Config = Partial<{
     fullscreen: boolean;
 }>;
 
-function styles(theme: Theme) {return css.global`
-    [am-window] {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden auto;
-        
-        padding: ${theme.spacing()};
-    }
+const styles = (theme: Theme) => <style jsx global>{`
+[am-window] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden auto;
     
-    [am-window][am-window-fullscreen] {
-        padding: 0;
-        overflow: initial;
-    }
-    
-    [am-window="inactive"] {
-        pointer-events: none;
-    }`
+    padding: ${theme.spacing()};
 }
+
+[am-window][am-window-fullscreen] {
+    padding: 0;
+    overflow: initial;
+}
+
+[am-window="inactive"] {
+    pointer-events: none;
+}`}</style>;
 
 function window({active, fullscreen, ...rest}: Config) {return {
     "am-window" : active ? "active" : "inactive",
@@ -39,10 +37,9 @@ export type Props = React.PropsWithChildren<HtmlSectionProps> & Config;
 
 function Window(props: Props, ref: ForwardedRef<HTMLElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <section {...window(props)} ref={ref} />
     </>;
 }

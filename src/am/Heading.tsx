@@ -1,8 +1,7 @@
 import React from "react";
-import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 
-function styles(theme: Theme) {return css.global`
+const styles = (theme: Theme) => <style jsx global>{`
 h1, h2, h3, h4, h5, h6, span[role="heading"] {
     font-family: system-san-serif;
     font-weight: bold;
@@ -30,7 +29,7 @@ h2, span[role="heading"][aria-level="2"] {
 h3, span[role="heading"][aria-level="3"] {
     padding-left: ${theme.spacing(0.5)};
 }
-`}
+`}</style>;
 
 type HtmlHeadingProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;
 
@@ -38,60 +37,54 @@ export type Props = React.PropsWithChildren<HtmlHeadingProps>;
 
 export const H1 = React.forwardRef<HTMLHeadingElement, Props>(function(props: Props, ref: React.ForwardedRef<HTMLHeadingElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <h1 {...props} ref={ref} />
     </>;
 });
 
 export const H2 = React.forwardRef<HTMLHeadingElement, Props>(function(props: Props, ref: React.ForwardedRef<HTMLHeadingElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <h2 {...props} ref={ref} />
     </>;
 });
 
 export const H3 = React.forwardRef<HTMLHeadingElement, Props>(function(props: Props, ref: React.ForwardedRef<HTMLHeadingElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <h3 {...props} ref={ref} />
     </>;
 });
 
 export const H4 = React.forwardRef<HTMLHeadingElement, Props>(function(props: Props, ref: React.ForwardedRef<HTMLHeadingElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <h4 {...props} ref={ref} />
     </>;
 });
 
 export const H5 = React.forwardRef<HTMLHeadingElement, Props>(function(props: Props, ref: React.ForwardedRef<HTMLHeadingElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <h5 {...props} ref={ref} />
     </>;
 });
 
 export const H6 = React.forwardRef<HTMLHeadingElement, Props>(function(props: Props, ref: React.ForwardedRef<HTMLHeadingElement>) {
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <h6 {...props} ref={ref} />
     </>;
 });
@@ -103,10 +96,9 @@ type ImposterProps = Props & Partial<{
 export const Imposter = React.forwardRef<HTMLSpanElement, ImposterProps>(function(props: ImposterProps, ref: React.ForwardedRef<HTMLSpanElement>) {
     const {level, ...spanProps} = props;
     const theme = useTheme();
-    const style = styles(theme);
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <span role="heading" aria-level={level} {...spanProps} ref={ref} />
     </>;
 });

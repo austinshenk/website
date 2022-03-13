@@ -1,5 +1,4 @@
 import React from "react";
-import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 
 type Config = Partial<{
@@ -7,7 +6,7 @@ type Config = Partial<{
     variation: "container" | "container-alternative" | "anchor" | "button" | "control";
 }>;
 
-function styles(theme: Theme) { return css.global`
+const styles = (theme: Theme) => <style jsx global>{`
 [am-container] {
     background: none;
     margin: ${theme.spacing()};
@@ -70,7 +69,7 @@ function styles(theme: Theme) { return css.global`
 [am-container][am-container-interactive]:not([disabled=""]):active, [am-container][am-container-interactive]:not([disabled=true]):active {
     transform: translate(0, 2px);
 }
-`;}
+`}</style>;
 
 const container = ({variation, ...containerProps}: Props) => {
     switch(variation) {
@@ -121,12 +120,11 @@ export type BodyProps = HtmlSectionProps & {[key: string]: any};
 
 function Container(props: Props, ref: React.ForwardedRef<HTMLElement>) {
     const theme = useTheme();
-    const style = styles(theme);
     const {as: As, variation, containerBodyProps, children, ...containerProps} = props;
     const Component = As ?? "section";
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <Component {...container({variation, ...containerProps})} ref={ref}>
             <section {...containerBodyProps}>{children}</section>
         </Component>

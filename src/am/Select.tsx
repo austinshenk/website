@@ -1,10 +1,9 @@
 import React, {FormEvent, FormEventHandler, useState} from "react";
-import css from "styled-jsx/css";
 import {useTheme, Theme} from "./Theme";
 import * as Icon from "./Icon";
 import * as Container from "./Container";
 
-function styles(theme: Theme) {return css.global`
+const styles = (theme: Theme) => <style jsx global>{`
 [am-select] {
     position: relative;
     padding: 0 !important;
@@ -33,7 +32,7 @@ function styles(theme: Theme) {return css.global`
     padding: ${theme.spacing()};
     padding-left: calc(1em + ${theme.spacing(2)});
 }
-`}
+`}</style>;
 
 type HtmlSelectProps = React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>;
 
@@ -64,11 +63,10 @@ const handleChangeEvent = (setValue: (value: string) => void, onChange?: FormEve
 
 function Select({children, onInput, value, ref, ...props}: Props) {
     const theme = useTheme();
-    const style = styles(theme);
     const [selectedValue, setSelectedValue] = useState<string | ReadonlyArray<string> | number>(determineInitialValue(children, value));
 
     return <>
-        <style jsx global>{style}</style>
+        {styles(theme)}
         <Container.Component as="section" variation="control" containerBodyProps={{"am-select":""}} {...props}>
             <Icon.DownArrow variation="outline" />
             <select value={selectedValue} onInput={handleChangeEvent(setSelectedValue, onInput)}>

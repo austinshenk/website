@@ -9,7 +9,7 @@ type DialogBackdropConfig = Partial<{
     open: boolean
 }>;
 
-function styles() {return css.global`
+const styles = css.global`
 [am-dialog] > dialog {
     color: inherit;
     background: none;
@@ -62,7 +62,7 @@ function styles() {return css.global`
 [prefers-color-scheme=dark] [am-dialog] > [am-dialog-backdrop] {
     background: hsla(0, 0%, 0%, 0.5);
 }
-`;}
+`;
 
 const dialog = (props?: DialogConfig) => ({
     "open": true,
@@ -82,10 +82,8 @@ export type Props = React.PropsWithChildren<HtmlDialogProps> & DialogConfig & {
 };
 
 function Dialog({open, onClose, backdropProps, ...props}: Props, ref: React.ForwardedRef<HTMLDialogElement>) {
-    const style = styles();
-
     return <>
-        <style jsx global>{style}</style>
+        <style jsx global>{styles}</style>
         <div {...dialogBackdrop({open})} {...backdropProps} onClick={onClose} />
         <dialog {...dialog({open})} {...props} ref={ref}>
             {props.children}
