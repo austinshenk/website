@@ -21,11 +21,11 @@ export default function Preferences({dialogRef, onLoad}: Props) {
         {(windowRef, tooltip) => (
             <Window.Popup ref={windowRef} fullscreen am-dialog="">
                 {(window) => <>
-                    <Dialog dialogRef={dialogRef} onOpen={window.activate} onClose={window.deactivate} containerProps={{...Am.flex({direction: "column"})}}>
+                    <Dialog dialogRef={dialogRef} onOpen={window.activate} onClose={window.deactivate}>
                         <section {...Am.flex({direction: "row", wrap: "no"})} style={{width: "100%"}}>
                             <span role="heading" aria-level={2} {...Am.flexItem({grow: 2})}>Accessibility</span>
                             <Tooltip content="Close">
-                                <Am.Button.Component onClick={dialogRef?.current?.close} {...Am.flexItem({alignSelf: "center"})} containerBodyProps={Am.flex({justifyContent: "center", alignItems: "stretch"})}>
+                                <Am.Button.Component onClick={dialogRef?.current?.close} {...Am.flexItem({alignSelf: "center"})} {...Am.flex({justifyContent: "center", alignItems: "stretch"})}>
                                     <Am.Icon.Cross variation="outline"/>
                                 </Am.Button.Component>
                             </Tooltip>

@@ -2,9 +2,9 @@ import React from "react";
 import Am from "am";
 import Basic from "template/Basic";
 
-const theme: Am.Theme = {
+const theme: Am.Theme = Am.ThemeGenerator({
     spacing: (amount) => `${4 * (amount ?? 1)}px`,
-}
+});
 
 export default function Editor() {
     return <Basic theme={theme}

@@ -15,7 +15,6 @@
 * {
   line-height: calc(#{$pixel} + 2ex + #{$pixel});
   box-sizing: border-box;
-  outline: none;
 }
 
 ::selection {
@@ -28,5 +27,6 @@ html {
 }
 
 [am-preference-transition=running] * {
-  transition: all .2s ease-in-out !important;
+  pointer-events: none !important;
+  transition: all .2s linear !important;
 }

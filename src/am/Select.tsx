@@ -67,7 +67,7 @@ function Select({children, onInput, value, ref, ...props}: Props) {
 
     return <>
         {styles(theme)}
-        <Container.Component as="section" variation="control" containerBodyProps={{"am-select":""}} {...props}>
+        <Container.Component as="section" variation="control" am-select="" {...props}>
             <Icon.DownArrow variation="outline" />
             <select value={selectedValue} onInput={handleChangeEvent(setSelectedValue, onInput)}>
                 {children.map(({label, value}) => <option key={value} value={value}>{label}</option>)}

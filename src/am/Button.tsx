@@ -1,27 +1,26 @@
 import React from "react";
-import css from "styled-jsx/css";
 import * as Container from "./Container";
+import {Theme, useTheme} from "./Theme";
 
-const styles = css.global`
+const styles = (theme: Theme) => <style jsx global>{`
     button {
         appearance: none;
-        border: none;
-        color: inherit;
-        font: 400 1rem system;
         background: none;
-        padding: 0 !important;
+        padding: 0;
+        color: inherit;
+        font: 400 ${theme.typography.default} system;
     }
-`;
+`}</style>;
 
 type HtmlButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
-export type Props = HtmlButtonProps & {
-    containerBodyProps?: Container.BodyProps
-};
+export type Props = HtmlButtonProps;
 
 function Button(props: Props, ref: React.ForwardedRef<HTMLButtonElement>) {
+    const theme = useTheme();
+
     return <>
-        <style jsx global>{styles}</style>
+        {styles(theme)}
         <Container.Component as="button" variation="button" {...props} ref={ref}>
             {props.children}
         </Container.Component>
